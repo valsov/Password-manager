@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="PasswordManager.View.EntryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PasswordManager.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding Entry, Source={StaticResource Locator}}">
+    <Grid
+        Visibility="{Binding UserControlVisibility}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Orientation="Vertical">
+            <TextBlock Text="{Binding PasswordEntry.Name}" />
+            <TextBlock Text="{Binding PasswordEntry.Category}" />
+            <TextBlock Text="{Binding PasswordEntry.Username}" />
+            <TextBlock Text="{Binding PasswordEntry.Password}" />
+            <TextBlock Text="{Binding PasswordEntry.Description}" />
+        </StackPanel>
+
+        <Button
+            Grid.Row="1"
+            Content="Edit"
+            Width="100"
+            Visibility="{Binding EditionButtonVisibility}">
+            <Button.InputBindings>
+                <MouseBinding
+                    MouseAction="LeftClick"
+                    Command="{Binding StartEditionCommand}" />
+            </Button.InputBindings>
+        </Button>
+
+        <StackPanel
+            Grid.Row="2"
+            Orientation="Vertical"
+            Width="200"
+            Visibility="{Binding EditionFormVisibility}">
+            <TextBox Text="{Binding PasswordEntry.Name, UpdateSourceTrigger=PropertyChanged}" />
+            <ComboBox
+                ItemsSource="{Binding Categories}"
+                SelectedValue="{Binding PasswordEntry.Category}" />
+            <TextBox Text="{Binding PasswordEntry.Username, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding PasswordEntry.Description, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <Grid
+            Grid.Row="3"
+            Visibility="{Binding EditionControlButtonsVisibility}">
+            <StackPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+                <Button
+                    Content="Validate"
+                    Width="100">
+                    <Button.InputBindings>
+                        <MouseBinding
+                            MouseAction="LeftClick"
+                            Command="{Binding ValidateEditionCommand}" />
+                    </Button.InputBindings>
+                </Button>
+                <Button
+                    Content="Cancel"
+                    Width="100">
+                    <Button.InputBindings>
+                        <MouseBinding
+                            MouseAction="LeftClick"
+                            Command="{Binding CancelEditionCommand}" />
+                    </Button.InputBindings>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
