@@ -17,15 +17,14 @@
         <StackPanel
             Grid.Row="0"
             Orientation="Vertical"
-            Width="200"
-            Visibility="{Binding EditionFormVisibility}">
+            Width="200">
             <TextBox Text="{Binding NewPasswordEntry.Name, UpdateSourceTrigger=PropertyChanged}" />
             <ComboBox
                 ItemsSource="{Binding Categories}"
                 SelectedValue="{Binding NewPasswordEntry.Category}" />
             <TextBox Text="{Binding NewPasswordEntry.Username, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Text="{Binding NewPasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Text="{Binding NewPasswordEntry.Description, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding NewPasswordEntry.Notes, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
         <StackPanel

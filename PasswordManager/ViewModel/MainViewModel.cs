@@ -17,8 +17,6 @@ namespace PasswordManager.ViewModel
 
         IDatabaseRepository databaseRepository;
 
-        public RelayCommand LoadedCommand { get; private set; }
-
         private Visibility mainViewVisibility;
         public Visibility MainViewVisibility
         {
@@ -32,6 +30,8 @@ namespace PasswordManager.ViewModel
                 RaisePropertyChanged(nameof(MainViewVisibility));
             }
         }
+
+        public RelayCommand LoadedCommand { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.

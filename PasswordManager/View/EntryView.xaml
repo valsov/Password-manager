@@ -22,7 +22,7 @@
             <TextBlock Text="{Binding PasswordEntry.Category}" />
             <TextBlock Text="{Binding PasswordEntry.Username}" />
             <TextBlock Text="{Binding PasswordEntry.Password}" />
-            <TextBlock Text="{Binding PasswordEntry.Description}" />
+            <TextBlock Text="{Binding PasswordEntry.Notes}" />
         </StackPanel>
 
         <Button
@@ -48,7 +48,7 @@
                 SelectedValue="{Binding PasswordEntry.Category}" />
             <TextBox Text="{Binding PasswordEntry.Username, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Text="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Text="{Binding PasswordEntry.Description, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding PasswordEntry.Notes, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
         <Grid

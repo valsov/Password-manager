@@ -24,5 +24,20 @@ namespace PasswordManager
         {
             InitializeComponent();
         }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        private void MinimizeWindow(object sender, MouseButtonEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void CloseWindow(object sender, MouseButtonEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

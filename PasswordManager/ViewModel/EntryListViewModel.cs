@@ -32,20 +32,44 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private PasswordEntryModel selectedPasswordEntry;
         /// <summary>
         /// Currently selected password entry
         /// </summary>
-        public PasswordEntryModel SelectedPasswordEntry { get; set; }
+        public PasswordEntryModel SelectedPasswordEntry
+        {
+            get
+            {
+                return selectedPasswordEntry;
+            }
+            set
+            {
+                selectedPasswordEntry = value;
+                RaisePropertyChanged(nameof(SelectedPasswordEntry));
+            }
+        }
 
         /// <summary>
         /// List of categories to be displayed
         /// </summary>
         public ObservableCollection<string> CategoryList { get; set; }
 
+        private string selectedCategory;
         /// <summary>
         /// Currently selected category
         /// </summary>
-        public string SelectedCategory { get; set; }
+        public string SelectedCategory
+        {
+            get
+            {
+                return selectedCategory;
+            }
+            set
+            {
+                selectedCategory = value;
+                RaisePropertyChanged(nameof(SelectedCategory));
+            }
+        }
 
         /// <summary>
         /// Command to select a category and filter password entries by this criteria
@@ -75,6 +99,7 @@ namespace PasswordManager.ViewModel
             SelectCategoryCommand = new RelayCommand<string>(SelectCategory);
             SelectEntryCommand = new RelayCommand<PasswordEntryModel>(SelectEntry);
             AddEntryCommand = new RelayCommand(AddEntry);
+            SelectedCategory = null;
         }
 
         /// <summary>

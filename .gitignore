@@ -6,3 +6,5 @@ PasswordManager/obj/
 packages/
 
 \.vs/
+
+*.user

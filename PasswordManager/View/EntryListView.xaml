@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PasswordManager.View"
+             xmlns:converters="clr-namespace:PasswordManager.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding EntryList, Source={StaticResource Locator}}">
+    <UserControl.Resources>
+        <converters:EqualityConverter x:Key="EqualityConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
@@ -20,28 +24,77 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Button
+            <Grid
                 Grid.Row="0"
-                Content="ALL"
-                Width="150">
-                <Button.InputBindings>
+                Margin="15 0 0 0">
+                <Border
+                    BorderThickness="1"
+                    CornerRadius="3 0 0 3"
+                    Padding="5">
+                    <TextBlock
+                        Foreground="#D3DBE8"
+                        FontSize="20"
+                        Text="All" />
+
+                    <Border.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <Trigger Property="Border.IsMouseOver" Value="True">
+                                    <Setter Property="Border.Background" Value="#485464"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding SelectedCategory}" Value="{x:Null}">
+                                    <Setter Property="Border.Background" Value="#485464"/>
+                                    <Setter Property="Border.BorderBrush" Value="Gray"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
+                <Grid.InputBindings>
                     <MouseBinding
                         MouseAction="LeftClick"
                         Command="{Binding DataContext.SelectCategoryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                         CommandParameter="" />
-                </Button.InputBindings>
-            </Button>
+                </Grid.InputBindings>
+            </Grid>
 
             <ItemsControl
                 Grid.Row="1"
                 ItemsSource="{Binding CategoryList}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <TextBlock
-                                Foreground="#D3DBE8"
-                                FontSize="18"
-                                Text="{Binding}" />
+                        <Grid
+                            Margin="15 0 0 0">
+                            <Border
+                                BorderThickness="1"
+                                CornerRadius="3 0 0 3"
+                                Padding="5">
+                                <TextBlock
+                                    Foreground="#D3DBE8"
+                                    FontSize="20"
+                                    Text="{Binding}" />
+
+                                <Border.Style>
+                                    <Style>
+                                        <Style.Triggers>
+                                            <Trigger Property="Border.IsMouseOver" Value="True">
+                                                <Setter Property="Border.Background" Value="#485464"/>
+                                            </Trigger>
+                                            <DataTrigger Value="True">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource EqualityConverter}">
+                                                        <Binding />
+                                                        <Binding Path="DataContext.SelectedCategory" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" />
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Border.Background" Value="#485464"/>
+                                                <Setter Property="Border.BorderBrush" Value="Gray"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
 
                             <Grid.InputBindings>
                                 <MouseBinding
@@ -58,8 +111,7 @@
         <Border
             Grid.Column="1"
             Background="#FFFFFF"
-            BorderBrush="#D4D4D4"
-            BorderThickness="1">
+            BorderBrush="#D4D4D4">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
@@ -83,17 +135,43 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                <Grid
+                                    Margin="15,4,0,4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
 
-                                <TextBlock
-                                    Grid.Column="0"
-                                    Text="{Binding Name}" />
-                                <TextBlock
-                                    Grid.Column="1"
-                                    Text="{Binding Username}" />
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Text="{Binding Name}"
+                                        FontSize="18"
+                                        FontWeight="DemiBold"/>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Text="{Binding Username}"
+                                        FontSize="16" />
+                                </Grid>
+
+                                <Grid.Style>
+                                    <Style>
+                                        <Style.Triggers>
+                                            <Trigger Property="Grid.IsMouseOver" Value="True">
+                                                <Setter Property="Grid.Background" Value="#EBEBEB"/>
+                                            </Trigger>
+                                            <DataTrigger Value="True">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource EqualityConverter}">
+                                                        <Binding />
+                                                        <Binding Path="DataContext.SelectedPasswordEntry" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" />
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Grid.Background" Value="#0169DA"/>
+                                                <Setter Property="TextBlock.Foreground" Value="#F6FEF4"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
 
                                 <Grid.InputBindings>
                                     <MouseBinding

@@ -12,6 +12,7 @@
         Background="Transparent"
         AllowsTransparency="True"
         WindowStyle="None"
+        ResizeMode="CanMinimize"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -20,22 +21,59 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid
-            Visibility="{Binding MainViewVisibility}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*" />
-                <ColumnDefinition Width="6*" />
-            </Grid.ColumnDefinitions>
-
-            <view:EntryListView
-                Grid.Column="0" />
+            Background="#3B4045">
+            <!--Visibility="{Binding MainViewVisibility}">-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
             <Grid
-                Background="#F9F9F9"
-                Grid.Column="1">
-                
-                <view:EntryView />
+                Grid.Row="0"
+                Background="#3B4045">
+                <Border
+                    Background="Transparent"
+                    MouseDown="Border_MouseDown" />
+                <StackPanel
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Margin="0 0 7 1">
+                    <Ellipse
+                        Width="20"
+                        Height="20"
+                        Fill="#F8C126"
+                        Margin="0 0 7 0"
+                        MouseUp="MinimizeWindow"
+                        Cursor="Hand" />
 
-                <view:NewEntryView />
+                    <Ellipse
+                        Width="20"
+                        Height="20"
+                        Fill="#FF5F61"
+                        MouseUp="CloseWindow"
+                        Cursor="Hand" />
+                </StackPanel>
+            </Grid>
+
+            <Grid
+                Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="7*" />
+                    <ColumnDefinition Width="6*" />
+                </Grid.ColumnDefinitions>
+                
+                <view:EntryListView
+                    Grid.Column="0"/>
+
+                <Grid
+                    Background="#F9F9F9"
+                    Grid.Column="1">
+
+                    <view:EntryView />
+
+                    <view:NewEntryView />
+                </Grid>
             </Grid>
         </Grid>
         

@@ -12,7 +12,7 @@
 
         public string Password { get; set; }
 
-        public string Description { get; set; }
+        public string Notes { get; set; }
 
         public PasswordEntryModel Copy()
         {
@@ -23,7 +23,7 @@
                 Category = this.Category,
                 Username = this.Username,
                 Password = this.Password,
-                Description = this.Description
+                Notes = this.Notes
             };
         }
     }

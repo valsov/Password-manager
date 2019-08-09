@@ -45,7 +45,7 @@ namespace PasswordManager.Service
                     {
                         Id = System.Guid.NewGuid().ToString(),
                         Name = "First entry",
-                        Description = "Is in first cat",
+                        Notes = "Is in first cat",
                         Password = "Password01!",
                         Username = "aze",
                         Category = firstCat
@@ -54,7 +54,7 @@ namespace PasswordManager.Service
                     {
                         Id = System.Guid.NewGuid().ToString(),
                         Name = "Seonc entry",
-                        Description = "Is in first cat",
+                        Notes = "Is in first cat",
                         Password = "Password02!",
                         Username = "ert",
                         Category = firstCat
@@ -63,7 +63,7 @@ namespace PasswordManager.Service
                     {
                         Id = System.Guid.NewGuid().ToString(),
                         Name = "Third one here",
-                        Description = "Is in second cat",
+                        Notes = "Is in second cat",
                         Password = "Password03!",
                         Username = "azerazer",
                         Category = secondCat
@@ -72,7 +72,7 @@ namespace PasswordManager.Service
                     {
                         Id = System.Guid.NewGuid().ToString(),
                         Name = "new entry !!",
-                        Description = "Is in second cat",
+                        Notes = "Is in second cat",
                         Password = "Password04!",
                         Username = "fsdfsdfsd",
                         Category = secondCat
@@ -81,7 +81,7 @@ namespace PasswordManager.Service
                     {
                         Id = System.Guid.NewGuid().ToString(),
                         Name = "Beforethelast",
-                        Description = "Is in second cat",
+                        Notes = "Is in second cat",
                         Password = "Password05!",
                         Username = "rthrth",
                         Category = secondCat
@@ -90,7 +90,7 @@ namespace PasswordManager.Service
                     {
                         Id = System.Guid.NewGuid().ToString(),
                         Name = "Last one :)",
-                        Description = "Is in NO cat",
+                        Notes = "Is in NO cat",
                         Password = "Password06!",
                         Username = "toto",
                         Category = null
