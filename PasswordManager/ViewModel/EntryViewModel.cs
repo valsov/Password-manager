@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Messengers;
 using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
+using PasswordManager.Service.Interfaces;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -13,6 +14,8 @@ namespace PasswordManager.ViewModel
     public class EntryViewModel : ViewModelBase
     {
         IDatabaseRepository databaseRepository;
+
+        IPasswordService passwordService;
 
         private PasswordEntryModel backupPasswordEntry;
 
@@ -43,6 +46,20 @@ namespace PasswordManager.ViewModel
             {
                 userControlVisibility = value;
                 RaisePropertyChanged(nameof(userControlVisibility));
+            }
+        }
+
+        private Visibility entryDataVisibility;
+        public Visibility EntryDataVisibility
+        {
+            get
+            {
+                return entryDataVisibility;
+            }
+            set
+            {
+                entryDataVisibility = value;
+                RaisePropertyChanged(nameof(EntryDataVisibility));
             }
         }
 
@@ -94,9 +111,11 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand CancelEditionCommand { get; private set; }
 
-        public EntryViewModel(IDatabaseRepository databaseRepository)
+        public EntryViewModel(IDatabaseRepository databaseRepository,
+                              IPasswordService passwordService)
         {
             this.databaseRepository = databaseRepository;
+            this.passwordService = passwordService;
             Messenger.Default.Register<EntrySelectedMessage>(this, EntrySelectedHandler);
             Messenger.Default.Register<ShowNewEntryViewMessage>(this, (x) => UserControlVisibility = Visibility.Hidden);
             StartEditionCommand = new RelayCommand(StartEdition);
@@ -107,6 +126,7 @@ namespace PasswordManager.ViewModel
             Categories = new ObservableCollection<string>();
 
             UserControlVisibility = Visibility.Hidden;
+            EntryDataVisibility = Visibility.Visible;
             EditionButtonVisibility = Visibility.Visible;
             EditionFormVisibility = Visibility.Hidden;
             EditionControlButtonsVisibility = Visibility.Hidden;
@@ -114,8 +134,6 @@ namespace PasswordManager.ViewModel
 
         private void EntrySelectedHandler(EntrySelectedMessage obj)
         {
-            UserControlVisibility = Visibility.Visible;
-
             // Fill categories combobox if this wasn't already done
             if (!Categories.Any())
             {
@@ -127,6 +145,9 @@ namespace PasswordManager.ViewModel
                 }
             }
             PasswordEntry = obj.passwordEntry;
+
+            UserControlVisibility = Visibility.Visible;
+            SetElementsVisibility(false);
         }
 
         private void StartEdition()
@@ -137,6 +158,9 @@ namespace PasswordManager.ViewModel
 
         private void ValidateEdition()
         {
+            PasswordEntry.PasswordStrength = passwordService.CheckPasswordStrength(PasswordEntry.Password);
+            RaisePropertyChanged(nameof(PasswordEntry));
+
             // Copy to avoid same instance manipulation
             var copy = PasswordEntry.Copy();
             databaseRepository.UpdatePasswordEntry(copy);
@@ -154,12 +178,14 @@ namespace PasswordManager.ViewModel
         {
             if (isInEditionMode)
             {
+                EntryDataVisibility = Visibility.Hidden;
                 EditionButtonVisibility = Visibility.Hidden;
                 EditionFormVisibility = Visibility.Visible;
                 EditionControlButtonsVisibility = Visibility.Visible;
             }
             else
             {
+                EntryDataVisibility = Visibility.Visible;
                 EditionButtonVisibility = Visibility.Visible;
                 EditionFormVisibility = Visibility.Hidden;
                 EditionControlButtonsVisibility = Visibility.Hidden;

@@ -21,8 +21,8 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid
-            Background="#3B4045">
-            <!--Visibility="{Binding MainViewVisibility}">-->
+            Background="#3B4045"
+            Visibility="{Binding MainViewVisibility}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25" />
                 <RowDefinition Height="*" />

@@ -138,13 +138,14 @@ namespace PasswordManager.ViewModel
         }
 
         /// <summary>
-        /// Add the newly created entry to the entries list
+        /// Add the newly created entry to the entries list and select it
         /// </summary>
         /// <param name="obj"></param>
         void EntryAddedHandler(EntryAddedMessage obj)
         {
             basePasswordEntries.Add(obj.Entry);
             RaisePropertyChanged(nameof(PasswordEntryList));
+            SelectEntry(obj.Entry);
         }
 
         /// <summary>

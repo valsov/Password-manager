@@ -47,6 +47,7 @@ namespace PasswordManager.Service
                         Name = "First entry",
                         Notes = "Is in first cat",
                         Password = "Password01!",
+                        PasswordStrength = PasswordStrength.VeryStrong,
                         Username = "aze",
                         Category = firstCat
                     },
@@ -55,7 +56,8 @@ namespace PasswordManager.Service
                         Id = System.Guid.NewGuid().ToString(),
                         Name = "Seonc entry",
                         Notes = "Is in first cat",
-                        Password = "Password02!",
+                        Password = "",
+                        PasswordStrength = PasswordStrength.Blank,
                         Username = "ert",
                         Category = firstCat
                     },
@@ -65,6 +67,7 @@ namespace PasswordManager.Service
                         Name = "Third one here",
                         Notes = "Is in second cat",
                         Password = "Password03!",
+                        PasswordStrength = PasswordStrength.VeryWeak,
                         Username = "azerazer",
                         Category = secondCat
                     },
@@ -74,6 +77,7 @@ namespace PasswordManager.Service
                         Name = "new entry !!",
                         Notes = "Is in second cat",
                         Password = "Password04!",
+                        PasswordStrength = PasswordStrength.Weak,
                         Username = "fsdfsdfsd",
                         Category = secondCat
                     },
@@ -83,6 +87,7 @@ namespace PasswordManager.Service
                         Name = "Beforethelast",
                         Notes = "Is in second cat",
                         Password = "Password05!",
+                        PasswordStrength = PasswordStrength.Medium,
                         Username = "rthrth",
                         Category = secondCat
                     },
@@ -92,6 +97,7 @@ namespace PasswordManager.Service
                         Name = "Last one :)",
                         Notes = "Is in NO cat",
                         Password = "Password06!",
+                        PasswordStrength = PasswordStrength.Strong,
                         Username = "toto",
                         Category = null
                     }

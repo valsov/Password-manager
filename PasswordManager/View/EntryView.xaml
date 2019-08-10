@@ -4,78 +4,228 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PasswordManager.View"
+             xmlns:converters="clr-namespace:PasswordManager.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Entry, Source={StaticResource Locator}}">
+    <UserControl.Resources>
+        <converters:PasswordStrengthToColorConverter x:Key="PasswordStrengthToColorConverter" />
+    </UserControl.Resources>
     <Grid
         Visibility="{Binding UserControlVisibility}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="20" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
-        <StackPanel
-            Grid.Row="0"
-            Orientation="Vertical">
-            <TextBlock Text="{Binding PasswordEntry.Name}" />
-            <TextBlock Text="{Binding PasswordEntry.Category}" />
-            <TextBlock Text="{Binding PasswordEntry.Username}" />
-            <TextBlock Text="{Binding PasswordEntry.Password}" />
-            <TextBlock Text="{Binding PasswordEntry.Notes}" />
-        </StackPanel>
+        <Grid
+            Visibility="{Binding EntryDataVisibility}">
+            <TextBlock
+                Margin="30 30 0 0"
+                Width="300"
+                Height="40"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                FontSize="25"
+                FontWeight="Bold"
+                Text="{Binding PasswordEntry.Name}" />
 
-        <Button
-            Grid.Row="1"
-            Content="Edit"
-            Width="100"
-            Visibility="{Binding EditionButtonVisibility}">
-            <Button.InputBindings>
-                <MouseBinding
-                    MouseAction="LeftClick"
-                    Command="{Binding StartEditionCommand}" />
-            </Button.InputBindings>
-        </Button>
+            <Button
+                Margin="0 35 30 0"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                Content="Edit"
+                Width="80"
+                Height="25"
+                Visibility="{Binding EditionButtonVisibility}">
+                <Button.InputBindings>
+                    <MouseBinding
+                        MouseAction="LeftClick"
+                        Command="{Binding StartEditionCommand}" />
+                </Button.InputBindings>
+            </Button>
 
-        <StackPanel
-            Grid.Row="2"
-            Orientation="Vertical"
-            Width="200"
-            Visibility="{Binding EditionFormVisibility}">
-            <TextBox Text="{Binding PasswordEntry.Name, UpdateSourceTrigger=PropertyChanged}" />
-            <ComboBox
-                ItemsSource="{Binding Categories}"
-                SelectedValue="{Binding PasswordEntry.Category}" />
-            <TextBox Text="{Binding PasswordEntry.Username, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Text="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Text="{Binding PasswordEntry.Notes, UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>
+            <Border
+                Margin="20 100 20 20"
+                VerticalAlignment="Top"
+                Height="180"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                CornerRadius="5"
+                Background="White">
+                <StackPanel
+                    Orientation="Vertical"
+                    Margin="15">
+                    <TextBlock
+                        Text="username"
+                        Foreground="#636361"
+                        FontSize="13" />
+                    <TextBlock
+                        Text="{Binding PasswordEntry.Username}"
+                        FontSize="16" />
+
+                    <Grid>
+                        <StackPanel
+                            Orientation="Vertical">
+                            <TextBlock
+                                Margin="0 10 0 0"
+                                Text="password"
+                                Foreground="#636361"
+                                FontSize="13" />
+                            <TextBlock
+                                Text="{Binding PasswordEntry.Password}"
+                                FontSize="16" />
+                        </StackPanel>
+
+                        <Ellipse
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right"
+                            Margin="0 0 0 5"
+                            Width="15"
+                            Height="15"
+                            Fill="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource PasswordStrengthToColorConverter}}" />
+                    </Grid>
+
+                    <TextBlock
+                        Margin="0 10 0 0"
+                        Text="category"
+                        Foreground="#636361"
+                        FontSize="13" />
+                    <TextBlock
+                        Text="{Binding PasswordEntry.Category}"
+                        FontSize="16" />
+                </StackPanel>
+            </Border>
+
+            <StackPanel
+                Orientation="Vertical"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Margin="35 290 0 0">
+                <TextBlock
+                    Text="Website"
+                    Foreground="#636361"
+                    FontSize="14" />
+                <TextBlock
+                    Text="{Binding PasswordEntry.Website}"
+                    FontSize="16" />
+
+                <TextBlock
+                    Margin="0 10 0 0"
+                    Text="Notes"
+                    Foreground="#636361"
+                    FontSize="14" />
+                <TextBlock
+                    Text="{Binding PasswordEntry.Notes}"
+                    FontSize="16" />
+            </StackPanel>
+        </Grid>
 
         <Grid
-            Grid.Row="3"
-            Visibility="{Binding EditionControlButtonsVisibility}">
+            Visibility="{Binding EditionFormVisibility}">
+            <TextBox
+                Margin="30 30 0 0"
+                Width="300"
+                Height="40"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                FontSize="25"
+                FontWeight="Bold"
+                Text="{Binding PasswordEntry.Name, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Border
+                Margin="20 100 20 20"
+                VerticalAlignment="Top"
+                Height="180"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                CornerRadius="5"
+                Background="White">
+                <StackPanel
+                    Orientation="Vertical"
+                    HorizontalAlignment="Left"
+                    Width="200"
+                    Margin="15">
+                    <TextBlock
+                        Text="username"
+                        Foreground="#636361"
+                        FontSize="13" />
+                    <TextBox
+                        Text="{Binding PasswordEntry.Username, UpdateSourceTrigger=PropertyChanged}"
+                        FontSize="16" />
+
+                    <TextBlock
+                        Margin="0 10 0 0"
+                        Text="password"
+                        Foreground="#636361"
+                        FontSize="13" />
+                    <TextBox
+                        Text="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}"
+                        FontSize="16" />
+
+                    <TextBlock
+                        Margin="0 10 0 0"
+                        Text="category"
+                        Foreground="#636361"
+                        FontSize="13" />
+                    <ComboBox
+                        ItemsSource="{Binding Categories}"
+                        SelectedValue="{Binding PasswordEntry.Category}" />
+                </StackPanel>
+            </Border>
+
             <StackPanel
-                Orientation="Horizontal"
-                HorizontalAlignment="Center">
-                <Button
-                    Content="Validate"
-                    Width="100">
-                    <Button.InputBindings>
-                        <MouseBinding
-                            MouseAction="LeftClick"
-                            Command="{Binding ValidateEditionCommand}" />
-                    </Button.InputBindings>
-                </Button>
-                <Button
-                    Content="Cancel"
-                    Width="100">
-                    <Button.InputBindings>
-                        <MouseBinding
-                            MouseAction="LeftClick"
-                            Command="{Binding CancelEditionCommand}" />
-                    </Button.InputBindings>
-                </Button>
+                Orientation="Vertical"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Margin="35 290 0 0"
+                Width="300">
+                <TextBlock
+                    Text="Website"
+                    Foreground="#636361"
+                    FontSize="14" />
+                <TextBox
+                    Text="{Binding PasswordEntry.Website, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="16" />
+
+                <TextBlock
+                    Margin="0 10 0 0"
+                    Text="Notes"
+                    Foreground="#636361"
+                    FontSize="14" />
+                <TextBox
+                    TextWrapping="Wrap"
+                    AcceptsReturn="True"
+                    AcceptsTab="True"
+                    Text="{Binding PasswordEntry.Notes, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="16"
+                    Height="100"/>
             </StackPanel>
+
+            <Grid
+                Visibility="{Binding EditionControlButtonsVisibility}"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0 0 20 30"
+                Height="20">
+                <StackPanel
+                    Orientation="Horizontal">
+                    <Button
+                        Content="Cancel"
+                        Width="80">
+                        <Button.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding CancelEditionCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+                    <Button
+                        Content="Validate"
+                        Width="80"
+                        Margin="10 0 0 0">
+                        <Button.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding ValidateEditionCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
