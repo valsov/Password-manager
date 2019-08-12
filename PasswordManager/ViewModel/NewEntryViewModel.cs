@@ -54,6 +54,7 @@ namespace PasswordManager.ViewModel
             CancelEntryCreationCommand = new RelayCommand(CancelCreation);
             Messenger.Default.Register<ShowNewEntryViewMessage>(this, ShowUserControl);
             Messenger.Default.Register<EntrySelectedMessage>(this, (x) => UserControlVisibility = Visibility.Hidden);
+            Messenger.Default.Register<CategoryAddedMessage>(this, HandleNewCategory);
 
             NewPasswordEntry = new PasswordEntryModel();
             UserControlVisibility = Visibility.Hidden;
@@ -91,6 +92,14 @@ namespace PasswordManager.ViewModel
         {
             NewPasswordEntry = new PasswordEntryModel();
             UserControlVisibility = Visibility.Hidden;
+        }
+
+        private void HandleNewCategory(CategoryAddedMessage obj)
+        {
+            if (Categories.Any())
+            {
+                Categories.Add(obj.NewCategory);
+            }
         }
     }
 }

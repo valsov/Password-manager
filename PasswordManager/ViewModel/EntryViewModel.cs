@@ -118,6 +118,7 @@ namespace PasswordManager.ViewModel
             this.passwordService = passwordService;
             Messenger.Default.Register<EntrySelectedMessage>(this, EntrySelectedHandler);
             Messenger.Default.Register<ShowNewEntryViewMessage>(this, (x) => UserControlVisibility = Visibility.Hidden);
+            Messenger.Default.Register<CategoryAddedMessage>(this, HandleNewCategory);
             StartEditionCommand = new RelayCommand(StartEdition);
             ValidateEditionCommand = new RelayCommand(ValidateEdition);
             CancelEditionCommand = new RelayCommand(CancelEdition);
@@ -189,6 +190,14 @@ namespace PasswordManager.ViewModel
                 EditionButtonVisibility = Visibility.Visible;
                 EditionFormVisibility = Visibility.Hidden;
                 EditionControlButtonsVisibility = Visibility.Hidden;
+            }
+        }
+
+        private void HandleNewCategory(CategoryAddedMessage obj)
+        {
+            if (Categories.Any())
+            {
+                Categories.Add(obj.NewCategory);
             }
         }
     }

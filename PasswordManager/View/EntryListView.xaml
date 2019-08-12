@@ -90,10 +90,53 @@
             Background="#3A4758">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Grid
+            <Button
                 Grid.Row="0"
+                Visibility="{Binding NewCategoryButtonVisibility}"
+                Content="New Category"
+                Width="100">
+                <Button.InputBindings>
+                    <MouseBinding
+                        MouseAction="LeftClick"
+                        Command="{Binding ShowNewCategoryFormCommand}" />
+                </Button.InputBindings>
+            </Button>
+            <StackPanel
+                Grid.Row="0"
+                Visibility="{Binding NewCategoryFormVisibility}"
+                Orientation="Vertical">
+                <TextBox
+                    Width="250"
+                    Text="{Binding NewCategoryName, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+                    <Button
+                        Content="Cancel"
+                        Width="100">
+                        <Button.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding CancelAddCategoryCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+                    <Button
+                        Content="Validate"
+                        Width="100">
+                        <Button.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding AddCategoryCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            
+            <Grid
+                Grid.Row="1"
                 Margin="15 0 0 0">
                 <Border
                     BorderThickness="1"
@@ -128,7 +171,7 @@
             </Grid>
 
             <ScrollViewer
-                Grid.Row="1"
+                Grid.Row="2"
                 VerticalScrollBarVisibility="Auto">
                 <ItemsControl
                     ItemsSource="{Binding CategoryList}">
@@ -189,16 +232,23 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Button
+                <StackPanel
                     Grid.Row="0"
-                    Content="New Entry"
-                    Width="150">
-                    <Button.InputBindings>
-                        <MouseBinding
-                            MouseAction="LeftClick"
-                            Command="{Binding AddEntryCommand}" />
-                    </Button.InputBindings>
-                </Button>
+                    Orientation="Horizontal">
+                    <Button
+                        Content="New Entry"
+                        Width="150">
+                        <Button.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding AddEntryCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+                    <TextBox
+                        Margin="20 0 0 0"
+                        Width="250"
+                        Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
 
                 <ScrollViewer
                     Grid.Row="1"

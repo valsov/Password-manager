@@ -57,8 +57,7 @@ namespace PasswordManager.Repository
         public bool AddPasswordEntry(PasswordEntryModel entry)
         {
             cache.PasswordEntries.Add(entry);
-            InternalWriteDatabase();
-            return true;
+            return InternalWriteDatabase();
         }
 
         public bool DeletePasswordEntry(PasswordEntryModel entry)
@@ -78,7 +77,8 @@ namespace PasswordManager.Repository
 
         public bool AddCategory(string category)
         {
-            throw new NotImplementedException();
+            cache.Categories.Add(category);
+            return InternalWriteDatabase();
         }
 
         public bool DeleteCategory(string category)
