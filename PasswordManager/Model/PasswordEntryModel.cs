@@ -17,20 +17,5 @@
         public PasswordStrength PasswordStrength { get; set; }
 
         public string Notes { get; set; }
-
-        public PasswordEntryModel Copy()
-        {
-            return new PasswordEntryModel()
-            {
-                Id = this.Id,
-                Name = this.Name,
-                Website = this.Website,
-                Category = this.Category,
-                Username = this.Username,
-                Password = this.Password,
-                PasswordStrength = this.PasswordStrength,
-                Notes = this.Notes
-            };
-        }
     }
 }

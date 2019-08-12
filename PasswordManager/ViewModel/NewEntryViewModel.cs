@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using PasswordManager.Extensions;
 using PasswordManager.Messengers;
 using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
