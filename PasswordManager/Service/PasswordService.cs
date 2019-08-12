@@ -14,31 +14,6 @@ namespace PasswordManager.Service
 
         const string ALPHA_CHARS = "azertyuiopqsdfghjklmwxcvbn";
 
-        string GenerateRandomSequence(int length, string chars)
-        {
-            var password = "";
-            var random = new Random();
-
-            for (int i = 0; i < length; i++)
-            {
-                var character = chars[random.Next(0, chars.Length)];
-
-                // If the random char is an alphabet character
-                if (ALPHA_CHARS.Contains(character))
-                {
-                    if (random.Next(0, 2) == 0)
-                    {
-                        // Random uppercase transform
-                        character = char.ToUpper(character);
-                    }
-                }
-
-                password += character;
-            }
-
-            return password;
-        }
-
         public string GeneratePassword(PasswordTypes type, int length)
         {
             var chars = string.Empty;
@@ -79,15 +54,40 @@ namespace PasswordManager.Service
                 score++;
             if (password.Length >= 12)
                 score++;
-            if (Regex.Match(password, @"/\d+/", RegexOptions.ECMAScript).Success)
+            if (password.Any(x => char.IsDigit(x)))
                 score++;
-            if (Regex.Match(password, @"/[a-z]/", RegexOptions.ECMAScript).Success &&
-              Regex.Match(password, @"/[A-Z]/", RegexOptions.ECMAScript).Success)
+            if (password.Any(x => char.IsLower(x))
+             && password.Any(x => char.IsUpper(x)))
                 score++;
-            if (Regex.Match(password, @"/.[!,@,#,$,%,^,&,*,?,_,~,-,£,(,)]/", RegexOptions.ECMAScript).Success)
+            if (password.Any(x => !char.IsLetterOrDigit(x)))
                 score++;
 
             return (PasswordStrength)score;
+        }
+
+        string GenerateRandomSequence(int length, string chars)
+        {
+            var password = "";
+            var random = new Random();
+
+            for (int i = 0; i < length; i++)
+            {
+                var character = chars[random.Next(0, chars.Length)];
+
+                // If the random char is an alphabet character
+                if (ALPHA_CHARS.Contains(character))
+                {
+                    if (random.Next(0, 2) == 0)
+                    {
+                        // Random uppercase transform
+                        character = char.ToUpper(character);
+                    }
+                }
+
+                password += character;
+            }
+
+            return password;
         }
     }
 }

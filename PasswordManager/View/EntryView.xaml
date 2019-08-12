@@ -78,7 +78,8 @@
                             Margin="0 0 0 5"
                             Width="15"
                             Height="15"
-                            Fill="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource PasswordStrengthToColorConverter}}" />
+                            StrokeThickness="3"
+                            Stroke="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource PasswordStrengthToColorConverter}}" />
                     </Grid>
 
                     <TextBlock

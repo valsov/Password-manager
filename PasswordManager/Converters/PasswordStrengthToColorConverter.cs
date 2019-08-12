@@ -21,13 +21,13 @@ namespace PasswordManager.Converters
                     color.Color = Colors.Orange;
                     break;
                 case PasswordStrength.Medium:
-                    color.Color = Colors.Yellow;
+                    color.Color = Colors.Gold;
                     break;
                 case PasswordStrength.Strong:
-                    color.Color = Colors.Green;
+                    color.Color = Colors.GreenYellow;
                     break;
                 case PasswordStrength.VeryStrong:
-                    color.Color = Colors.Blue;
+                    color.Color = Colors.DeepSkyBlue;
                     break;
             }
 
