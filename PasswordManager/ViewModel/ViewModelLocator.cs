@@ -57,7 +57,6 @@ namespace PasswordManager.ViewModel
             SimpleIoc.Default.Register<CategoryListViewModel>();
             SimpleIoc.Default.Register<EntryListViewModel>();
             SimpleIoc.Default.Register<EntryViewModel>();
-            SimpleIoc.Default.Register<NewEntryViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
         }
 
@@ -106,14 +105,6 @@ namespace PasswordManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<EntryViewModel>();
-            }
-        }
-
-        public NewEntryViewModel NewEntry
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<NewEntryViewModel>();
             }
         }
 

@@ -106,11 +106,29 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private Visibility creationControlButtonsVisibility;
+        public Visibility CreationControlButtonsVisibility
+        {
+            get
+            {
+                return creationControlButtonsVisibility;
+            }
+            set
+            {
+                creationControlButtonsVisibility = value;
+                RaisePropertyChanged(nameof(CreationControlButtonsVisibility));
+            }
+        }
+
         public RelayCommand StartEditionCommand { get; private set; }
 
         public RelayCommand ValidateEditionCommand { get; private set; }
 
         public RelayCommand CancelEditionCommand { get; private set; }
+
+        public RelayCommand CreateEntryCommand { get; private set; }
+
+        public RelayCommand CancelEntryCreationCommand { get; private set; }
 
         public EntryViewModel(IDatabaseRepository databaseRepository,
                               IPasswordService passwordService)
@@ -118,44 +136,33 @@ namespace PasswordManager.ViewModel
             this.databaseRepository = databaseRepository;
             this.passwordService = passwordService;
             Messenger.Default.Register<EntrySelectedMessage>(this, EntrySelectedHandler);
-            Messenger.Default.Register<ShowNewEntryViewMessage>(this, (x) => UserControlVisibility = Visibility.Hidden);
+            Messenger.Default.Register<ShowNewEntryViewMessage>(this, StartEntryCreation);
             Messenger.Default.Register<CategoryAddedMessage>(this, HandleNewCategory);
             StartEditionCommand = new RelayCommand(StartEdition);
             ValidateEditionCommand = new RelayCommand(ValidateEdition);
             CancelEditionCommand = new RelayCommand(CancelEdition);
+            CreateEntryCommand = new RelayCommand(CreateEntry);
+            CancelEntryCreationCommand = new RelayCommand(CancelCreation);
 
             backupPasswordEntry = new PasswordEntryModel();
             Categories = new ObservableCollection<string>();
 
             UserControlVisibility = Visibility.Hidden;
-            EntryDataVisibility = Visibility.Visible;
-            EditionButtonVisibility = Visibility.Visible;
-            EditionFormVisibility = Visibility.Hidden;
-            EditionControlButtonsVisibility = Visibility.Hidden;
         }
 
         private void EntrySelectedHandler(EntrySelectedMessage obj)
         {
-            // Fill categories combobox if this wasn't already done
-            if (!Categories.Any())
-            {
-                // string.Empty for no category
-                Categories.Add(string.Empty);
-                foreach (var category in databaseRepository.GetDatabase().Categories)
-                {
-                    Categories.Add(category);
-                }
-            }
+            AddCategories();
             PasswordEntry = obj.passwordEntry;
 
             UserControlVisibility = Visibility.Visible;
-            SetElementsVisibility(false);
+            SetElementsVisibility(ViewModes.View);
         }
 
         private void StartEdition()
         {
             backupPasswordEntry = PasswordEntry.Copy();
-            SetElementsVisibility(true);
+            SetElementsVisibility(ViewModes.Edition);
         }
 
         private void ValidateEdition()
@@ -167,30 +174,75 @@ namespace PasswordManager.ViewModel
             var copy = PasswordEntry.Copy();
             databaseRepository.UpdatePasswordEntry(copy);
             Messenger.Default.Send(new EntryEditedMessage(this, copy));
-            SetElementsVisibility(false);
+            SetElementsVisibility(ViewModes.View);
         }
 
         private void CancelEdition()
         {
             PasswordEntry = backupPasswordEntry.Copy();
-            SetElementsVisibility(false);
+            SetElementsVisibility(ViewModes.View);
         }
 
-        private void SetElementsVisibility(bool isInEditionMode)
+        private void StartEntryCreation(ShowNewEntryViewMessage obj)
         {
-            if (isInEditionMode)
+            AddCategories();
+            PasswordEntry = new PasswordEntryModel();
+            UserControlVisibility = Visibility.Visible;
+            SetElementsVisibility(ViewModes.Creation);
+        }
+
+        private void CreateEntry()
+        {
+            PasswordEntry.PasswordStrength = passwordService.CheckPasswordStrength(PasswordEntry.Password);
+            var copy = PasswordEntry.Copy();
+            databaseRepository.AddPasswordEntry(copy);
+            Messenger.Default.Send(new EntryAddedMessage(this, copy));
+        }
+
+        private void CancelCreation()
+        {
+            UserControlVisibility = Visibility.Hidden;
+        }
+
+        private void SetElementsVisibility(ViewModes mode)
+        {
+            switch (mode)
             {
-                EntryDataVisibility = Visibility.Hidden;
-                EditionButtonVisibility = Visibility.Hidden;
-                EditionFormVisibility = Visibility.Visible;
-                EditionControlButtonsVisibility = Visibility.Visible;
+                case ViewModes.View:
+                    EntryDataVisibility = Visibility.Visible;
+                    EditionButtonVisibility = Visibility.Visible;
+                    EditionFormVisibility = Visibility.Hidden;
+                    EditionControlButtonsVisibility = Visibility.Hidden;
+                    CreationControlButtonsVisibility = Visibility.Hidden;
+                    break;
+                case ViewModes.Edition:
+                    EntryDataVisibility = Visibility.Hidden;
+                    EditionButtonVisibility = Visibility.Hidden;
+                    EditionFormVisibility = Visibility.Visible;
+                    EditionControlButtonsVisibility = Visibility.Visible;
+                    CreationControlButtonsVisibility = Visibility.Hidden;
+                    break;
+                case ViewModes.Creation:
+                    EntryDataVisibility = Visibility.Hidden;
+                    EditionButtonVisibility = Visibility.Hidden;
+                    EditionFormVisibility = Visibility.Visible;
+                    EditionControlButtonsVisibility = Visibility.Hidden;
+                    CreationControlButtonsVisibility = Visibility.Visible;
+                    break;
             }
-            else
+        }
+
+        private void AddCategories()
+        {
+            // Fill categories combobox if this wasn't already done
+            if (!Categories.Any())
             {
-                EntryDataVisibility = Visibility.Visible;
-                EditionButtonVisibility = Visibility.Visible;
-                EditionFormVisibility = Visibility.Hidden;
-                EditionControlButtonsVisibility = Visibility.Hidden;
+                // string.Empty for no category
+                Categories.Add(string.Empty);
+                foreach (var category in databaseRepository.GetDatabase().Categories)
+                {
+                    Categories.Add(category);
+                }
             }
         }
 

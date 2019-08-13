@@ -7,9 +7,11 @@
              xmlns:converters="clr-namespace:PasswordManager.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
+             Background="#F9F9F9"
              DataContext="{Binding Entry, Source={StaticResource Locator}}">
     <UserControl.Resources>
         <converters:PasswordStrengthToColorConverter x:Key="PasswordStrengthToColorConverter" />
+        <converters:PasswordStrengthToLabelConverter x:Key="PasswordStrengthToLabelConverter" />
     </UserControl.Resources>
     <Grid
         Visibility="{Binding UserControlVisibility}">
@@ -72,14 +74,20 @@
                                 FontSize="16" />
                         </StackPanel>
 
-                        <Ellipse
+                        <StackPanel
+                            Orientation="Horizontal"
                             VerticalAlignment="Bottom"
                             HorizontalAlignment="Right"
-                            Margin="0 0 0 5"
-                            Width="15"
-                            Height="15"
-                            StrokeThickness="3"
-                            Stroke="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource PasswordStrengthToColorConverter}}" />
+                            Margin="0 0 0 5">
+                            <TextBlock
+                                Margin="0 0 5 0"
+                                Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource PasswordStrengthToLabelConverter}}" />
+                            <Ellipse
+                                Width="15"
+                                Height="15"
+                                StrokeThickness="3"
+                                Stroke="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource PasswordStrengthToColorConverter}}" />
+                        </StackPanel>
                     </Grid>
 
                     <TextBlock
@@ -199,13 +207,13 @@
             </StackPanel>
 
             <Grid
-                Visibility="{Binding EditionControlButtonsVisibility}"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Margin="0 0 20 30"
                 Height="20">
                 <StackPanel
-                    Orientation="Horizontal">
+                    Orientation="Horizontal"
+                    Visibility="{Binding EditionControlButtonsVisibility}">
                     <Button
                         Content="Cancel"
                         Width="80">
@@ -223,6 +231,31 @@
                             <MouseBinding
                                 MouseAction="LeftClick"
                                 Command="{Binding ValidateEditionCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Row="1"
+                    Orientation="Horizontal"
+                    Visibility="{Binding CreationControlButtonsVisibility}">
+                    <Button
+                        Content="Cancel"
+                        Width="80">
+                        <Button.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding CancelEntryCreationCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+                    <Button
+                        Content="Validate"
+                        Width="80"
+                        Margin="10 0 0 0">
+                        <Button.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding CreateEntryCommand}" />
                         </Button.InputBindings>
                     </Button>
                 </StackPanel>

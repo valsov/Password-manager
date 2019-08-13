@@ -70,14 +70,8 @@
                 <view:EntryListView
                     Grid.Column="1"/>
 
-                <Grid
-                    Background="#F9F9F9"
-                    Grid.Column="2">
-
-                    <view:EntryView />
-
-                    <view:NewEntryView />
-                </Grid>
+                <view:EntryView
+                    Grid.Column="2" />
             </Grid>
         </Grid>
         
