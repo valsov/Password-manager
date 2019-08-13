@@ -6,6 +6,7 @@ using PasswordManager.Messengers;
 using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -64,6 +65,20 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private Visibility deleteButtonVisibility;
+        public Visibility DeleteButtonVisibility
+        {
+            get
+            {
+                return deleteButtonVisibility;
+            }
+            set
+            {
+                deleteButtonVisibility = value;
+                RaisePropertyChanged(nameof(DeleteButtonVisibility));
+            }
+        }
+
         private Visibility editionButtonVisibility;
         public Visibility EditionButtonVisibility
         {
@@ -119,6 +134,7 @@ namespace PasswordManager.ViewModel
                 RaisePropertyChanged(nameof(CreationControlButtonsVisibility));
             }
         }
+        public RelayCommand DeleteEntryCommand { get; private set; }
 
         public RelayCommand StartEditionCommand { get; private set; }
 
@@ -138,6 +154,7 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Register<EntrySelectedMessage>(this, EntrySelectedHandler);
             Messenger.Default.Register<ShowNewEntryViewMessage>(this, StartEntryCreation);
             Messenger.Default.Register<CategoryAddedMessage>(this, HandleNewCategory);
+            DeleteEntryCommand = new RelayCommand(DeleteEntry);
             StartEditionCommand = new RelayCommand(StartEdition);
             ValidateEditionCommand = new RelayCommand(ValidateEdition);
             CancelEditionCommand = new RelayCommand(CancelEdition);
@@ -157,6 +174,13 @@ namespace PasswordManager.ViewModel
 
             UserControlVisibility = Visibility.Visible;
             SetElementsVisibility(ViewModes.View);
+        }
+
+        private void DeleteEntry()
+        {
+            databaseRepository.DeletePasswordEntry(PasswordEntry);
+            Messenger.Default.Send(new EntryDeletedMessage(this, PasswordEntry));
+            UserControlVisibility = Visibility.Hidden;
         }
 
         private void StartEdition()
@@ -210,6 +234,7 @@ namespace PasswordManager.ViewModel
             {
                 case ViewModes.View:
                     EntryDataVisibility = Visibility.Visible;
+                    DeleteButtonVisibility = Visibility.Visible;
                     EditionButtonVisibility = Visibility.Visible;
                     EditionFormVisibility = Visibility.Hidden;
                     EditionControlButtonsVisibility = Visibility.Hidden;
@@ -217,6 +242,7 @@ namespace PasswordManager.ViewModel
                     break;
                 case ViewModes.Edition:
                     EntryDataVisibility = Visibility.Hidden;
+                    DeleteButtonVisibility = Visibility.Hidden;
                     EditionButtonVisibility = Visibility.Hidden;
                     EditionFormVisibility = Visibility.Visible;
                     EditionControlButtonsVisibility = Visibility.Visible;
@@ -224,6 +250,7 @@ namespace PasswordManager.ViewModel
                     break;
                 case ViewModes.Creation:
                     EntryDataVisibility = Visibility.Hidden;
+                    DeleteButtonVisibility = Visibility.Hidden;
                     EditionButtonVisibility = Visibility.Hidden;
                     EditionFormVisibility = Visibility.Visible;
                     EditionControlButtonsVisibility = Visibility.Hidden;

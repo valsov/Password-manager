@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Extensions;
 using PasswordManager.Messengers;
 using PasswordManager.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -79,6 +80,7 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
             Messenger.Default.Register<EntryEditedMessage>(this, EntryEditedHandler);
             Messenger.Default.Register<EntryAddedMessage>(this, EntryAddedHandler);
+            Messenger.Default.Register<EntryDeletedMessage>(this, EntryDeletedHandler);
             Messenger.Default.Register<CategorySelectedMessage>(this, CategorySelectedHandler);
             basePasswordEntries = new List<PasswordEntryModel>();
             SelectEntryCommand = new RelayCommand<PasswordEntryModel>(SelectEntry);
@@ -124,6 +126,12 @@ namespace PasswordManager.ViewModel
             basePasswordEntries.Add(obj.Entry);
             RaisePropertyChanged(nameof(PasswordEntryList));
             SelectEntry(obj.Entry);
+        }
+
+        private void EntryDeletedHandler(EntryDeletedMessage obj)
+        {
+            basePasswordEntries.RemoveAll(x => x.Id == obj.Entry.Id);
+            RaisePropertyChanged(nameof(PasswordEntryList));
         }
 
         /// <summary>

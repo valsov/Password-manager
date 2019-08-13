@@ -42,6 +42,21 @@
                 </Button.InputBindings>
             </Button>
 
+            <Button
+                Margin="0 65 30 0"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                Content="Delete"
+                Width="80"
+                Height="25"
+                Visibility="{Binding DeleteButtonVisibility}">
+                <Button.InputBindings>
+                    <MouseBinding
+                        MouseAction="LeftClick"
+                        Command="{Binding DeleteEntryCommand}" />
+                </Button.InputBindings>
+            </Button>
+
             <Border
                 Margin="20 100 20 20"
                 VerticalAlignment="Top"

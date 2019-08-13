@@ -62,7 +62,8 @@ namespace PasswordManager.Repository
 
         public bool DeletePasswordEntry(PasswordEntryModel entry)
         {
-            throw new NotImplementedException();
+            cache.PasswordEntries.RemoveAll(x => x.Id == entry.Id);
+            return InternalWriteDatabase();
         }
 
         public bool CheckDatabaseExists(string path)
