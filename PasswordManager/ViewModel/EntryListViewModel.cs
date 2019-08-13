@@ -4,17 +4,14 @@ using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Extensions;
 using PasswordManager.Messengers;
 using PasswordManager.Model;
-using PasswordManager.Repository.Interfaces;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 
 namespace PasswordManager.ViewModel
 {
     public class EntryListViewModel : ViewModelBase
     {
-        private IDatabaseRepository databaseRepository;
+        private string selectedCategory;
 
         /// <summary>
         /// Complete password entries list
@@ -28,7 +25,7 @@ namespace PasswordManager.ViewModel
         {
             get
             {
-                return basePasswordEntries.Where(x => (string.IsNullOrWhiteSpace(SelectedCategory) || x.Category == SelectedCategory)
+                return basePasswordEntries.Where(x => (string.IsNullOrWhiteSpace(selectedCategory) || x.Category == selectedCategory)
                                                    && (string.IsNullOrWhiteSpace(SearchValue) || x.Name.ToLower().Contains(SearchValue.ToLower())));
             }
         }
@@ -50,28 +47,6 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        /// <summary>
-        /// List of categories to be displayed
-        /// </summary>
-        public ObservableCollection<string> CategoryList { get; set; }
-
-        private string selectedCategory;
-        /// <summary>
-        /// Currently selected category
-        /// </summary>
-        public string SelectedCategory
-        {
-            get
-            {
-                return selectedCategory;
-            }
-            set
-            {
-                selectedCategory = value;
-                RaisePropertyChanged(nameof(SelectedCategory));
-            }
-        }
-
         private string searchValue;
         public string SearchValue
         {
@@ -86,53 +61,6 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private string newCategoryName;
-        public string NewCategoryName
-        {
-            get
-            {
-                return newCategoryName;
-            }
-            set
-            {
-                newCategoryName = value;
-                RaisePropertyChanged(nameof(NewCategoryName));
-            }
-        }
-
-        private Visibility newCategoryButtonVisibility;
-        public Visibility NewCategoryButtonVisibility
-        {
-            get
-            {
-                return newCategoryButtonVisibility;
-            }
-            set
-            {
-                newCategoryButtonVisibility = value;
-                RaisePropertyChanged(nameof(NewCategoryButtonVisibility));
-            }
-        }
-
-        private Visibility newCategoryFormVisibility;
-        public Visibility NewCategoryFormVisibility
-        {
-            get
-            {
-                return newCategoryFormVisibility;
-            }
-            set
-            {
-                newCategoryFormVisibility = value;
-                RaisePropertyChanged(nameof(NewCategoryFormVisibility));
-            }
-        }
-
-        /// <summary>
-        /// Command to select a category and filter password entries by this criteria
-        /// </summary>
-        public RelayCommand<string> SelectCategoryCommand { get; private set; }
-
         /// <summary>
         /// Command to select an entry
         /// </summary>
@@ -143,32 +71,18 @@ namespace PasswordManager.ViewModel
         /// </summary>
         public RelayCommand AddEntryCommand { get; private set; }
 
-        public RelayCommand ShowNewCategoryFormCommand { get; private set; }
-
-        public RelayCommand CancelAddCategoryCommand { get; private set; }
-
-        public RelayCommand AddCategoryCommand { get; private set; }
-
         /// <summary>
         /// Constructor
         /// </summary>
-        public EntryListViewModel(IDatabaseRepository databaseRepository)
+        public EntryListViewModel()
         {
-            this.databaseRepository = databaseRepository;
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
             Messenger.Default.Register<EntryEditedMessage>(this, EntryEditedHandler);
             Messenger.Default.Register<EntryAddedMessage>(this, EntryAddedHandler);
+            Messenger.Default.Register<CategorySelectedMessage>(this, CategorySelectedHandler);
             basePasswordEntries = new List<PasswordEntryModel>();
-            CategoryList = new ObservableCollection<string>();
-            SelectCategoryCommand = new RelayCommand<string>(SelectCategory);
             SelectEntryCommand = new RelayCommand<PasswordEntryModel>(SelectEntry);
             AddEntryCommand = new RelayCommand(AddEntry);
-            ShowNewCategoryFormCommand = new RelayCommand(() => ToggleNewCategoryFormVisibility(true));
-            CancelAddCategoryCommand = new RelayCommand(StopAddCategory);
-            AddCategoryCommand = new RelayCommand(AddCategory);
-            SelectedCategory = null;
-            NewCategoryButtonVisibility = Visibility.Visible;
-            NewCategoryFormVisibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -182,11 +96,6 @@ namespace PasswordManager.ViewModel
                 basePasswordEntries.Add(entry);
             }
             RaisePropertyChanged(nameof(PasswordEntryList));
-
-            foreach (var cat in obj.DatabaseModel.Categories)
-            {
-                CategoryList.Add(cat);
-            }
         }
 
         /// <summary>
@@ -221,9 +130,9 @@ namespace PasswordManager.ViewModel
         /// Set SelectedCategory
         /// </summary>
         /// <param name="selectedCategory"></param>
-        private void SelectCategory(string selectedCategory)
+        private void CategorySelectedHandler(CategorySelectedMessage obj)
         {
-            SelectedCategory = CategoryList.FirstOrDefault(x => x == selectedCategory);
+            selectedCategory = obj.SelectedCategory;
             RaisePropertyChanged(nameof(PasswordEntryList));
         }
 
@@ -243,38 +152,6 @@ namespace PasswordManager.ViewModel
         private void AddEntry()
         {
             Messenger.Default.Send(new ShowNewEntryViewMessage(this));
-        }
-
-        private void AddCategory()
-        {
-            if (string.IsNullOrWhiteSpace(NewCategoryName))
-            {
-                return;
-            }
-            databaseRepository.AddCategory(NewCategoryName);
-            Messenger.Default.Send(new CategoryAddedMessage(this, NewCategoryName));
-            CategoryList.Add(NewCategoryName);
-            StopAddCategory();
-        }
-
-        private void StopAddCategory()
-        {
-            NewCategoryName = string.Empty;
-            ToggleNewCategoryFormVisibility(false);
-        }
-
-        private void ToggleNewCategoryFormVisibility(bool editionMode)
-        {
-            if (editionMode)
-            {
-                NewCategoryButtonVisibility = Visibility.Hidden;
-                NewCategoryFormVisibility = Visibility.Visible;
-            }
-            else
-            {
-                NewCategoryButtonVisibility = Visibility.Visible;
-                NewCategoryFormVisibility = Visibility.Hidden;
-            }
         }
     }
 }
