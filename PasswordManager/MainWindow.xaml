@@ -34,6 +34,13 @@
                 <Border
                     Background="Transparent"
                     MouseDown="Border_MouseDown" />
+
+                <Button
+                    Content="Close Database"
+                    Command="{Binding CloseDatabaseCommand}"
+                    Width="100"
+                    HorizontalAlignment="Left" />
+
                 <StackPanel
                     Orientation="Horizontal"
                     VerticalAlignment="Center"

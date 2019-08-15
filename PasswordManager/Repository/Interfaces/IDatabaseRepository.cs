@@ -8,6 +8,8 @@ namespace PasswordManager.Repository.Interfaces
 
         DatabaseModel LoadDatabase(string path, string password);
 
+        void UnloadDatabase();
+
         bool WriteDatabase(DatabaseModel database);
 
         bool UpdatePasswordEntry(PasswordEntryModel entry);

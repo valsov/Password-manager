@@ -34,6 +34,11 @@ namespace PasswordManager.Repository
             return cache;
         }
 
+        public void UnloadDatabase()
+        {
+            cache = null;
+        }
+
         public bool WriteDatabase(DatabaseModel database)
         {
             cache = database;

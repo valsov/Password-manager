@@ -121,6 +121,7 @@ namespace PasswordManager.ViewModel
         {
             this.databaseRepository = databaseRepository;
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
+            Messenger.Default.Register<DatabaseUnloadedMessage>(this, DatabaseUnloadedHandler);
             CategoryList = new ObservableCollection<string>();
             SelectCategoryCommand = new RelayCommand<string>(SelectCategory);
             ShowNewCategoryFormCommand = new RelayCommand(() => ToggleNewCategoryFormVisibility(true));
@@ -146,6 +147,15 @@ namespace PasswordManager.ViewModel
             {
                 CategoryList.Add(cat);
             }
+        }
+
+        private void DatabaseUnloadedHandler(DatabaseUnloadedMessage obj)
+        {
+            CategoryList.Clear();
+            SelectedCategory = null;
+            CategoryInEdition = null;
+            originalCategoryInEdition = null;
+            ToggleNewCategoryFormVisibility(false);
         }
 
         /// <summary>

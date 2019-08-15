@@ -33,6 +33,8 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand LoadedCommand { get; private set; }
 
+        public RelayCommand CloseDatabaseCommand { get; private set; }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -43,6 +45,7 @@ namespace PasswordManager.ViewModel
             this.databaseRepository = databaseRepository;
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
             LoadedCommand = new RelayCommand(ViewLoadedHandler);
+            CloseDatabaseCommand = new RelayCommand(CloseDatabase);
             MainViewVisibility = Visibility.Hidden;
         }
 
@@ -63,6 +66,14 @@ namespace PasswordManager.ViewModel
             {
                 Messenger.Default.Send(new ShowDatabaseChallengeViewMessage(this, path));
             }
+        }
+
+        private void CloseDatabase()
+        {
+            MainViewVisibility = Visibility.Hidden;
+            databaseRepository.UnloadDatabase();
+            Messenger.Default.Send(new DatabaseUnloadedMessage(this));
+            Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this));
         }
     }
 }

@@ -150,6 +150,7 @@ namespace PasswordManager.ViewModel
         {
             this.databaseRepository = databaseRepository;
             this.passwordService = passwordService;
+            Messenger.Default.Register<DatabaseUnloadedMessage>(this, DatabaseUnloadedHandler);
             Messenger.Default.Register<EntrySelectedMessage>(this, EntrySelectedHandler);
             Messenger.Default.Register<ShowNewEntryViewMessage>(this, StartEntryCreation);
             Messenger.Default.Register<CategoryAddedMessage>(this, HandleNewCategory);
@@ -166,6 +167,14 @@ namespace PasswordManager.ViewModel
             Categories = new ObservableCollection<string>();
 
             UserControlVisibility = Visibility.Hidden;
+        }
+
+        private void DatabaseUnloadedHandler(DatabaseUnloadedMessage obj)
+        {
+            Categories.Clear();
+            backupPasswordEntry = null;
+            PasswordEntry = null;
+            SetElementsVisibility(ViewModes.View);
         }
 
         private void EntrySelectedHandler(EntrySelectedMessage obj)

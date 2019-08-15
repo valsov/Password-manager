@@ -4,7 +4,6 @@ using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Extensions;
 using PasswordManager.Messengers;
 using PasswordManager.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -78,6 +77,7 @@ namespace PasswordManager.ViewModel
         public EntryListViewModel()
         {
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
+            Messenger.Default.Register<DatabaseUnloadedMessage>(this, DatabaseUnloadedHandler);
             Messenger.Default.Register<EntryEditedMessage>(this, EntryEditedHandler);
             Messenger.Default.Register<EntryAddedMessage>(this, EntryAddedHandler);
             Messenger.Default.Register<EntryDeletedMessage>(this, EntryDeletedHandler);
@@ -100,6 +100,14 @@ namespace PasswordManager.ViewModel
                 basePasswordEntries.Add(entry);
             }
             RaisePropertyChanged(nameof(PasswordEntryList));
+        }
+
+        private void DatabaseUnloadedHandler(DatabaseUnloadedMessage obj)
+        {
+            basePasswordEntries.Clear();
+            selectedCategory = null;
+            SearchValue = null;
+            SelectedPasswordEntry = null;
         }
 
         /// <summary>
