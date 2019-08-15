@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Messengers;
 using PasswordManager.Repository.Interfaces;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -49,6 +50,9 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private string originalCategoryInEdition;
+        public string CategoryInEdition { get; set; }
+
         private Visibility newCategoryButtonVisibility;
         public Visibility NewCategoryButtonVisibility
         {
@@ -77,6 +81,20 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private Visibility categoryEditionFormVisibility;
+        public Visibility CategoryEditionFormVisibility
+        {
+            get
+            {
+                return categoryEditionFormVisibility;
+            }
+            set
+            {
+                categoryEditionFormVisibility = value;
+                RaisePropertyChanged(nameof(CategoryEditionFormVisibility));
+            }
+        }
+
         /// <summary>
         /// Command to select a category and filter password entries by this criteria
         /// </summary>
@@ -87,6 +105,14 @@ namespace PasswordManager.ViewModel
         public RelayCommand CancelAddCategoryCommand { get; private set; }
 
         public RelayCommand AddCategoryCommand { get; private set; }
+
+        public RelayCommand<string> EditCategoryCommand { get; private set; }
+
+        public RelayCommand<string> DeleteCategoryCommand { get; private set; }
+
+        public RelayCommand CancelCategoryEditionCommand { get; private set; }
+
+        public RelayCommand ValidateCategoryEditionCommand { get; private set; }
 
         /// <summary>
         /// Constructor
@@ -100,9 +126,14 @@ namespace PasswordManager.ViewModel
             ShowNewCategoryFormCommand = new RelayCommand(() => ToggleNewCategoryFormVisibility(true));
             CancelAddCategoryCommand = new RelayCommand(StopAddCategory);
             AddCategoryCommand = new RelayCommand(AddCategory);
+            EditCategoryCommand = new RelayCommand<string>(EditCategory);
+            DeleteCategoryCommand = new RelayCommand<string>(DeleteCategory);
+            CancelCategoryEditionCommand = new RelayCommand(CancelCategoryEdition);
+            ValidateCategoryEditionCommand = new RelayCommand(ValidateCategoryEdition);
             SelectedCategory = null;
             NewCategoryButtonVisibility = Visibility.Visible;
             NewCategoryFormVisibility = Visibility.Hidden;
+            CategoryEditionFormVisibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -157,6 +188,43 @@ namespace PasswordManager.ViewModel
                 NewCategoryButtonVisibility = Visibility.Visible;
                 NewCategoryFormVisibility = Visibility.Hidden;
             }
+        }
+
+        private void DeleteCategory(string category)
+        {
+            if(SelectedCategory == category)
+            {
+                SelectCategory(null);
+            }
+            CategoryList.Remove(category);
+            databaseRepository.DeleteCategory(category);
+            Messenger.Default.Send(new CategoryDeletedMessage(this, category));
+        }
+
+        private void EditCategory(string category)
+        {
+            originalCategoryInEdition = category;
+            CategoryInEdition = category;
+            RaisePropertyChanged(nameof(CategoryInEdition));
+            CategoryEditionFormVisibility = Visibility.Visible;
+        }
+
+        private void ValidateCategoryEdition()
+        {
+            var index = CategoryList.IndexOf(originalCategoryInEdition);
+            CategoryList[index] = CategoryInEdition;
+            databaseRepository.UpdateCategory(originalCategoryInEdition, CategoryInEdition);
+            Messenger.Default.Send(new CategoryEditedMessage(this, originalCategoryInEdition, CategoryInEdition));
+            if (SelectedCategory == originalCategoryInEdition)
+            {
+                SelectedCategory = CategoryInEdition;
+            }
+            CategoryEditionFormVisibility = Visibility.Hidden;
+        }
+
+        private void CancelCategoryEdition()
+        {
+            CategoryEditionFormVisibility = Visibility.Hidden;
         }
     }
 }

@@ -6,7 +6,6 @@ using PasswordManager.Messengers;
 using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -154,6 +153,8 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Register<EntrySelectedMessage>(this, EntrySelectedHandler);
             Messenger.Default.Register<ShowNewEntryViewMessage>(this, StartEntryCreation);
             Messenger.Default.Register<CategoryAddedMessage>(this, HandleNewCategory);
+            Messenger.Default.Register<CategoryDeletedMessage>(this, CategoryDeletedHandler);
+            Messenger.Default.Register<CategoryEditedMessage>(this, CategoryEditedHandler);
             DeleteEntryCommand = new RelayCommand(DeleteEntry);
             StartEditionCommand = new RelayCommand(StartEdition);
             ValidateEditionCommand = new RelayCommand(ValidateEdition);
@@ -279,6 +280,27 @@ namespace PasswordManager.ViewModel
             {
                 Categories.Add(obj.NewCategory);
             }
+        }
+
+        private void CategoryEditedHandler(CategoryEditedMessage obj)
+        {
+            var updateEntry = PasswordEntry.Category == obj.BaseCategory;
+            var index = Categories.IndexOf(obj.BaseCategory);
+            if(index != -1)
+            {
+                Categories[index] = obj.NewCategory;
+            }
+
+            if (updateEntry)
+            {
+                PasswordEntry.Category = obj.NewCategory;
+                RaisePropertyChanged(nameof(PasswordEntry));
+            }
+        }
+
+        private void CategoryDeletedHandler(CategoryDeletedMessage obj)
+        {
+            Categories.Remove(obj.Category);
         }
     }
 }

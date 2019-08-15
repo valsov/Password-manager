@@ -4,6 +4,7 @@ using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace PasswordManager.Repository
 {
@@ -71,20 +72,31 @@ namespace PasswordManager.Repository
             return File.Exists(path);
         }
 
-        public bool UpdateCategory(string oldCategory, string newCategory)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool AddCategory(string category)
         {
             cache.Categories.Add(category);
             return InternalWriteDatabase();
         }
 
+        public bool UpdateCategory(string oldCategory, string newCategory)
+        {
+            var index = cache.Categories.IndexOf(oldCategory);
+            cache.Categories[index] = newCategory;
+            foreach (var entry in cache.PasswordEntries.Where(x => x.Category == oldCategory))
+            {
+                entry.Category = newCategory;
+            }
+            return InternalWriteDatabase();
+        }
+
         public bool DeleteCategory(string category)
         {
-            throw new NotImplementedException();
+            cache.Categories.Remove(category);
+            foreach (var entry in cache.PasswordEntries.Where(x => x.Category == category))
+            {
+                entry.Category = null;
+            }
+            return InternalWriteDatabase();
         }
 
         DatabaseModel InternalGetDatabase(string path, string password)

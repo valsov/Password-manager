@@ -82,6 +82,8 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Register<EntryAddedMessage>(this, EntryAddedHandler);
             Messenger.Default.Register<EntryDeletedMessage>(this, EntryDeletedHandler);
             Messenger.Default.Register<CategorySelectedMessage>(this, CategorySelectedHandler);
+            Messenger.Default.Register<CategoryDeletedMessage>(this, CategoryDeletedHandler);
+            Messenger.Default.Register<CategoryEditedMessage>(this, CategoryEditedHandler);
             basePasswordEntries = new List<PasswordEntryModel>();
             SelectEntryCommand = new RelayCommand<PasswordEntryModel>(SelectEntry);
             AddEntryCommand = new RelayCommand(AddEntry);
@@ -106,15 +108,18 @@ namespace PasswordManager.ViewModel
         /// <param name="obj"></param>
         void EntryEditedHandler(EntryEditedMessage obj)
         {
+            var index = 0;
             for (int i = 0; i < basePasswordEntries.Count; i++)
             {
-                if(basePasswordEntries[i].Id == obj.Entry.Id)
+                if (basePasswordEntries[i].Id == obj.Entry.Id)
                 {
                     basePasswordEntries[i] = obj.Entry;
+                    index = i;
                     break;
                 }
             }
             RaisePropertyChanged(nameof(PasswordEntryList));
+            SelectedPasswordEntry = basePasswordEntries[index];
         }
 
         /// <summary>
@@ -142,6 +147,22 @@ namespace PasswordManager.ViewModel
         {
             selectedCategory = obj.SelectedCategory;
             RaisePropertyChanged(nameof(PasswordEntryList));
+        }
+
+        private void CategoryEditedHandler(CategoryEditedMessage obj)
+        {
+            foreach (var entry in basePasswordEntries.Where(x => x.Category == obj.BaseCategory))
+            {
+                entry.Category = obj.NewCategory;
+            }
+        }
+
+        private void CategoryDeletedHandler(CategoryDeletedMessage obj)
+        {
+            foreach(var entry in basePasswordEntries.Where(x => x.Category == obj.Category))
+            {
+                entry.Category = null;
+            }
         }
 
         /// <summary>
