@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="PasswordManager.View.DatabaseSelectionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PasswordManager.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding DatabaseSelection, Source={StaticResource Locator}}">
+    <Grid
+        Background="White"
+        Visibility="{Binding UserControlVisibility}">
+        <StackPanel
+            Orientation="Vertical">
+            <TextBlock
+                Text="{Binding DatabasePath}" />
+
+            <Button
+                Content="Select file"
+                Command="{Binding SelectDatabaseFileCommand}" />
+
+            <Button
+                Content="Open Database"
+                Visibility="{Binding DatabaseChallengeButtonVisibility}"
+                Command="{Binding OpenDatabaseChallengeViewCommand}" />
+
+            <Button
+                Content="Create new Database"
+                Command="{Binding OpenDatabaseCreationViewCommand}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

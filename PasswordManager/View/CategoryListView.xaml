@@ -24,13 +24,8 @@
             Grid.Row="0"
             Visibility="{Binding NewCategoryButtonVisibility}"
             Content="New Category"
-            Width="100">
-            <Button.InputBindings>
-                <MouseBinding
-                    MouseAction="LeftClick"
-                    Command="{Binding ShowNewCategoryFormCommand}" />
-            </Button.InputBindings>
-        </Button>
+            Width="100"
+            Command="{Binding ShowNewCategoryFormCommand}" />
         <StackPanel
             Grid.Row="0"
             Visibility="{Binding NewCategoryFormVisibility}"
@@ -43,22 +38,13 @@
                 HorizontalAlignment="Center">
                 <Button
                     Content="Cancel"
-                    Width="100">
-                    <Button.InputBindings>
-                        <MouseBinding
-                            MouseAction="LeftClick"
-                            Command="{Binding CancelAddCategoryCommand}" />
-                    </Button.InputBindings>
-                </Button>
+                    Width="100"
+                    Command="{Binding CancelAddCategoryCommand}" />
+
                 <Button
                     Content="Validate"
-                    Width="100">
-                    <Button.InputBindings>
-                        <MouseBinding
-                            MouseAction="LeftClick"
-                            Command="{Binding AddCategoryCommand}" />
-                    </Button.InputBindings>
-                </Button>
+                    Width="100"
+                    Command="{Binding AddCategoryCommand}" />
             </StackPanel>
         </StackPanel>
 
@@ -186,22 +172,12 @@
                 HorizontalAlignment="Center">
                 <Button
                     Content="Cancel"
-                    Width="100">
-                    <Button.InputBindings>
-                        <MouseBinding
-                            MouseAction="LeftClick"
-                            Command="{Binding CancelCategoryEditionCommand}" />
-                    </Button.InputBindings>
-                </Button>
+                    Width="100"
+                    Command="{Binding CancelCategoryEditionCommand}" />
                 <Button
                     Content="Validate"
-                    Width="100">
-                    <Button.InputBindings>
-                        <MouseBinding
-                            MouseAction="LeftClick"
-                            Command="{Binding ValidateCategoryEditionCommand}" />
-                    </Button.InputBindings>
-                </Button>
+                    Width="100"
+                    Command="{Binding ValidateCategoryEditionCommand}" />
             </StackPanel>
         </StackPanel>
     </Grid>

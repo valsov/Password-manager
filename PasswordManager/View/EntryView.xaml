@@ -34,13 +34,8 @@
                 Content="Edit"
                 Width="80"
                 Height="25"
-                Visibility="{Binding EditionButtonVisibility}">
-                <Button.InputBindings>
-                    <MouseBinding
-                        MouseAction="LeftClick"
-                        Command="{Binding StartEditionCommand}" />
-                </Button.InputBindings>
-            </Button>
+                Visibility="{Binding EditionButtonVisibility}"
+                Command="{Binding StartEditionCommand}" />
 
             <Button
                 Margin="0 65 30 0"
@@ -49,13 +44,8 @@
                 Content="Delete"
                 Width="80"
                 Height="25"
-                Visibility="{Binding DeleteButtonVisibility}">
-                <Button.InputBindings>
-                    <MouseBinding
-                        MouseAction="LeftClick"
-                        Command="{Binding DeleteEntryCommand}" />
-                </Button.InputBindings>
-            </Button>
+                Visibility="{Binding DeleteButtonVisibility}"
+                Command="{Binding DeleteEntryCommand}" />
 
             <Border
                 Margin="20 100 20 20"
@@ -231,23 +221,14 @@
                     Visibility="{Binding EditionControlButtonsVisibility}">
                     <Button
                         Content="Cancel"
-                        Width="80">
-                        <Button.InputBindings>
-                            <MouseBinding
-                                MouseAction="LeftClick"
-                                Command="{Binding CancelEditionCommand}" />
-                        </Button.InputBindings>
-                    </Button>
+                        Width="80"
+                        Command="{Binding CancelEditionCommand}" />
+
                     <Button
                         Content="Validate"
                         Width="80"
-                        Margin="10 0 0 0">
-                        <Button.InputBindings>
-                            <MouseBinding
-                                MouseAction="LeftClick"
-                                Command="{Binding ValidateEditionCommand}" />
-                        </Button.InputBindings>
-                    </Button>
+                        Margin="10 0 0 0"
+                        Command="{Binding ValidateEditionCommand}" />
                 </StackPanel>
 
                 <StackPanel
@@ -256,23 +237,13 @@
                     Visibility="{Binding CreationControlButtonsVisibility}">
                     <Button
                         Content="Cancel"
-                        Width="80">
-                        <Button.InputBindings>
-                            <MouseBinding
-                                MouseAction="LeftClick"
-                                Command="{Binding CancelEntryCreationCommand}" />
-                        </Button.InputBindings>
-                    </Button>
+                        Width="80"
+                        Command="{Binding CancelEntryCreationCommand}" />
                     <Button
                         Content="Validate"
                         Width="80"
-                        Margin="10 0 0 0">
-                        <Button.InputBindings>
-                            <MouseBinding
-                                MouseAction="LeftClick"
-                                Command="{Binding CreateEntryCommand}" />
-                        </Button.InputBindings>
-                    </Button>
+                        Margin="10 0 0 0"
+                        Command="{Binding CreateEntryCommand}" />
                 </StackPanel>
             </Grid>
         </Grid>

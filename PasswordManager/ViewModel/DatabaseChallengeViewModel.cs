@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Messengers;
 using PasswordManager.Service.Interfaces;
+using System;
 using System.Windows;
 
 namespace PasswordManager.ViewModel
@@ -80,6 +81,8 @@ namespace PasswordManager.ViewModel
         /// </summary>
         public RelayCommand TryOpenDatabaseCommand { get; private set; }
 
+        public RelayCommand CancelDatabaseOpeningCommand { get; private set; }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -88,6 +91,7 @@ namespace PasswordManager.ViewModel
         {
             this.databaseService = databaseService;
             TryOpenDatabaseCommand = new RelayCommand(TryOpenDatabase);
+            CancelDatabaseOpeningCommand = new RelayCommand(CancelDatabaseOpening);
             UserControlVisibility = Visibility.Collapsed;
             Messenger.Default.Register<ShowDatabaseChallengeViewMessage>(this, ShowUserControl);
         }
@@ -112,6 +116,12 @@ namespace PasswordManager.ViewModel
                 UserControlVisibility = Visibility.Collapsed;
                 Messenger.Default.Send(new DatabaseLoadedMessage(this, databaseModel));
             }
+        }
+
+        private void CancelDatabaseOpening()
+        {
+            UserControlVisibility = Visibility.Hidden;
+            Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this));
         }
 
         /// <summary>

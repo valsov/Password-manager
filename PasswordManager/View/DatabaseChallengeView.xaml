@@ -20,11 +20,16 @@
                 Width="100"
                 Content="Open Database"
                 Command="{Binding TryOpenDatabaseCommand}"
-                IsEnabled="{Binding TryOpenDatabaseEnabled}"/>
+                IsEnabled="{Binding TryOpenDatabaseEnabled}" />
 
             <TextBlock
                 Text="{Binding Error}"
                 Foreground="Red"/>
+
+            <Button
+                Width="100"
+                Content="Cancel"
+                Command="{Binding CancelDatabaseOpeningCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>

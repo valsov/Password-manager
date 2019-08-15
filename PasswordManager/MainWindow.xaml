@@ -74,7 +74,11 @@
                     Grid.Column="2" />
             </Grid>
         </Grid>
-        
+
+        <view:DatabaseSelectionView
+            Width="500"
+            Height="300" />
+
         <view:DatabaseCreationView
             Width="500"
             Height="300" />

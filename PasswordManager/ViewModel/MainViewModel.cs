@@ -57,7 +57,7 @@ namespace PasswordManager.ViewModel
             if (string.IsNullOrEmpty(path) || !databaseRepository.CheckDatabaseExists(path))
             {
                 // Database path isn't set or database doesn't exist anymore
-                Messenger.Default.Send(new ShowDatabaseCreationViewMessage(this));
+                Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this));
             }
             else
             {

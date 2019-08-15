@@ -27,13 +27,9 @@
                     Orientation="Horizontal">
                     <Button
                         Content="New Entry"
-                        Width="150">
-                        <Button.InputBindings>
-                            <MouseBinding
-                                MouseAction="LeftClick"
-                                Command="{Binding AddEntryCommand}" />
-                        </Button.InputBindings>
-                    </Button>
+                        Width="150"
+                        Command="{Binding AddEntryCommand}" />
+
                     <TextBox
                         Margin="20 0 0 0"
                         Width="250"

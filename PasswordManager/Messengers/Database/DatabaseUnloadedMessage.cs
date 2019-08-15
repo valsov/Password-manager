@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PasswordManager.Messengers
+﻿namespace PasswordManager.Messengers
 {
-    public class DatabaseUnloadedMessage
+    public class DatabaseUnloadedMessage : BaseMessage
     {
+        public DatabaseUnloadedMessage(object sender)
+            : base(sender)
+        {
+
+        }
     }
 }

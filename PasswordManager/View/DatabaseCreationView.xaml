@@ -49,11 +49,16 @@
                     Width="100"
                     Content="Create Database"
                     Command="{Binding CreateDatabaseCommand}"
-                    IsEnabled="{Binding IsCreateDatabaseEnabled}"/>
+                    IsEnabled="{Binding IsCreateDatabaseEnabled}" />
 
                 <TextBlock
                     Text="{Binding Error}"
                     Foreground="Red"/>
+                
+                <Button
+                    Width="100"
+                    Content="Cancel"
+                    Command="{Binding CancelDatabaseCreationCommand}" />
             </StackPanel>
         </Grid>
     </Grid>
