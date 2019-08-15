@@ -97,6 +97,22 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
+                <TextBlock
+                    Grid.Row="1"
+                    Margin="0 20 0 0"
+                    HorizontalAlignment="Center"
+                    Text="No entries">
+                    <TextBlock.Style>
+                        <Style>
+                            <Setter Property="TextBlock.Visibility" Value="Hidden" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding PasswordEntryList.Count}" Value="0">
+                                    <Setter Property="TextBlock.Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </Grid>
         </Border>
     </Grid>

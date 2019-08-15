@@ -159,6 +159,23 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
+        <TextBlock
+            Grid.Row="2"
+            Margin="0 20 0 0"
+            HorizontalAlignment="Center"
+            Text="No Categories">
+            <TextBlock.Style>
+                <Style>
+                    <Setter Property="TextBlock.Visibility" Value="Hidden" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CategoryList.Count}" Value="0">
+                            <Setter Property="TextBlock.Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
         <StackPanel
             Grid.Row="3"
             Orientation="Vertical"
