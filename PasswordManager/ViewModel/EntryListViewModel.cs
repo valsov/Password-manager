@@ -188,6 +188,7 @@ namespace PasswordManager.ViewModel
         /// </summary>
         private void AddEntry()
         {
+            SelectedPasswordEntry = null;
             Messenger.Default.Send(new ShowNewEntryViewMessage(this));
         }
     }

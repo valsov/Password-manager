@@ -4,29 +4,52 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PasswordManager.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding DatabaseSelection, Source={StaticResource Locator}}">
     <Grid
         Background="White"
         Visibility="{Binding UserControlVisibility}">
-        <StackPanel
-            Orientation="Vertical">
+        <Border
+            Margin="10 30 0 0"
+            Width="220"
+            BorderBrush="DarkGray"
+            BorderThickness="0 0 0 1"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Left">
             <TextBlock
-                Text="{Binding DatabasePath}" />
+                Text="{Binding DatabasePath}"
+                Padding="3" />
+        </Border>
 
-            <Button
-                Content="Select file"
-                Command="{Binding SelectDatabaseFileCommand}" />
+        <Button
+            Command="{Binding SelectDatabaseFileCommand}"
+            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+            Background="DeepSkyBlue"
+            BorderBrush="Transparent"
+            Width="35"
+            Height="35"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Right">
+            <materialDesign:PackIcon
+                Kind="File"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Width="20"
+                Height="20" />
+        </Button>
 
-            <Button
-                Content="Open Database"
-                Visibility="{Binding DatabaseChallengeButtonVisibility}"
-                Command="{Binding OpenDatabaseChallengeViewCommand}" />
+        <!--Visibility="{Binding DatabaseChallengeButtonVisibility}"-->
+        <Button
+            Content="Open Database"
+            Command="{Binding OpenDatabaseChallengeViewCommand}" />
 
-            <Button
-                Content="Create new Database"
-                Command="{Binding OpenDatabaseCreationViewCommand}" />
-        </StackPanel>
+        <Button
+            VerticalAlignment="Bottom"
+            Content="Create new Database"
+            Width="170"
+            Margin="10"
+            Command="{Binding OpenDatabaseCreationViewCommand}" />
     </Grid>
 </UserControl>

@@ -30,12 +30,12 @@ namespace PasswordManager
             this.DragMove();
         }
 
-        private void MinimizeWindow(object sender, MouseButtonEventArgs e)
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
         }
 
-        private void CloseWindow(object sender, MouseButtonEventArgs e)
+        private void CloseWindow(object sender, RoutedEventArgs e)
         {
             this.Close();
         }

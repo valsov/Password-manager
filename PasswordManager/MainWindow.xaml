@@ -7,12 +7,14 @@
         xmlns:view="clr-namespace:PasswordManager.View"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000"
         Background="Transparent"
         AllowsTransparency="True"
         WindowStyle="None"
         ResizeMode="CanMinimize"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -20,71 +22,88 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <Grid
+        <Border
+            Visibility="{Binding MainViewVisibility}"
             Background="#3B4045"
-            Visibility="{Binding MainViewVisibility}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+            BorderBrush="#3A4758"
+            BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <Grid
-                Grid.Row="0"
-                Background="#3B4045">
-                <Border
-                    Background="Transparent"
-                    MouseDown="Border_MouseDown" />
+                <Grid
+                    Grid.Row="0"
+                    Background="#3B4045">
+                    <Border
+                        Background="Transparent"
+                        MouseDown="Border_MouseDown" />
 
-                <Button
-                    Content="Close Database"
-                    Command="{Binding CloseDatabaseCommand}"
-                    Width="100"
-                    HorizontalAlignment="Left" />
+                    <Button
+                        Command="{Binding CloseDatabaseCommand}"
+                        Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                        Background="Gray"
+                        BorderBrush="Transparent"
+                        Margin="5 0 0 0"
+                        Width="30"
+                        Height="30"
+                        HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="Lock" />
+                    </Button>
 
-                <StackPanel
-                    Orientation="Horizontal"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Right"
-                    Margin="0 0 7 1">
-                    <Ellipse
-                        Width="20"
-                        Height="20"
-                        Fill="#F8C126"
-                        Margin="0 0 7 0"
-                        MouseUp="MinimizeWindow"
-                        Cursor="Hand" />
+                    <StackPanel
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Margin="0 0 7 1">
+                        <Button
+                            Click="MinimizeWindow"
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Background="#F8C126"
+                            BorderBrush="Transparent"
+                            Margin="0 0 7 0"
+                            Width="30"
+                            Height="30"
+                            HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="WindowMinimize" Margin="0 10 0 0" />
+                        </Button>
+                        <Button
+                            Click="CloseWindow"
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Background="#FF5F61"
+                            BorderBrush="Transparent"
+                            Width="30"
+                            Height="30"
+                            HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="Close" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
 
-                    <Ellipse
-                        Width="20"
-                        Height="20"
-                        Fill="#FF5F61"
-                        MouseUp="CloseWindow"
-                        Cursor="Hand" />
-                </StackPanel>
-            </Grid>
+                <Grid
+                    Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="6*" />
+                    </Grid.ColumnDefinitions>
 
-            <Grid
-                Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="4*" />
-                    <ColumnDefinition Width="6*" />
-                </Grid.ColumnDefinitions>
-                
-                <view:CategoryListView
+                    <view:CategoryListView
                     Grid.Column="0"/>
 
-                <view:EntryListView
+                    <view:EntryListView
                     Grid.Column="1"/>
 
-                <view:EntryView
+                    <view:EntryView
                     Grid.Column="2" />
+                </Grid>
             </Grid>
-        </Grid>
+        </Border>
 
         <view:DatabaseSelectionView
-            Width="500"
-            Height="300" />
+            Width="300"
+            Height="200" />
 
         <view:DatabaseCreationView
             Width="500"

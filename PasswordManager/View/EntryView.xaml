@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PasswordManager.View"
              xmlns:converters="clr-namespace:PasswordManager.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Background="#F9F9F9"
@@ -28,29 +29,37 @@
                 Text="{Binding PasswordEntry.Name}" />
 
             <Button
-                Margin="0 35 30 0"
+                Width="30"
+                Height="30"
+                Background="White"
+                BorderBrush="Transparent"
+                Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                Margin="0 65 70 0"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
-                Content="Edit"
-                Width="80"
-                Height="25"
-                Visibility="{Binding EditionButtonVisibility}"
-                Command="{Binding StartEditionCommand}" />
+                Visibility="{Binding DeleteButtonVisibility}"
+                Command="{Binding DeleteEntryCommand}">
+                <materialDesign:PackIcon Kind="Bin" />
+            </Button>
 
             <Button
+                Width="30"
+                Height="30"
+                Background="White"
+                BorderBrush="Transparent"
+                Style="{DynamicResource MaterialDesignFloatingActionButton}"
                 Margin="0 65 30 0"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
-                Content="Delete"
-                Width="80"
-                Height="25"
-                Visibility="{Binding DeleteButtonVisibility}"
-                Command="{Binding DeleteEntryCommand}" />
+                Visibility="{Binding EditionButtonVisibility}"
+                Command="{Binding StartEditionCommand}">
+                    <materialDesign:PackIcon Kind="Pencil" />
+            </Button>
 
             <Border
                 Margin="20 100 20 20"
                 VerticalAlignment="Top"
-                Height="180"
+                Height="160"
                 BorderBrush="Gray"
                 BorderThickness="1"
                 CornerRadius="5"
@@ -135,12 +144,12 @@
             <TextBox
                 Margin="30 30 0 0"
                 Width="300"
-                Height="40"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Left"
                 FontSize="25"
                 FontWeight="Bold"
-                Text="{Binding PasswordEntry.Name, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding PasswordEntry.Name, UpdateSourceTrigger=PropertyChanged}"
+                materialDesign:HintAssist.Hint="Entry name" />
 
             <Border
                 Margin="20 100 20 20"
@@ -155,31 +164,27 @@
                     HorizontalAlignment="Left"
                     Width="200"
                     Margin="15">
-                    <TextBlock
-                        Text="username"
-                        Foreground="#636361"
-                        FontSize="13" />
                     <TextBox
+                        Margin="0 10 0 0"
                         Text="{Binding PasswordEntry.Username, UpdateSourceTrigger=PropertyChanged}"
-                        FontSize="16" />
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Username"
+                        materialDesign:HintAssist.IsFloating="True" />
 
-                    <TextBlock
-                        Margin="0 10 0 0"
-                        Text="password"
-                        Foreground="#636361"
-                        FontSize="13" />
                     <TextBox
-                        Text="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}"
-                        FontSize="16" />
-
-                    <TextBlock
                         Margin="0 10 0 0"
-                        Text="category"
-                        Foreground="#636361"
-                        FontSize="13" />
+                        Text="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}"
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Password"
+                        materialDesign:HintAssist.IsFloating="True" />
+
                     <ComboBox
+                        FontSize="16"
+                        Margin="0 10 0 0"
                         ItemsSource="{Binding Categories}"
-                        SelectedValue="{Binding PasswordEntry.Category}" />
+                        SelectedValue="{Binding PasswordEntry.Category}"
+                        materialDesign:HintAssist.Hint="Category"
+                        materialDesign:HintAssist.IsFloating="True" />
                 </StackPanel>
             </Border>
 
@@ -189,61 +194,79 @@
                 HorizontalAlignment="Left"
                 Margin="35 290 0 0"
                 Width="300">
-                <TextBlock
-                    Text="Website"
-                    Foreground="#636361"
-                    FontSize="14" />
                 <TextBox
                     Text="{Binding PasswordEntry.Website, UpdateSourceTrigger=PropertyChanged}"
+                    materialDesign:HintAssist.Hint="Website"
+                    materialDesign:HintAssist.IsFloating="True"
                     FontSize="16" />
 
-                <TextBlock
-                    Margin="0 10 0 0"
-                    Text="Notes"
-                    Foreground="#636361"
-                    FontSize="14" />
                 <TextBox
+                    Margin="0 10 0 0"
                     TextWrapping="Wrap"
                     AcceptsReturn="True"
                     AcceptsTab="True"
+                    MaxLines="5"
                     Text="{Binding PasswordEntry.Notes, UpdateSourceTrigger=PropertyChanged}"
-                    FontSize="16"
-                    Height="100"/>
+                    materialDesign:HintAssist.Hint="Notes"
+                    materialDesign:HintAssist.IsFloating="True"
+                    FontSize="16"/>
             </StackPanel>
 
             <Grid
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                Margin="0 0 20 30"
-                Height="20">
+                Margin="0 0 10 30"
+                Width="90">
                 <StackPanel
                     Orientation="Horizontal"
                     Visibility="{Binding EditionControlButtonsVisibility}">
                     <Button
-                        Content="Cancel"
-                        Width="80"
-                        Command="{Binding CancelEditionCommand}" />
+                        Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                        Width="30"
+                        Height="30"
+                        Margin="0 0 10 10"
+                        Background="LightGray"
+                        BorderBrush="Transparent"
+                        Command="{Binding CancelEditionCommand}">
+                        <materialDesign:PackIcon Kind="Cancel" />
+                    </Button>
 
                     <Button
-                        Content="Validate"
-                        Width="80"
-                        Margin="10 0 0 0"
-                        Command="{Binding ValidateEditionCommand}" />
+                        Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                        Width="30"
+                        Height="30"
+                        Margin="10 0 0 10"
+                        Background="LimeGreen"
+                        BorderBrush="Transparent"
+                        Command="{Binding ValidateEditionCommand}">
+                        <materialDesign:PackIcon Kind="Check" />
+                    </Button>
                 </StackPanel>
 
                 <StackPanel
-                    Grid.Row="1"
                     Orientation="Horizontal"
                     Visibility="{Binding CreationControlButtonsVisibility}">
                     <Button
-                        Content="Cancel"
-                        Width="80"
-                        Command="{Binding CancelEntryCreationCommand}" />
+                        Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                        Width="30"
+                        Height="30"
+                        Margin="0 0 10 10"
+                        Background="LightGray"
+                        BorderBrush="Transparent"
+                        Command="{Binding CancelEntryCreationCommand}">
+                        <materialDesign:PackIcon Kind="Cancel" />
+                    </Button>
+
                     <Button
-                        Content="Validate"
-                        Width="80"
-                        Margin="10 0 0 0"
-                        Command="{Binding CreateEntryCommand}" />
+                        Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                        Width="30"
+                        Height="30"
+                        Margin="10 0 0 10"
+                        Background="LimeGreen"
+                        BorderBrush="Transparent"
+                        Command="{Binding CreateEntryCommand}">
+                        <materialDesign:PackIcon Kind="Check" />
+                    </Button>
                 </StackPanel>
             </Grid>
         </Grid>

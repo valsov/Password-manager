@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PasswordManager.View"
              xmlns:converters="clr-namespace:PasswordManager.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding CategoryList, Source={StaticResource Locator}}">
@@ -12,173 +13,229 @@
         <converters:EqualityConverter x:Key="EqualityConverter" />
         <local:BindingProxy x:Key="proxy" Data="{Binding}" />
     </UserControl.Resources>
-    <Grid
-        Background="#3A4758">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
-        </Grid.RowDefinitions>
-        <Button
-            Grid.Row="0"
-            Visibility="{Binding NewCategoryButtonVisibility}"
-            Content="New Category"
-            Width="100"
-            Command="{Binding ShowNewCategoryFormCommand}" />
-        <StackPanel
-            Grid.Row="0"
-            Visibility="{Binding NewCategoryFormVisibility}"
-            Orientation="Vertical">
-            <TextBox
-                Width="250"
-                Text="{Binding NewCategoryName, UpdateSourceTrigger=PropertyChanged}" />
-            <StackPanel
-                Orientation="Horizontal"
-                HorizontalAlignment="Center">
-                <Button
-                    Content="Cancel"
-                    Width="100"
-                    Command="{Binding CancelAddCategoryCommand}" />
-
-                <Button
-                    Content="Validate"
-                    Width="100"
-                    Command="{Binding AddCategoryCommand}" />
-            </StackPanel>
-        </StackPanel>
-
+    <Grid>
         <Grid
-            Grid.Row="1"
-            Margin="15 0 0 0">
-            <Border
-                BorderThickness="1"
-                CornerRadius="3 0 0 3"
-                Padding="5">
-                <TextBlock
-                    Foreground="#D3DBE8"
-                    FontSize="20"
-                    Text="All" />
+            Background="#3A4758">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button
+                Grid.Row="0"
+                Margin="0 5 0 6"
+                Width="30"
+                Height="30"
+                Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                Background="White"
+                BorderBrush="Transparent"
+                Command="{Binding ShowNewCategoryFormCommand}">
+                <materialDesign:PackIcon Kind="Plus" />
+            </Button>
 
-                <Border.Style>
+            <ScrollViewer
+                Grid.Row="1"
+                Margin="15 0 0 0"
+                VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid
+                        Grid.Row="0">
+                        <Border
+                            BorderThickness="1 1 0 1"
+                            CornerRadius="3 0 0 3"
+                            Padding="5">
+                            <TextBlock
+                                Foreground="#D3DBE8"
+                                FontSize="20"
+                                Text="All" />
+
+                            <Border.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <Trigger Property="Border.IsMouseOver" Value="True">
+                                            <Setter Property="Border.Background" Value="#485464"/>
+                                        </Trigger>
+                                        <DataTrigger Binding="{Binding SelectedCategory}" Value="{x:Null}">
+                                            <Setter Property="Border.Background" Value="#485464"/>
+                                            <Setter Property="Border.BorderBrush" Value="Gray"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding SelectCategoryCommand}"
+                                CommandParameter="" />
+                        </Grid.InputBindings>
+                    </Grid>
+                    <ItemsControl
+                        Grid.Row="1"
+                        ItemsSource="{Binding CategoryList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border
+                                        BorderThickness="1 1 0 1"
+                                        CornerRadius="3 0 0 3"
+                                        Padding="5">
+                                        <TextBlock
+                                            Foreground="#D3DBE8"
+                                            FontSize="20"
+                                            Text="{Binding}" />
+
+                                        <Border.Style>
+                                            <Style>
+                                                <Style.Triggers>
+                                                    <Trigger Property="Border.IsMouseOver" Value="True">
+                                                        <Setter Property="Border.Background" Value="#485464"/>
+                                                    </Trigger>
+                                                    <DataTrigger Value="True">
+                                                        <DataTrigger.Binding>
+                                                            <MultiBinding Converter="{StaticResource EqualityConverter}">
+                                                                <Binding />
+                                                                <Binding Path="DataContext.SelectedCategory" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" />
+                                                            </MultiBinding>
+                                                        </DataTrigger.Binding>
+                                                        <Setter Property="Border.Background" Value="#485464"/>
+                                                        <Setter Property="Border.BorderBrush" Value="Gray"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <Border.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem
+                                                    Header="Edit"
+                                                    Command="{Binding Data.EditCategoryCommand, Source={StaticResource proxy}}"
+                                                    CommandParameter="{Binding}" />
+                                                <MenuItem
+                                                    Header="Delete"
+                                                    Command="{Binding Data.DeleteCategoryCommand, Source={StaticResource proxy}}"
+                                                    CommandParameter="{Binding}" />
+                                            </ContextMenu>
+                                        </Border.ContextMenu>
+                                    </Border>
+
+                                    <Grid.InputBindings>
+                                        <MouseBinding
+                                            MouseAction="LeftClick"
+                                            Command="{Binding DataContext.SelectCategoryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding}" />
+                                    </Grid.InputBindings>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </ScrollViewer>
+            
+            <TextBlock
+                Margin="0 20 0 0"
+                HorizontalAlignment="Center"
+                Text="No Categories">
+                <TextBlock.Style>
                     <Style>
+                        <Setter Property="TextBlock.Visibility" Value="Hidden" />
                         <Style.Triggers>
-                            <Trigger Property="Border.IsMouseOver" Value="True">
-                                <Setter Property="Border.Background" Value="#485464"/>
-                            </Trigger>
-                            <DataTrigger Binding="{Binding SelectedCategory}" Value="{x:Null}">
-                                <Setter Property="Border.Background" Value="#485464"/>
-                                <Setter Property="Border.BorderBrush" Value="Gray"/>
+                            <DataTrigger Binding="{Binding CategoryList.Count}" Value="0">
+                                <Setter Property="TextBlock.Visibility" Value="Visible" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Border.Style>
-            </Border>
-
-            <Grid.InputBindings>
-                <MouseBinding
-                    MouseAction="LeftClick"
-                    Command="{Binding SelectCategoryCommand}"
-                    CommandParameter="" />
-            </Grid.InputBindings>
+                </TextBlock.Style>
+            </TextBlock>
         </Grid>
 
-        <ScrollViewer
-            Grid.Row="2"
-            VerticalScrollBarVisibility="Auto">
-            <ItemsControl
-                ItemsSource="{Binding CategoryList}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid
-                            Margin="15 0 0 0">
-                            <Border
-                                BorderThickness="1"
-                                CornerRadius="3 0 0 3"
-                                Padding="5">
-                                <TextBlock
-                                    Foreground="#D3DBE8"
-                                    FontSize="20"
-                                    Text="{Binding}" />
+        <materialDesign:DialogHost IsOpen="{Binding NewCategoryFormVisibility}">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid
+                    Width="200"
+                    Height="100">
+                    <TextBox
+                        Width="150"
+                        Margin="0 10 0 10"
+                        VerticalAlignment="Top"
+                        materialDesign:HintAssist.Hint="New category"
+                        materialDesign:HintAssist.IsFloating="True"
+                        Text="{Binding NewCategoryName, UpdateSourceTrigger=PropertyChanged}" />
+                    
+                    <StackPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom">
+                        <Button
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Width="30"
+                            Height="30"
+                            Margin="0 0 10 10"
+                            Background="LightGray"
+                            BorderBrush="Transparent"
+                            Command="{Binding CancelAddCategoryCommand}">
+                            <materialDesign:PackIcon Kind="Cancel" />
+                        </Button>
 
-                                <Border.Style>
-                                    <Style>
-                                        <Style.Triggers>
-                                            <Trigger Property="Border.IsMouseOver" Value="True">
-                                                <Setter Property="Border.Background" Value="#485464"/>
-                                            </Trigger>
-                                            <DataTrigger Value="True">
-                                                <DataTrigger.Binding>
-                                                    <MultiBinding Converter="{StaticResource EqualityConverter}">
-                                                        <Binding />
-                                                        <Binding Path="DataContext.SelectedCategory" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" />
-                                                    </MultiBinding>
-                                                </DataTrigger.Binding>
-                                                <Setter Property="Border.Background" Value="#485464"/>
-                                                <Setter Property="Border.BorderBrush" Value="Gray"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                                <Border.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem
-                                            Header="Edit"
-                                            Command="{Binding Data.EditCategoryCommand, Source={StaticResource proxy}}"
-                                            CommandParameter="{Binding}" />
-                                        <MenuItem
-                                            Header="Delete"
-                                            Command="{Binding Data.DeleteCategoryCommand, Source={StaticResource proxy}}"
-                                            CommandParameter="{Binding}" />
-                                    </ContextMenu>
-                                </Border.ContextMenu>
-                            </Border>
+                        <Button
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Width="30"
+                            Height="30"
+                            Margin="10 0 0 10"
+                            Background="LimeGreen"
+                            BorderBrush="Transparent"
+                            Command="{Binding AddCategoryCommand}">
+                            <materialDesign:PackIcon Kind="Check" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+        
+        <materialDesign:DialogHost IsOpen="{Binding CategoryEditionFormVisibility}">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid
+                    Width="200"
+                    Height="100">
+                    <TextBox
+                        Width="150"
+                        Margin="0 10 0 10"
+                        VerticalAlignment="Top"
+                        materialDesign:HintAssist.Hint="New category"
+                        materialDesign:HintAssist.IsFloating="True"
+                        Text="{Binding CategoryInEdition, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <Grid.InputBindings>
-                                <MouseBinding
-                                    MouseAction="LeftClick"
-                                    Command="{Binding DataContext.SelectCategoryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                    CommandParameter="{Binding}" />
-                            </Grid.InputBindings>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-        <TextBlock
-            Grid.Row="2"
-            Margin="0 20 0 0"
-            HorizontalAlignment="Center"
-            Text="No Categories">
-            <TextBlock.Style>
-                <Style>
-                    <Setter Property="TextBlock.Visibility" Value="Hidden" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding CategoryList.Count}" Value="0">
-                            <Setter Property="TextBlock.Visibility" Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
+                    <StackPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom">
+                        <Button
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Width="30"
+                            Height="30"
+                            Margin="0 0 10 10"
+                            Background="LightGray"
+                            BorderBrush="Transparent"
+                            Command="{Binding CancelCategoryEditionCommand}">
+                            <materialDesign:PackIcon Kind="Cancel" />
+                        </Button>
 
-        <StackPanel
-            Grid.Row="3"
-            Orientation="Vertical"
-            Visibility="{Binding CategoryEditionFormVisibility}">
-            <TextBox Text="{Binding CategoryInEdition, UpdateSourceTrigger=PropertyChanged}" />
-            <StackPanel
-                Orientation="Horizontal"
-                HorizontalAlignment="Center">
-                <Button
-                    Content="Cancel"
-                    Width="100"
-                    Command="{Binding CancelCategoryEditionCommand}" />
-                <Button
-                    Content="Validate"
-                    Width="100"
-                    Command="{Binding ValidateCategoryEditionCommand}" />
-            </StackPanel>
-        </StackPanel>
+                        <Button
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Width="30"
+                            Height="30"
+                            Margin="10 0 0 10"
+                            Background="LimeGreen"
+                            BorderBrush="Transparent"
+                            Command="{Binding ValidateCategoryEditionCommand}">
+                            <materialDesign:PackIcon Kind="Check" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
     </Grid>
 </UserControl>

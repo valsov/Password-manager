@@ -293,6 +293,8 @@ namespace PasswordManager.ViewModel
 
         private void CategoryEditedHandler(CategoryEditedMessage obj)
         {
+            if (PasswordEntry is null) return;
+
             var updateEntry = PasswordEntry.Category == obj.BaseCategory;
             var index = Categories.IndexOf(obj.BaseCategory);
             if(index != -1)

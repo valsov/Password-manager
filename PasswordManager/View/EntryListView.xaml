@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PasswordManager.View"
              xmlns:converters="clr-namespace:PasswordManager.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding EntryList, Source={StaticResource Locator}}">
@@ -18,23 +19,40 @@
             BorderThickness="0 0 1 0">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20" />
+                    <RowDefinition Height="40" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <StackPanel
+                <Border
                     Grid.Row="0"
-                    Orientation="Horizontal">
-                    <Button
-                        Content="New Entry"
-                        Width="150"
-                        Command="{Binding AddEntryCommand}" />
+                    BorderBrush="LightGray"
+                    BorderThickness="0 0 0 1">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Background="#EAEAEA">
+                        <materialDesign:PackIcon
+                            Kind="Search"
+                            Width="20"
+                            Height="20"
+                            Margin="5 10 0 0"/>
+                        
+                        <TextBox
+                            Margin="10 0 0 10"
+                            Width="200"
+                            Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <TextBox
-                        Margin="20 0 0 0"
-                        Width="250"
-                        Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
+                        <Button
+                            Width="30"
+                            Height="30"
+                            Margin="30 0 0 0"
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Background="White"
+                            BorderBrush="Transparent"
+                            Command="{Binding AddEntryCommand}">
+                            <materialDesign:PackIcon Kind="Plus" />
+                        </Button>
+                    </StackPanel>
+                </Border>
 
                 <ScrollViewer
                     Grid.Row="1"
