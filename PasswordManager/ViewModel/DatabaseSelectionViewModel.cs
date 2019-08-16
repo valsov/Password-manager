@@ -4,7 +4,9 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Win32;
 using PasswordManager.Messengers;
 using PasswordManager.Service.Interfaces;
+using System;
 using System.IO;
+using System.Timers;
 using System.Windows;
 
 namespace PasswordManager.ViewModel
@@ -82,6 +84,20 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private bool databaseOpeningInProgress;
+        public bool DatabaseOpeningInProgress
+        {
+            get
+            {
+                return databaseOpeningInProgress;
+            }
+            set
+            {
+                databaseOpeningInProgress = value;
+                RaisePropertyChanged(nameof(DatabaseOpeningInProgress));
+            }
+        }
+
         private Visibility userControlVisibility;
         public Visibility UserControlVisibility
         {
@@ -136,10 +152,24 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        void TryOpenDatabase()
+        {
+            if (DatabaseOpeningInProgress) return;
+
+            DatabaseOpeningInProgress = true;
+            // Wait 1.5 sec before performing the operation
+            var timer = new Timer(2000)
+            {
+                Enabled = true,
+                AutoReset = false
+            };
+            timer.Elapsed += OpenDatabaseTimerElapsed;
+        }
+
         /// <summary>
         /// Try to decrypt the current database with the input password
         /// </summary>
-        void TryOpenDatabase()
+        private void OpenDatabaseTimerElapsed(object sender, ElapsedEventArgs e)
         {
             var databaseModel = databaseService.ReadDatabase(databasePath, Password);
             if (databaseModel is null)
@@ -149,8 +179,11 @@ namespace PasswordManager.ViewModel
             else
             {
                 UserControlVisibility = Visibility.Hidden;
-                Messenger.Default.Send(new DatabaseLoadedMessage(this, databaseModel));
+                // Need to use dispatcher because timers run in another thread
+                Application.Current.Dispatcher.Invoke(() => Messenger.Default.Send(new DatabaseLoadedMessage(this, databaseModel)));
             }
+
+            DatabaseOpeningInProgress = false;
         }
 
         private void OpenDatabaseCreationView()

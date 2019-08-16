@@ -104,10 +104,18 @@
 
                 <Button
                     Margin="0 15 0 0"
-                    Width="130"
-                    Content="Open Database"
+                    Style="{DynamicResource MaterialDesignFloatingActionButton}"
                     Command="{Binding TryOpenDatabaseCommand}"
-                    IsEnabled="{Binding TryOpenDatabaseEnabled}" />
+                    IsEnabled="{Binding TryOpenDatabaseEnabled}"
+                    materialDesign:ButtonProgressAssist.IndicatorForeground="DeepSkyBlue"
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding DatabaseOpeningInProgress}"
+                    materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                    materialDesign:ButtonProgressAssist.Value="25">
+                    <materialDesign:PackIcon
+                        Kind="Key"
+                        Height="22"
+                        Width="22" />
+                </Button>
             </StackPanel>
 
             <Button

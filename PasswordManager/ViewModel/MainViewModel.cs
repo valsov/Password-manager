@@ -78,6 +78,7 @@ namespace PasswordManager.ViewModel
         private void CloseDatabase()
         {
             MainViewVisibility = Visibility.Hidden;
+            DatabaseName = string.Empty;
             var path = settingsService.GetDatabasePath();
             databaseRepository.UnloadDatabase();
             Messenger.Default.Send(new DatabaseUnloadedMessage(this));
