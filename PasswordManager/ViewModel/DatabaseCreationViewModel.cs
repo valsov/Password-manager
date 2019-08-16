@@ -1,9 +1,10 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Win32;
 using PasswordManager.Messengers;
 using PasswordManager.Service.Interfaces;
-using System;
+using System.IO;
 using System.Windows;
 
 namespace PasswordManager.ViewModel
@@ -29,19 +30,20 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private string databaseLocation;
+        private string databasePath;
         /// <summary>
         /// Database file location
         /// </summary>
-        public string DatabaseLocation
+        public string DatabasePath
         {
             get
             {
-                return databaseLocation;
+                return Path.GetFileName(databasePath);
             }
             set
             {
-                databaseLocation = value;
+                databasePath = value;
+                RaisePropertyChanged(nameof(DatabasePath));
                 RaisePropertyChanged(nameof(IsCreateDatabaseEnabled));
             }
         }
@@ -87,7 +89,7 @@ namespace PasswordManager.ViewModel
         {
             get
             {
-                return !string.IsNullOrEmpty(DatabaseLocation) && !string.IsNullOrEmpty(DatabaseName) && !string.IsNullOrEmpty(Password);
+                return !string.IsNullOrEmpty(databasePath) && !string.IsNullOrEmpty(DatabaseName) && !string.IsNullOrEmpty(Password);
             }
         }
 
@@ -108,6 +110,8 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        public RelayCommand SelectDatabaseFileCommand { get; private set; }
+
         /// <summary>
         /// Command to create a database
         /// </summary>
@@ -122,10 +126,26 @@ namespace PasswordManager.ViewModel
         public DatabaseCreationViewModel(IDatabaseService databaseService)
         {
             this.databaseService = databaseService;
+            SelectDatabaseFileCommand = new RelayCommand(SelectDatabaseFile);
             CreateDatabaseCommand = new RelayCommand(CreateDatabase);
             CancelDatabaseCreationCommand = new RelayCommand(CancelDatabaseCreation);
             UserControlVisibility = Visibility.Collapsed;
             Messenger.Default.Register<ShowDatabaseCreationViewMessage>(this, ShowUserControl);
+        }
+
+        private void SelectDatabaseFile()
+        {
+            var fileDialog = new SaveFileDialog()
+            {
+                Title = "Choose your Database file",
+                Filter = "Password Databases|*.crypt"
+            };
+
+            var result = fileDialog.ShowDialog();
+            if (result == true)
+            {
+                DatabasePath = fileDialog.FileName;
+            }
         }
 
         /// <summary>
@@ -133,12 +153,12 @@ namespace PasswordManager.ViewModel
         /// </summary>
         void CreateDatabase()
         {
-            if (string.IsNullOrEmpty(DatabaseLocation) || string.IsNullOrEmpty(DatabaseName) || string.IsNullOrEmpty(Password))
+            if (string.IsNullOrEmpty(databasePath) || string.IsNullOrEmpty(DatabaseName) || string.IsNullOrEmpty(Password))
             {
                 return;
             }
 
-            var databaseModel = databaseService.CreateDatabase(DatabaseLocation, DatabaseName, Password);
+            var databaseModel = databaseService.CreateDatabase(databasePath, DatabaseName, Password);
             if (databaseModel is null)
             {
                 Error = "IO error: Couldn't create the database";
@@ -153,7 +173,7 @@ namespace PasswordManager.ViewModel
         private void CancelDatabaseCreation()
         {
             UserControlVisibility = Visibility.Hidden;
-            Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this));
+            Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this, string.Empty));
         }
 
         /// <summary>

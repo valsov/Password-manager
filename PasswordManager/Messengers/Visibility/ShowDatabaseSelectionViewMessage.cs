@@ -2,10 +2,12 @@
 {
     public class ShowDatabaseSelectionViewMessage : BaseMessage
     {
-        public ShowDatabaseSelectionViewMessage(object sender)
+        public string Path { get; set; }
+
+        public ShowDatabaseSelectionViewMessage(object sender, string path)
             : base(sender)
         {
-
+            Path = path;
         }
     }
 }

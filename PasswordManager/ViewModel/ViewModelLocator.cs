@@ -53,7 +53,6 @@ namespace PasswordManager.ViewModel
             // Register ViewModels
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<DatabaseSelectionViewModel>();
-            SimpleIoc.Default.Register<DatabaseChallengeViewModel>();
             SimpleIoc.Default.Register<DatabaseCreationViewModel>();
             SimpleIoc.Default.Register<CategoryListViewModel>();
             SimpleIoc.Default.Register<EntryListViewModel>();
@@ -74,14 +73,6 @@ namespace PasswordManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<DatabaseSelectionViewModel>();
-            }
-        }
-
-        public DatabaseChallengeViewModel DatabaseChallenge
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<DatabaseChallengeViewModel>();
             }
         }
 

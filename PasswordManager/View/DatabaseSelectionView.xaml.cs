@@ -20,9 +20,34 @@ namespace PasswordManager.View
     /// </summary>
     public partial class DatabaseSelectionView : UserControl
     {
+        Window window;
+
         public DatabaseSelectionView()
         {
             InitializeComponent();
+        }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            GetWindow();
+            window.DragMove();
+        }
+
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        {
+            GetWindow();
+            window.WindowState = WindowState.Minimized;
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            GetWindow();
+            window.Close();
+        }
+
+        private void GetWindow()
+        {
+            if (window is null) window = Window.GetWindow(this) as MainWindow;
         }
     }
 }

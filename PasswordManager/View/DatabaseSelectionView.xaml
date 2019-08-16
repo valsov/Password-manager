@@ -11,45 +11,128 @@
     <Grid
         Background="White"
         Visibility="{Binding UserControlVisibility}">
-        <Border
-            Margin="10 30 0 0"
-            Width="220"
-            BorderBrush="DarkGray"
-            BorderThickness="0 0 0 1"
-            VerticalAlignment="Top"
-            HorizontalAlignment="Left">
-            <TextBlock
-                Text="{Binding DatabasePath}"
-                Padding="3" />
-        </Border>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid
+            Grid.Row="0"
+            Background="#3B4045">
+            <Border
+                Background="Transparent"
+                MouseDown="Border_MouseDown" />
+            <StackPanel
+                Orientation="Horizontal"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Margin="0 0 7 1">
+                <Button
+                    Click="MinimizeWindow"
+                    Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                    Background="#F8C126"
+                    BorderBrush="Transparent"
+                    Margin="0 0 7 0"
+                    Width="30"
+                    Height="30"
+                    HorizontalAlignment="Left">
+                    <materialDesign:PackIcon Kind="WindowMinimize" Margin="0 10 0 0" />
+                </Button>
+                <Button
+                    Click="CloseWindow"
+                    Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                    Background="#FF5F61"
+                    BorderBrush="Transparent"
+                    Width="30"
+                    Height="30"
+                    HorizontalAlignment="Left">
+                    <materialDesign:PackIcon Kind="Close" />
+                </Button>
+            </StackPanel>
+        </Grid>
 
-        <Button
-            Command="{Binding SelectDatabaseFileCommand}"
-            Style="{DynamicResource MaterialDesignFloatingActionButton}"
-            Background="DeepSkyBlue"
-            BorderBrush="Transparent"
-            Width="35"
-            Height="35"
-            VerticalAlignment="Top"
-            HorizontalAlignment="Right">
-            <materialDesign:PackIcon
-                Kind="File"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Width="20"
-                Height="20" />
-        </Button>
+        <Grid
+            Grid.Row="1"
+            Margin="0 30 0 0">
+            <StackPanel
+                Orientation="Vertical"
+                Width="220">
+                <Border
+                    BorderBrush="DarkGray"
+                    BorderThickness="0 0 0 1"
+                    VerticalAlignment="Top">
+                    <Grid>
+                        <TextBlock
+                            Text="{Binding DatabasePath}"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Left"
+                            MaxWidth="170"
+                            Margin="5 0 0 7"
+                            FontSize="14" />
 
-        <!--Visibility="{Binding DatabaseChallengeButtonVisibility}"-->
-        <Button
-            Content="Open Database"
-            Command="{Binding OpenDatabaseChallengeViewCommand}" />
+                        <Button
+                            Command="{Binding SelectDatabaseFileCommand}"
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Background="DeepSkyBlue"
+                            BorderBrush="Transparent"
+                            Margin="0 0 0 5"
+                            Width="35"
+                            Height="35"
+                            HorizontalAlignment="Right">
+                            <materialDesign:PackIcon
+                                Kind="File"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Width="20"
+                                Height="20" />
+                        </Button>
+                    </Grid>
+                </Border>
 
-        <Button
-            VerticalAlignment="Bottom"
-            Content="Create new Database"
-            Width="170"
-            Margin="10"
-            Command="{Binding OpenDatabaseCreationViewCommand}" />
+                <TextBox
+                    Margin="0 20 0 0"
+                    FontSize="14"
+                    Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                    materialDesign:HintAssist.Hint="Password"
+                    materialDesign:HintAssist.IsFloating="True"
+                    IsEnabled="{Binding PasswordEnabled}" />
+
+                <TextBlock
+                    Margin="0 10 0 0"
+                    FontSize="14"
+                    Text="{Binding Error}"
+                    Foreground="Red" />
+
+                <Button
+                    Margin="0 15 0 0"
+                    Width="130"
+                    Content="Open Database"
+                    Command="{Binding TryOpenDatabaseCommand}"
+                    IsEnabled="{Binding TryOpenDatabaseEnabled}" />
+            </StackPanel>
+
+            <Button
+                VerticalAlignment="Bottom"
+                Width="190"
+                Margin="10"
+                Command="{Binding OpenDatabaseCreationViewCommand}">
+                <Grid>
+                    <TextBlock
+                        Text="Create new Database"
+                        Margin="-30 2 0 0" />
+                    <Ellipse
+                        Fill="Black"
+                        Width="20"
+                        Height="20"
+                        Margin="0 0 -150 0" />
+                    <materialDesign:PackIcon
+                        Kind="Add"
+                        Foreground="DeepSkyBlue"
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Right"
+                        Margin="0 0 -34 0"/>
+                </Grid>
+            </Button>
+        </Grid>
     </Grid>
 </UserControl>

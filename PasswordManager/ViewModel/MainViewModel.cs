@@ -17,6 +17,20 @@ namespace PasswordManager.ViewModel
 
         IDatabaseRepository databaseRepository;
 
+        private string databaseName;
+        public string DatabaseName
+        {
+            get
+            {
+                return databaseName;
+            }
+            set
+            {
+                databaseName = value;
+                RaisePropertyChanged(nameof(DatabaseName));
+            }
+        }
+
         private Visibility mainViewVisibility;
         public Visibility MainViewVisibility
         {
@@ -51,29 +65,23 @@ namespace PasswordManager.ViewModel
 
         private void DatabaseLoadedHandler(DatabaseLoadedMessage obj)
         {
+            DatabaseName = obj.DatabaseModel.Name;
             MainViewVisibility = Visibility.Visible;
         }
 
         void ViewLoadedHandler()
         {
             var path = settingsService.GetDatabasePath();
-            if (string.IsNullOrEmpty(path) || !databaseRepository.CheckDatabaseExists(path))
-            {
-                // Database path isn't set or database doesn't exist anymore
-                Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this));
-            }
-            else
-            {
-                Messenger.Default.Send(new ShowDatabaseChallengeViewMessage(this, path));
-            }
+            Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this, path));
         }
 
         private void CloseDatabase()
         {
             MainViewVisibility = Visibility.Hidden;
+            var path = settingsService.GetDatabasePath();
             databaseRepository.UnloadDatabase();
             Messenger.Default.Send(new DatabaseUnloadedMessage(this));
-            Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this));
+            Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this, path));
         }
     }
 }
