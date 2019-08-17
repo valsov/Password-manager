@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PasswordManager.View
 {
@@ -20,7 +9,7 @@ namespace PasswordManager.View
     /// </summary>
     public partial class DatabaseCreationView : UserControl
     {
-        Window window;
+        MainWindow window;
 
         public DatabaseCreationView()
         {
@@ -30,19 +19,19 @@ namespace PasswordManager.View
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             GetWindow();
-            window.DragMove();
+            window.Border_MouseDown(sender, e);
         }
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
             GetWindow();
-            window.WindowState = WindowState.Minimized;
+            window.MinimizeWindow(sender, e);
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             GetWindow();
-            window.Close();
+            window.CloseWindow(sender, e);
         }
 
         private void GetWindow()

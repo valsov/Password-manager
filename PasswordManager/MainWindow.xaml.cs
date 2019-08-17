@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PasswordManager
 {
@@ -20,23 +11,49 @@ namespace PasswordManager
     /// </summary>
     public partial class MainWindow : Window
     {
+        NotifyIcon trayIcon;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            trayIcon = new NotifyIcon()
+            {
+                Visible = true,
+                Text = "Password manager",
+                ContextMenu = new ContextMenu(new MenuItem[]
+                {
+                    new MenuItem("Show", (x,y) => this.Show()),
+                    new MenuItem("Quit", (x,y) => System.Windows.Application.Current.Shutdown())
+                })
+            };
+            trayIcon.Click += delegate
+            {
+                if (!this.IsVisible)
+                {
+                    this.Show();
+                }
+            };
+
+            using (var iconStream = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/icon.ico")).Stream)
+            {
+                trayIcon.Icon = new Icon(iconStream);
+            }
         }
 
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        public void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
         }
 
-        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        public void MinimizeWindow(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            this.Hide();
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
+        public void CloseWindow(object sender, RoutedEventArgs e)
         {
+            trayIcon.Dispose();
             this.Close();
         }
     }
