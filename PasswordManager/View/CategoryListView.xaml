@@ -221,5 +221,46 @@
                 </Grid>
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
+
+        <materialDesign:DialogHost IsOpen="{Binding CategoryDeletionConfimationVisibility}">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid
+                    Width="200"
+                    Height="100">
+                    <TextBlock
+                        Text="Confirm deletion ?"
+                        FontSize="18"
+                        HorizontalAlignment="Center"
+                        Margin="0 20 0 0"/>
+
+                    <StackPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom">
+                        <Button
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Width="30"
+                            Height="30"
+                            Margin="0 0 10 10"
+                            Background="LightGray"
+                            BorderBrush="Transparent"
+                            Command="{Binding CancelCategoryDeletionCommand}">
+                            <materialDesign:PackIcon Kind="Cancel" />
+                        </Button>
+
+                        <Button
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Width="30"
+                            Height="30"
+                            Margin="10 0 0 10"
+                            Background="Orange"
+                            BorderBrush="Transparent"
+                            Command="{Binding ValidateCategoryDeletionCommand}">
+                            <materialDesign:PackIcon Kind="Garbage" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
     </Grid>
 </UserControl>

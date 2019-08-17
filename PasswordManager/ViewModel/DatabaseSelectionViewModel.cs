@@ -4,7 +4,6 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Win32;
 using PasswordManager.Messengers;
 using PasswordManager.Service.Interfaces;
-using System;
 using System.IO;
 using System.Timers;
 using System.Windows;

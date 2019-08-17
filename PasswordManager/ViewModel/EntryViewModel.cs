@@ -134,13 +134,32 @@ namespace PasswordManager.ViewModel
                 RaisePropertyChanged(nameof(CreationControlButtonsVisibility));
             }
         }
-        public RelayCommand DeleteEntryCommand { get; private set; }
+
+        private bool deletionConfimationVisibility;
+        public bool DeletionConfimationVisibility
+        {
+            get
+            {
+                return deletionConfimationVisibility;
+            }
+            set
+            {
+                deletionConfimationVisibility = value;
+                RaisePropertyChanged(nameof(DeletionConfimationVisibility));
+            }
+        }
 
         public RelayCommand StartEditionCommand { get; private set; }
 
         public RelayCommand ValidateEditionCommand { get; private set; }
 
         public RelayCommand CancelEditionCommand { get; private set; }
+
+        public RelayCommand DeleteEntryCommand { get; private set; }
+
+        public RelayCommand ValidateDeletionCommand { get; private set; }
+
+        public RelayCommand CancelDeletionCommand { get; private set; }
 
         public RelayCommand CreateEntryCommand { get; private set; }
 
@@ -164,6 +183,8 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Register<CategoryDeletedMessage>(this, CategoryDeletedHandler);
             Messenger.Default.Register<CategoryEditedMessage>(this, CategoryEditedHandler);
             DeleteEntryCommand = new RelayCommand(DeleteEntry);
+            ValidateDeletionCommand = new RelayCommand(ValidateDeletion);
+            CancelDeletionCommand = new RelayCommand(CancelDeletion);
             StartEditionCommand = new RelayCommand(StartEdition);
             ValidateEditionCommand = new RelayCommand(ValidateEdition);
             CancelEditionCommand = new RelayCommand(CancelEdition);
@@ -177,6 +198,7 @@ namespace PasswordManager.ViewModel
             Categories = new ObservableCollection<string>();
 
             UserControlVisibility = Visibility.Hidden;
+            DeletionConfimationVisibility = false;
         }
 
         private void DatabaseUnloadedHandler(DatabaseUnloadedMessage obj)
@@ -198,9 +220,20 @@ namespace PasswordManager.ViewModel
 
         private void DeleteEntry()
         {
+            DeletionConfimationVisibility = true;
+        }
+
+        private void ValidateDeletion()
+        {
             databaseRepository.DeletePasswordEntry(PasswordEntry);
             Messenger.Default.Send(new EntryDeletedMessage(this, PasswordEntry));
             UserControlVisibility = Visibility.Hidden;
+            DeletionConfimationVisibility = false;
+        }
+
+        private void CancelDeletion()
+        {
+            DeletionConfimationVisibility = false;
         }
 
         private void StartEdition()

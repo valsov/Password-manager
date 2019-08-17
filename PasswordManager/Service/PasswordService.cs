@@ -2,7 +2,6 @@
 using PasswordManager.Service.Interfaces;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace PasswordManager.Service
 {

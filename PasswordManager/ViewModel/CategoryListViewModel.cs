@@ -79,6 +79,21 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private string categoryToDelete;
+        private bool categoryDeletionConfimationVisibility;
+        public bool CategoryDeletionConfimationVisibility
+        {
+            get
+            {
+                return categoryDeletionConfimationVisibility;
+            }
+            set
+            {
+                categoryDeletionConfimationVisibility = value;
+                RaisePropertyChanged(nameof(CategoryDeletionConfimationVisibility));
+            }
+        }
+
         /// <summary>
         /// Command to select a category and filter password entries by this criteria
         /// </summary>
@@ -98,6 +113,10 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand ValidateCategoryEditionCommand { get; private set; }
 
+        public RelayCommand CancelCategoryDeletionCommand { get; private set; }
+
+        public RelayCommand ValidateCategoryDeletionCommand { get; private set; }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -112,12 +131,16 @@ namespace PasswordManager.ViewModel
             CancelAddCategoryCommand = new RelayCommand(StopAddCategory);
             AddCategoryCommand = new RelayCommand(AddCategory);
             EditCategoryCommand = new RelayCommand<string>(EditCategory);
-            DeleteCategoryCommand = new RelayCommand<string>(DeleteCategory);
             CancelCategoryEditionCommand = new RelayCommand(CancelCategoryEdition);
             ValidateCategoryEditionCommand = new RelayCommand(ValidateCategoryEdition);
+            DeleteCategoryCommand = new RelayCommand<string>(DeleteCategory);
+            CancelCategoryDeletionCommand = new RelayCommand(CancelCategoryDeletion);
+            ValidateCategoryDeletionCommand = new RelayCommand(ValidateCategoryDeletion);
+
             SelectedCategory = null;
             NewCategoryFormVisibility = false;
             CategoryEditionFormVisibility = false;
+            CategoryDeletionConfimationVisibility = false;
         }
 
         /// <summary>
@@ -139,6 +162,8 @@ namespace PasswordManager.ViewModel
             CategoryInEdition = null;
             originalCategoryInEdition = null;
             NewCategoryFormVisibility = false;
+            CategoryDeletionConfimationVisibility = false;
+            categoryToDelete = null;
         }
 
         /// <summary>
@@ -169,17 +194,6 @@ namespace PasswordManager.ViewModel
             NewCategoryFormVisibility = false;
         }
 
-        private void DeleteCategory(string category)
-        {
-            if(SelectedCategory == category)
-            {
-                SelectCategory(null);
-            }
-            CategoryList.Remove(category);
-            databaseRepository.DeleteCategory(category);
-            Messenger.Default.Send(new CategoryDeletedMessage(this, category));
-        }
-
         private void EditCategory(string category)
         {
             originalCategoryInEdition = category;
@@ -204,6 +218,29 @@ namespace PasswordManager.ViewModel
         private void CancelCategoryEdition()
         {
             CategoryEditionFormVisibility = false;
+        }
+
+        private void DeleteCategory(string category)
+        {
+            categoryToDelete = category;
+            CategoryDeletionConfimationVisibility = true;
+        }
+
+        private void ValidateCategoryDeletion()
+        {
+            if (SelectedCategory == categoryToDelete)
+            {
+                SelectCategory(null);
+            }
+            CategoryList.Remove(categoryToDelete);
+            databaseRepository.DeleteCategory(categoryToDelete);
+            Messenger.Default.Send(new CategoryDeletedMessage(this, categoryToDelete));
+            CategoryDeletionConfimationVisibility = false;
+        }
+
+        private void CancelCategoryDeletion()
+        {
+            CategoryDeletionConfimationVisibility = false;
         }
     }
 }
