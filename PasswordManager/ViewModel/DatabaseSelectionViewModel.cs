@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Win32;
 using PasswordManager.Messengers;
-using PasswordManager.Service.Interfaces;
+using PasswordManager.Repository.Interfaces;
 using System.IO;
 using System.Timers;
 using System.Windows;
@@ -12,7 +12,7 @@ namespace PasswordManager.ViewModel
 {
     public class DatabaseSelectionViewModel : ViewModelBase
     {
-        IDatabaseService databaseService;
+        IDatabaseRepository databaseRepository;
 
         private string databasePath;
         public string DatabasePath
@@ -117,9 +117,9 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand OpenDatabaseCreationViewCommand { get; private set; }
 
-        public DatabaseSelectionViewModel(IDatabaseService databaseService)
+        public DatabaseSelectionViewModel(IDatabaseRepository databaseRepository)
         {
-            this.databaseService = databaseService;
+            this.databaseRepository = databaseRepository;
 
             UserControlVisibility = false;
 
@@ -173,7 +173,7 @@ namespace PasswordManager.ViewModel
         /// </summary>
         private void OpenDatabaseTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            var databaseModel = databaseService.ReadDatabase(databasePath, Password);
+            var databaseModel = databaseRepository.LoadDatabase(databasePath, Password);
             if (databaseModel is null)
             {
                 Error = "Couldn't open the database";

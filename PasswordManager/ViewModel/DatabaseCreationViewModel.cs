@@ -3,14 +3,16 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Win32;
 using PasswordManager.Messengers;
-using PasswordManager.Service.Interfaces;
+using PasswordManager.Model;
+using PasswordManager.Repository.Interfaces;
+using System.Collections.Generic;
 using System.IO;
 
 namespace PasswordManager.ViewModel
 {
     public class DatabaseCreationViewModel : ViewModelBase
     {
-        IDatabaseService databaseService;
+        IDatabaseRepository databaseRepository;
 
         private bool userControlVisibility;
         /// <summary>
@@ -122,9 +124,9 @@ namespace PasswordManager.ViewModel
         /// Constructor
         /// </summary>
         /// <param name="databaseService"></param>
-        public DatabaseCreationViewModel(IDatabaseService databaseService)
+        public DatabaseCreationViewModel(IDatabaseRepository databaseRepository)
         {
-            this.databaseService = databaseService;
+            this.databaseRepository = databaseRepository;
 
             UserControlVisibility = false;
 
@@ -160,15 +162,24 @@ namespace PasswordManager.ViewModel
                 return;
             }
 
-            var databaseModel = databaseService.CreateDatabase(databasePath, DatabaseName, Password);
-            if (databaseModel is null)
+            var databaseModel = new DatabaseModel()
             {
-                Error = "IO error: Couldn't create the database";
-            }
-            else
+                Name = DatabaseName,
+                Path = databasePath,
+                Categories = new List<string>(),
+                PasswordEntries = new List<PasswordEntryModel>(),
+                MainPassword = Password
+            };
+
+            var result = databaseRepository.WriteDatabase(databaseModel);
+            if (result)
             {
                 UserControlVisibility = false;
                 Messenger.Default.Send(new DatabaseLoadedMessage(this, databaseModel));
+            }
+            else
+            {
+                Error = "IO error: Couldn't create the database";
             }
         }
 
