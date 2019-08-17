@@ -11,6 +11,7 @@
              DataContext="{Binding EntryList, Source={StaticResource Locator}}">
     <UserControl.Resources>
         <converters:EqualityConverter x:Key="EqualityConverter" />
+        <local:BindingProxy x:Key="proxy" Data="{Binding}" />
     </UserControl.Resources>
     <Grid>
         <Border
@@ -105,7 +106,28 @@
                                             MouseAction="LeftClick"
                                             Command="{Binding DataContext.SelectEntryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                             CommandParameter="{Binding}" />
+                                        <MouseBinding
+                                            MouseAction="LeftDoubleClick"
+                                            Command="{Binding DataContext.CopyPasswordCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding}" />
                                     </Grid.InputBindings>
+
+                                    <Grid.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem
+                                                Header="Copy Password"
+                                                Command="{Binding Data.CopyPasswordCommand, Source={StaticResource proxy}}"
+                                                CommandParameter="{Binding}" />
+                                            <MenuItem
+                                                Header="Copy Username"
+                                                Command="{Binding Data.CopyUsernameCommand, Source={StaticResource proxy}}"
+                                                CommandParameter="{Binding}" />
+                                            <MenuItem
+                                                Header="Copy Website"
+                                                Command="{Binding Data.CopyWebsiteCommand, Source={StaticResource proxy}}"
+                                                CommandParameter="{Binding}" />
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

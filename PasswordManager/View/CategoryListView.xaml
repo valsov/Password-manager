@@ -134,22 +134,6 @@
                     </ItemsControl>
                 </Grid>
             </ScrollViewer>
-            
-            <TextBlock
-                Margin="0 20 0 0"
-                HorizontalAlignment="Center"
-                Text="No Categories">
-                <TextBlock.Style>
-                    <Style>
-                        <Setter Property="TextBlock.Visibility" Value="Hidden" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding CategoryList.Count}" Value="0">
-                                <Setter Property="TextBlock.Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
         </Grid>
 
         <materialDesign:DialogHost IsOpen="{Binding NewCategoryFormVisibility}">

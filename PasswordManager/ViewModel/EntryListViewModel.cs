@@ -71,6 +71,12 @@ namespace PasswordManager.ViewModel
         /// </summary>
         public RelayCommand AddEntryCommand { get; private set; }
 
+        public RelayCommand<PasswordEntryModel> CopyPasswordCommand { get; private set; }
+
+        public RelayCommand<PasswordEntryModel> CopyUsernameCommand { get; private set; }
+
+        public RelayCommand<PasswordEntryModel> CopyWebsiteCommand { get; private set; }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -87,6 +93,9 @@ namespace PasswordManager.ViewModel
             basePasswordEntries = new List<PasswordEntryModel>();
             SelectEntryCommand = new RelayCommand<PasswordEntryModel>(SelectEntry);
             AddEntryCommand = new RelayCommand(AddEntry);
+            CopyPasswordCommand = new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Password)));
+            CopyUsernameCommand = new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Username)));
+            CopyWebsiteCommand = new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Website)));
         }
 
         /// <summary>
@@ -190,6 +199,11 @@ namespace PasswordManager.ViewModel
         {
             SelectedPasswordEntry = null;
             Messenger.Default.Send(new ShowNewEntryViewMessage(this));
+        }
+
+        private void CopyToClipboard(PasswordEntryModel obj, string property)
+        {
+            obj.CopyDataToClipboard(property);
         }
     }
 }

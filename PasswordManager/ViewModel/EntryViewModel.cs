@@ -6,6 +6,7 @@ using PasswordManager.Messengers;
 using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -145,6 +146,12 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand CancelEntryCreationCommand { get; private set; }
 
+        public RelayCommand CopyPasswordCommand { get; private set; }
+
+        public RelayCommand CopyUsernameCommand { get; private set; }
+
+        public RelayCommand CopyWebsiteCommand { get; private set; }
+
         public EntryViewModel(IDatabaseRepository databaseRepository,
                               IPasswordService passwordService)
         {
@@ -162,6 +169,9 @@ namespace PasswordManager.ViewModel
             CancelEditionCommand = new RelayCommand(CancelEdition);
             CreateEntryCommand = new RelayCommand(CreateEntry);
             CancelEntryCreationCommand = new RelayCommand(CancelCreation);
+            CopyPasswordCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Password)));
+            CopyUsernameCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Username)));
+            CopyWebsiteCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Website)));
 
             backupPasswordEntry = new PasswordEntryModel();
             Categories = new ObservableCollection<string>();
@@ -312,6 +322,11 @@ namespace PasswordManager.ViewModel
         private void CategoryDeletedHandler(CategoryDeletedMessage obj)
         {
             Categories.Remove(obj.Category);
+        }
+
+        private void CopyToClipboard(string property)
+        {
+            PasswordEntry.CopyDataToClipboard(property);
         }
     }
 }

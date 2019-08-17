@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <converters:PasswordStrengthToColorConverter x:Key="PasswordStrengthToColorConverter" />
         <converters:PasswordStrengthToLabelConverter x:Key="PasswordStrengthToLabelConverter" />
+        <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
     </UserControl.Resources>
     <Grid
         Visibility="{Binding UserControlVisibility}">
@@ -71,9 +72,25 @@
                         Text="username"
                         Foreground="#636361"
                         FontSize="13" />
-                    <TextBlock
-                        Text="{Binding PasswordEntry.Username}"
-                        FontSize="16" />
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Text="{Binding PasswordEntry.Username}"
+                            FontSize="16"
+                            Margin="0 0 10 0" />
+                        <Grid
+                            Visibility="{Binding PasswordEntry.Username, Converter={StaticResource EmptyStringToVisibilityConverter}}"
+                            Cursor="Hand"
+                            Background="Transparent"
+                            VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="ContentCopy" />
+                            <Grid.InputBindings>
+                                <MouseBinding
+                                    MouseAction="LeftClick"
+                                    Command="{Binding CopyUsernameCommand}" />
+                            </Grid.InputBindings>
+                        </Grid>
+                    </StackPanel>
 
                     <Grid>
                         <StackPanel
@@ -83,9 +100,26 @@
                                 Text="password"
                                 Foreground="#636361"
                                 FontSize="13" />
-                            <TextBlock
-                                Text="{Binding PasswordEntry.Password}"
-                                FontSize="16" />
+
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Text="{Binding PasswordEntry.Password}"
+                                    FontSize="16"
+                                    Margin="0 0 10 0" />
+                                <Grid
+                                    Visibility="{Binding PasswordEntry.Password, Converter={StaticResource EmptyStringToVisibilityConverter}}"
+                                    Cursor="Hand"
+                                    Background="Transparent"
+                                    VerticalAlignment="Center">
+                                    <materialDesign:PackIcon Kind="ContentCopy" />
+                                    <Grid.InputBindings>
+                                        <MouseBinding
+                                            MouseAction="LeftClick"
+                                            Command="{Binding CopyPasswordCommand}" />
+                                    </Grid.InputBindings>
+                                </Grid>
+                            </StackPanel>
                         </StackPanel>
 
                         <StackPanel
@@ -124,9 +158,25 @@
                     Text="Website"
                     Foreground="#636361"
                     FontSize="14" />
-                <TextBlock
-                    Text="{Binding PasswordEntry.Website}"
-                    FontSize="16" />
+                <StackPanel
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Text="{Binding PasswordEntry.Website}"
+                        FontSize="16"
+                        Margin="0 0 10 0" />
+                    <Grid
+                        Visibility="{Binding PasswordEntry.Website, Converter={StaticResource EmptyStringToVisibilityConverter}}"
+                        Cursor="Hand"
+                        Background="Transparent"
+                        VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="ContentCopy" />
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding CopyWebsiteCommand}" />
+                        </Grid.InputBindings>
+                    </Grid>
+                </StackPanel>
 
                 <TextBlock
                     Margin="0 10 0 0"
