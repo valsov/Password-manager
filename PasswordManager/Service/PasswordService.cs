@@ -25,12 +25,6 @@ namespace PasswordManager.Service
         public string GeneratePassword(PasswordTypes type, int length)
         {
             var chars = string.Empty;
-            var password = string.Empty;
-
-            if (type == PasswordTypes.Custom)
-            {
-                return password;
-            }
 
             // goto keyword is mandatory to fall from one case to another
             switch (type)
@@ -62,7 +56,7 @@ namespace PasswordManager.Service
 
             if (password.Length < 1)
                 return PasswordStrength.Blank;
-            if (password.Length < 4)
+            if (password.Length < 8)
                 return PasswordStrength.VeryWeak;
 
             if (password.Length >= 8)

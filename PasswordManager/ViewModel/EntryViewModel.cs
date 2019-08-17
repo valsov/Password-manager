@@ -6,7 +6,10 @@ using PasswordManager.Messengers;
 using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 
 namespace PasswordManager.ViewModel
@@ -39,7 +42,49 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        /// <summary>
+        /// List of categories to be used
+        /// </summary>
         public ObservableCollection<string> Categories { get; set; }
+
+        /// <summary>
+        /// List of password types for password generation
+        /// </summary>
+        public IEnumerable<PasswordTypes> PasswordTypesList
+        {
+            get
+            {
+                return Enum.GetValues(typeof(PasswordTypes)).Cast<PasswordTypes>();
+            }
+        }
+
+        private PasswordTypes selectedPasswordType;
+        public PasswordTypes SelectedPasswordType
+        {
+            get
+            {
+                return selectedPasswordType;
+            }
+            set
+            {
+                selectedPasswordType = value;
+                RaisePropertyChanged(nameof(SelectedPasswordType));
+            }
+        }
+
+        private string passwordLength;
+        public string PasswordLength
+        {
+            get
+            {
+                return passwordLength;
+            }
+            set
+            {
+                passwordLength = value;
+                RaisePropertyChanged(nameof(PasswordLength));
+            }
+        }
 
         private bool userControlVisibility;
         public bool UserControlVisibility
@@ -153,6 +198,20 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private bool passwordGenerationDialogVisibility;
+        public bool PasswordGenerationDialogVisibility
+        {
+            get
+            {
+                return passwordGenerationDialogVisibility;
+            }
+            set
+            {
+                passwordGenerationDialogVisibility = value;
+                RaisePropertyChanged(nameof(PasswordGenerationDialogVisibility));
+            }
+        }
+
         public RelayCommand StartEditionCommand { get; private set; }
 
         public RelayCommand ValidateEditionCommand { get; private set; }
@@ -175,6 +234,12 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand CopyWebsiteCommand { get; private set; }
 
+        public RelayCommand OpenPasswordGenerationDialogCommand { get; private set; }
+
+        public RelayCommand GeneratePasswordCommand { get; private set; }
+
+        public RelayCommand CancelPasswordGenerationCommand { get; private set; }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -190,6 +255,7 @@ namespace PasswordManager.ViewModel
             Categories = new ObservableCollection<string>();
             UserControlVisibility = false;
             DeletionConfimationVisibility = false;
+            PasswordGenerationDialogVisibility = false;
 
             Messenger.Default.Register<DatabaseUnloadedMessage>(this, DatabaseUnloadedHandler);
             Messenger.Default.Register<EntrySelectedMessage>(this, EntrySelectedHandler);
@@ -209,6 +275,9 @@ namespace PasswordManager.ViewModel
             CopyPasswordCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Password)));
             CopyUsernameCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Username)));
             CopyWebsiteCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Website)));
+            OpenPasswordGenerationDialogCommand = new RelayCommand(OpenPasswordGenerationDialog);
+            GeneratePasswordCommand = new RelayCommand(GeneratePassword);
+            CancelPasswordGenerationCommand = new RelayCommand(CancelPasswordGeneration);
         }
 
         /// <summary>
@@ -221,6 +290,7 @@ namespace PasswordManager.ViewModel
             backupPasswordEntry = null;
             PasswordEntry = null;
             SetElementsVisibility(ViewModes.View);
+            PasswordEntry.PropertyChanged -= PasswordPropertyChanged;
         }
 
         /// <summary>
@@ -269,6 +339,7 @@ namespace PasswordManager.ViewModel
         private void StartEdition()
         {
             backupPasswordEntry = PasswordEntry.Copy();
+            PasswordEntry.PropertyChanged += PasswordPropertyChanged;
             SetElementsVisibility(ViewModes.Edition);
         }
 
@@ -277,9 +348,6 @@ namespace PasswordManager.ViewModel
         /// </summary>
         private void ValidateEdition()
         {
-            PasswordEntry.PasswordStrength = passwordService.CheckPasswordStrength(PasswordEntry.Password);
-            RaisePropertyChanged(nameof(PasswordEntry));
-
             // Copy to avoid same instance manipulation
             var copy = PasswordEntry.Copy();
             databaseRepository.UpdatePasswordEntry(copy);
@@ -293,6 +361,7 @@ namespace PasswordManager.ViewModel
         private void CancelEdition()
         {
             PasswordEntry = backupPasswordEntry.Copy();
+            PasswordEntry.PropertyChanged -= PasswordPropertyChanged;
             SetElementsVisibility(ViewModes.View);
         }
 
@@ -304,6 +373,8 @@ namespace PasswordManager.ViewModel
         {
             AddCategories();
             PasswordEntry = new PasswordEntryModel();
+            PasswordEntry.PropertyChanged += PasswordPropertyChanged;
+            PasswordEntry.Password = passwordService.GeneratePassword(PasswordTypes.Full, 20);
             UserControlVisibility = true;
             SetElementsVisibility(ViewModes.Creation);
         }
@@ -313,7 +384,6 @@ namespace PasswordManager.ViewModel
         /// </summary>
         private void CreateEntry()
         {
-            PasswordEntry.PasswordStrength = passwordService.CheckPasswordStrength(PasswordEntry.Password);
             var copy = PasswordEntry.Copy();
             databaseRepository.AddPasswordEntry(copy);
             Messenger.Default.Send(new EntryAddedMessage(this, copy));
@@ -367,7 +437,7 @@ namespace PasswordManager.ViewModel
         /// </summary>
         private void AddCategories()
         {
-            if (!Categories.Any())
+            if (Categories.Any())
             {
                 return;
             }
@@ -430,6 +500,46 @@ namespace PasswordManager.ViewModel
         private void CopyToClipboard(string property)
         {
             PasswordEntry.CopyDataToClipboard(property);
+        }
+
+        /// <summary>
+        /// Setup and open the password generation dialog
+        /// </summary>
+        private void OpenPasswordGenerationDialog()
+        {
+            PasswordGenerationDialogVisibility = true;
+            PasswordLength = "20";
+            SelectedPasswordType = PasswordTypes.Full;
+        }
+
+        /// <summary>
+        /// Close the password generation dialog
+        /// </summary>
+        private void CancelPasswordGeneration()
+        {
+            PasswordGenerationDialogVisibility = false;
+        }
+
+        /// <summary>
+        /// Generate a password with the selected length and composition
+        /// </summary>
+        private void GeneratePassword()
+        {
+            if (string.IsNullOrWhiteSpace(PasswordLength)) return;
+
+            PasswordEntry.Password = passwordService.GeneratePassword(SelectedPasswordType, int.Parse(PasswordLength));
+            PasswordGenerationDialogVisibility = false;
+        }
+
+        /// <summary>
+        /// PasswordEntry.Password property changed event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PasswordPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PasswordEntry.PasswordStrength = passwordService.CheckPasswordStrength(PasswordEntry.Password);
+            RaisePropertyChanged(nameof(PasswordEntry));
         }
     }
 }

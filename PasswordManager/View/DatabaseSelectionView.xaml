@@ -111,10 +111,10 @@
                     Style="{DynamicResource MaterialDesignFloatingActionButton}"
                     Command="{Binding TryOpenDatabaseCommand}"
                     IsEnabled="{Binding TryOpenDatabaseEnabled}"
-                    materialDesign:ButtonProgressAssist.IndicatorForeground="DeepSkyBlue"
+                    materialDesign:ButtonProgressAssist.IndicatorForeground="Black"
                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding DatabaseOpeningInProgress}"
                     materialDesign:ButtonProgressAssist.IsIndeterminate="True"
-                    materialDesign:ButtonProgressAssist.Value="25">
+                    materialDesign:ButtonProgressAssist.Value="30">
                     <materialDesign:PackIcon
                         Kind="Key"
                         Height="22"

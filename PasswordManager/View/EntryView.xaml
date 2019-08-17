@@ -11,13 +11,15 @@
              Background="#F9F9F9"
              DataContext="{Binding Entry, Source={StaticResource Locator}}">
     <UserControl.Resources>
-        <converters:PasswordStrengthToColorConverter x:Key="PasswordStrengthToColorConverter" />
-        <converters:PasswordStrengthToLabelConverter x:Key="PasswordStrengthToLabelConverter" />
-        <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
+        <converters:PasswordStrengthToColorConverter x:Key="PasswordStrengthToColorConverter" />
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
     </UserControl.Resources>
     <Grid
         Visibility="{Binding UserControlVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+        
+        <!-- View mode -->
         <Grid
             Visibility="{Binding EntryDataVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBlock
@@ -130,7 +132,7 @@
                             Margin="0 0 0 5">
                             <TextBlock
                                 Margin="0 0 5 0"
-                                Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource PasswordStrengthToLabelConverter}}" />
+                                Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource EnumToDescriptionConverter}}" />
                             <Ellipse
                                 Width="15"
                                 Height="15"
@@ -190,6 +192,7 @@
             </StackPanel>
         </Grid>
 
+        <!-- Edition/creation mode -->
         <Grid
             Visibility="{Binding EditionFormVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBox
@@ -212,26 +215,60 @@
                 Background="White">
                 <StackPanel
                     Orientation="Vertical"
-                    HorizontalAlignment="Left"
-                    Width="200"
+                    Width="390"
                     Margin="15">
                     <TextBox
                         Margin="0 10 0 0"
+                        Width="250"
+                        HorizontalAlignment="Left"
                         Text="{Binding PasswordEntry.Username, UpdateSourceTrigger=PropertyChanged}"
                         FontSize="16"
                         materialDesign:HintAssist.Hint="Username"
                         materialDesign:HintAssist.IsFloating="True" />
 
-                    <TextBox
-                        Margin="0 10 0 0"
-                        Text="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}"
-                        FontSize="16"
-                        materialDesign:HintAssist.Hint="Password"
-                        materialDesign:HintAssist.IsFloating="True" />
+                    <Grid>
+                        <TextBox
+                            Margin="0 10 0 0"
+                            Width="250"
+                            HorizontalAlignment="Left"
+                            Text="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}"
+                            FontSize="16"
+                            materialDesign:HintAssist.Hint="Password"
+                            materialDesign:HintAssist.IsFloating="True" />
+
+                        <Button
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Width="30"
+                            Height="30"
+                            Margin="0 0 100 0"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right"
+                            Background="LightGray"
+                            BorderBrush="Transparent"
+                            Command="{Binding OpenPasswordGenerationDialogCommand}">
+                            <materialDesign:PackIcon Kind="Autorenew" />
+                        </Button>
+
+                        <StackPanel
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right"
+                            Margin="0 0 5 5">
+                            <TextBlock
+                                Margin="0 0 5 0"
+                                Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource EnumToDescriptionConverter}}" />
+                            <Ellipse
+                                Width="15"
+                                Height="15"
+                                StrokeThickness="3"
+                                Stroke="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource PasswordStrengthToColorConverter}}" />
+                        </StackPanel>
+                    </Grid>
 
                     <ComboBox
                         FontSize="16"
                         Margin="0 10 0 0"
+                        HorizontalAlignment="Left"
                         ItemsSource="{Binding Categories}"
                         SelectedValue="{Binding PasswordEntry.Category}"
                         materialDesign:HintAssist.Hint="Category"
@@ -357,6 +394,74 @@
                             BorderBrush="Transparent"
                             Command="{Binding ValidateDeletionCommand}">
                             <materialDesign:PackIcon Kind="Garbage" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+
+        <materialDesign:DialogHost IsOpen="{Binding PasswordGenerationDialogVisibility}">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid
+                    Width="200"
+                    Height="250">
+                    <StackPanel
+                        Orientation="Vertical">
+                        <TextBlock
+                            Text="Generate password"
+                            FontSize="18"
+                            HorizontalAlignment="Center"
+                            Margin="0 20 0 0" />
+                        <TextBox
+                            Margin="0 30 0 0"
+                            Width="150"
+                            FontSize="16"
+                            PreviewTextInput="TextBox_PreviewTextInput"
+                            DataObject.Pasting="TextBox_Pasting"
+                            Text="{Binding PasswordLength}"
+                            materialDesign:HintAssist.Hint="Password length"
+                            materialDesign:HintAssist.IsFloating="True" />
+
+                        <ComboBox
+                            Width="150"
+                            FontSize="16"
+                            Margin="0 10 0 0"
+                            ItemsSource="{Binding PasswordTypesList}"
+                            SelectedValue="{Binding SelectedPasswordType}"
+                            materialDesign:HintAssist.Hint="Password type"
+                            materialDesign:HintAssist.IsFloating="True">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom">
+                        <Button
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Width="30"
+                            Height="30"
+                            Margin="0 0 10 10"
+                            Background="LightGray"
+                            BorderBrush="Transparent"
+                            Command="{Binding CancelPasswordGenerationCommand}">
+                            <materialDesign:PackIcon Kind="Cancel" />
+                        </Button>
+
+                        <Button
+                            Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                            Width="30"
+                            Height="30"
+                            Margin="10 0 0 10"
+                            Background="LimeGreen"
+                            BorderBrush="Transparent"
+                            Command="{Binding GeneratePasswordCommand}">
+                            <materialDesign:PackIcon Kind="Check" />
                         </Button>
                     </StackPanel>
                 </Grid>

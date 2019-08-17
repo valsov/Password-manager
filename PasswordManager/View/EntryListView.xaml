@@ -108,6 +108,10 @@
                                             Command="{Binding DataContext.SelectEntryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                             CommandParameter="{Binding}" />
                                         <MouseBinding
+                                            MouseAction="RightClick"
+                                            Command="{Binding DataContext.SelectEntryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding}" />
+                                        <MouseBinding
                                             MouseAction="LeftDoubleClick"
                                             Command="{Binding DataContext.CopyPasswordCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                             CommandParameter="{Binding}" />
@@ -138,7 +142,8 @@
                     Grid.Row="1"
                     Margin="0 20 0 0"
                     HorizontalAlignment="Center"
-                    Text="No entries">
+                    Text="No entries"
+                    FontSize="20">
                     <TextBlock.Style>
                         <Style>
                             <Setter Property="TextBlock.Visibility" Value="Hidden" />

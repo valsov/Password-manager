@@ -1,9 +1,13 @@
-﻿namespace PasswordManager.Model
+﻿using Newtonsoft.Json;
+using System;
+using System.ComponentModel;
+
+namespace PasswordManager.Model
 {
     /// <summary>
     /// Class to identify a password with its details
     /// </summary>
-    public class PasswordEntryModel
+    public class PasswordEntryModel : INotifyPropertyChanged
     {
         /// <summary>
         /// Unique id (GUID)
@@ -30,10 +34,23 @@
         /// </summary>
         public string Username { get; set; }
 
+        [JsonIgnore]
+        private string password;
         /// <summary>
         /// Password
         /// </summary>
-        public string Password { get; set; }
+        public string Password
+        {
+            get
+            {
+                return password;
+            }
+            set
+            {
+                password = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Password)));
+            }
+        }
 
         /// <summary>
         /// Corresponding password Strength
@@ -44,5 +61,18 @@
         /// Notes of the password entry
         /// </summary>
         public string Notes { get; set; }
+
+        /// <summary>
+        /// Property changed event
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Constructor, set GUID
+        /// </summary>
+        public PasswordEntryModel()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

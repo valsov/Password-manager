@@ -1,13 +1,19 @@
-﻿namespace PasswordManager.Model
+﻿using System.ComponentModel;
+
+namespace PasswordManager.Model
 {
     /// <summary>
     /// Types of password to generate
     /// </summary>
     public enum PasswordTypes
     {
+        [Description("All characters")]
         Full,
+
+        [Description("Letters and numbers")]
         AlphaAndNum,
-        Alpha,
-        Custom
+
+        [Description("Letters only")]
+        Alpha
     }
 }
