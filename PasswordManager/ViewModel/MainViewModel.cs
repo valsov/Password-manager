@@ -57,10 +57,13 @@ namespace PasswordManager.ViewModel
         {
             this.settingsService = settingsService;
             this.databaseRepository = databaseRepository;
+
+            MainViewVisibility = Visibility.Hidden;
+
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
+
             LoadedCommand = new RelayCommand(ViewLoadedHandler);
             CloseDatabaseCommand = new RelayCommand(CloseDatabase);
-            MainViewVisibility = Visibility.Hidden;
         }
 
         private void DatabaseLoadedHandler(DatabaseLoadedMessage obj)

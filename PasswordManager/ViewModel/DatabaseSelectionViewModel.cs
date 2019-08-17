@@ -97,8 +97,8 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private Visibility userControlVisibility;
-        public Visibility UserControlVisibility
+        private bool userControlVisibility;
+        public bool UserControlVisibility
         {
             get
             {
@@ -120,11 +120,14 @@ namespace PasswordManager.ViewModel
         public DatabaseSelectionViewModel(IDatabaseService databaseService)
         {
             this.databaseService = databaseService;
+
+            UserControlVisibility = false;
+
             Messenger.Default.Register<ShowDatabaseSelectionViewMessage>(this, ShowUserControl);
+
             SelectDatabaseFileCommand = new RelayCommand(SelectDatabaseFile);
             TryOpenDatabaseCommand = new RelayCommand(TryOpenDatabase);
             OpenDatabaseCreationViewCommand = new RelayCommand(OpenDatabaseCreationView);
-            UserControlVisibility = Visibility.Hidden;
         }
 
         private void ShowUserControl(ShowDatabaseSelectionViewMessage obj)
@@ -132,7 +135,7 @@ namespace PasswordManager.ViewModel
             DatabasePath = obj.Path;
             Password = string.Empty;
             Error = string.Empty;
-            UserControlVisibility = Visibility.Visible;
+            UserControlVisibility = true;
         }
 
         private void SelectDatabaseFile()
@@ -177,7 +180,7 @@ namespace PasswordManager.ViewModel
             }
             else
             {
-                UserControlVisibility = Visibility.Hidden;
+                UserControlVisibility = false;
                 // Need to use dispatcher because timers run in another thread
                 Application.Current.Dispatcher.Invoke(() => Messenger.Default.Send(new DatabaseLoadedMessage(this, databaseModel)));
             }
@@ -187,7 +190,7 @@ namespace PasswordManager.ViewModel
 
         private void OpenDatabaseCreationView()
         {
-            UserControlVisibility = Visibility.Hidden;
+            UserControlVisibility = false;
             Messenger.Default.Send(new ShowDatabaseCreationViewMessage(this));
         }
     }

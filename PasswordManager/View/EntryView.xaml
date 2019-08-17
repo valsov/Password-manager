@@ -14,11 +14,12 @@
         <converters:PasswordStrengthToColorConverter x:Key="PasswordStrengthToColorConverter" />
         <converters:PasswordStrengthToLabelConverter x:Key="PasswordStrengthToLabelConverter" />
         <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <Grid
-        Visibility="{Binding UserControlVisibility}">
+        Visibility="{Binding UserControlVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
         <Grid
-            Visibility="{Binding EntryDataVisibility}">
+            Visibility="{Binding EntryDataVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBlock
                 Margin="30 30 0 0"
                 Width="300"
@@ -38,7 +39,7 @@
                 Margin="0 65 70 0"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
-                Visibility="{Binding DeleteButtonVisibility}"
+                Visibility="{Binding DeleteButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Command="{Binding DeleteEntryCommand}">
                 <materialDesign:PackIcon Kind="Bin" />
             </Button>
@@ -52,7 +53,7 @@
                 Margin="0 65 30 0"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
-                Visibility="{Binding EditionButtonVisibility}"
+                Visibility="{Binding EditionButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Command="{Binding StartEditionCommand}">
                     <materialDesign:PackIcon Kind="Pencil" />
             </Button>
@@ -190,7 +191,7 @@
         </Grid>
 
         <Grid
-            Visibility="{Binding EditionFormVisibility}">
+            Visibility="{Binding EditionFormVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBox
                 Margin="30 30 0 0"
                 Width="300"
@@ -269,7 +270,7 @@
                 Width="90">
                 <StackPanel
                     Orientation="Horizontal"
-                    Visibility="{Binding EditionControlButtonsVisibility}">
+                    Visibility="{Binding EditionControlButtonsVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Button
                         Style="{DynamicResource MaterialDesignFloatingActionButton}"
                         Width="30"
@@ -295,7 +296,7 @@
 
                 <StackPanel
                     Orientation="Horizontal"
-                    Visibility="{Binding CreationControlButtonsVisibility}">
+                    Visibility="{Binding CreationControlButtonsVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Button
                         Style="{DynamicResource MaterialDesignFloatingActionButton}"
                         Width="30"

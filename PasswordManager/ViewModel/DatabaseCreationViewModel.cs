@@ -5,7 +5,6 @@ using Microsoft.Win32;
 using PasswordManager.Messengers;
 using PasswordManager.Service.Interfaces;
 using System.IO;
-using System.Windows;
 
 namespace PasswordManager.ViewModel
 {
@@ -13,11 +12,11 @@ namespace PasswordManager.ViewModel
     {
         IDatabaseService databaseService;
 
-        private Visibility userControlVisibility;
+        private bool userControlVisibility;
         /// <summary>
         /// DatabaseCreation UserControl visibility
         /// </summary>
-        public Visibility UserControlVisibility
+        public bool UserControlVisibility
         {
             get
             {
@@ -126,11 +125,14 @@ namespace PasswordManager.ViewModel
         public DatabaseCreationViewModel(IDatabaseService databaseService)
         {
             this.databaseService = databaseService;
+
+            UserControlVisibility = false;
+
+            Messenger.Default.Register<ShowDatabaseCreationViewMessage>(this, ShowUserControl);
+
             SelectDatabaseFileCommand = new RelayCommand(SelectDatabaseFile);
             CreateDatabaseCommand = new RelayCommand(CreateDatabase);
             CancelDatabaseCreationCommand = new RelayCommand(CancelDatabaseCreation);
-            UserControlVisibility = Visibility.Collapsed;
-            Messenger.Default.Register<ShowDatabaseCreationViewMessage>(this, ShowUserControl);
         }
 
         private void SelectDatabaseFile()
@@ -165,14 +167,14 @@ namespace PasswordManager.ViewModel
             }
             else
             {
-                UserControlVisibility = Visibility.Collapsed;
+                UserControlVisibility = false;
                 Messenger.Default.Send(new DatabaseLoadedMessage(this, databaseModel));
             }
         }
 
         private void CancelDatabaseCreation()
         {
-            UserControlVisibility = Visibility.Hidden;
+            UserControlVisibility = false;
             Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this, string.Empty));
         }
 
@@ -182,7 +184,7 @@ namespace PasswordManager.ViewModel
         /// <param name="message"></param>
         void ShowUserControl(ShowDatabaseCreationViewMessage message)
         {
-            UserControlVisibility = Visibility.Visible;
+            UserControlVisibility = true;
         }
     }
 }

@@ -1,17 +1,3 @@
-/*
-  In App.xaml:
-  <Application.Resources>
-      <vm:ViewModelLocator xmlns:vm="clr-namespace:PasswordManager"
-                           x:Key="Locator" />
-  </Application.Resources>
-  
-  In the View:
-  DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
-
-  You can also use Blend to do all this with the tool's support.
-  See http://www.galasoft.ch/mvvm
-*/
-
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using PasswordManager.Repository;
@@ -32,11 +18,6 @@ namespace PasswordManager.ViewModel
         /// </summary>
         public ViewModelLocator()
         {
-            ///
-            /// Reference : https://stackoverflow.com/questions/13795596/how-to-use-mvvmlight-simpleioc
-            ///
-
-
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             // Register Repositories

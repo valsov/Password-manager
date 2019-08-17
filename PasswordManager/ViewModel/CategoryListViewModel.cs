@@ -123,9 +123,16 @@ namespace PasswordManager.ViewModel
         public CategoryListViewModel(IDatabaseRepository databaseRepository)
         {
             this.databaseRepository = databaseRepository;
+
+            CategoryList = new ObservableCollection<string>();
+            SelectedCategory = null;
+            NewCategoryFormVisibility = false;
+            CategoryEditionFormVisibility = false;
+            CategoryDeletionConfimationVisibility = false;
+
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
             Messenger.Default.Register<DatabaseUnloadedMessage>(this, DatabaseUnloadedHandler);
-            CategoryList = new ObservableCollection<string>();
+
             SelectCategoryCommand = new RelayCommand<string>(SelectCategory);
             ShowNewCategoryFormCommand = new RelayCommand(() => NewCategoryFormVisibility = true);
             CancelAddCategoryCommand = new RelayCommand(StopAddCategory);
@@ -136,11 +143,6 @@ namespace PasswordManager.ViewModel
             DeleteCategoryCommand = new RelayCommand<string>(DeleteCategory);
             CancelCategoryDeletionCommand = new RelayCommand(CancelCategoryDeletion);
             ValidateCategoryDeletionCommand = new RelayCommand(ValidateCategoryDeletion);
-
-            SelectedCategory = null;
-            NewCategoryFormVisibility = false;
-            CategoryEditionFormVisibility = false;
-            CategoryDeletionConfimationVisibility = false;
         }
 
         /// <summary>

@@ -6,10 +6,8 @@ using PasswordManager.Messengers;
 using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 
 namespace PasswordManager.ViewModel
 {
@@ -37,8 +35,8 @@ namespace PasswordManager.ViewModel
 
         public ObservableCollection<string> Categories { get; set; }
 
-        private Visibility userControlVisibility;
-        public Visibility UserControlVisibility
+        private bool userControlVisibility;
+        public bool UserControlVisibility
         {
             get
             {
@@ -51,8 +49,8 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private Visibility entryDataVisibility;
-        public Visibility EntryDataVisibility
+        private bool entryDataVisibility;
+        public bool EntryDataVisibility
         {
             get
             {
@@ -65,8 +63,8 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private Visibility deleteButtonVisibility;
-        public Visibility DeleteButtonVisibility
+        private bool deleteButtonVisibility;
+        public bool DeleteButtonVisibility
         {
             get
             {
@@ -79,8 +77,8 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private Visibility editionButtonVisibility;
-        public Visibility EditionButtonVisibility
+        private bool editionButtonVisibility;
+        public bool EditionButtonVisibility
         {
             get
             {
@@ -93,8 +91,8 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private Visibility editionFormVisibility;
-        public Visibility EditionFormVisibility
+        private bool editionFormVisibility;
+        public bool EditionFormVisibility
         {
             get
             {
@@ -107,8 +105,8 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private Visibility editionControlButtonsVisibility;
-        public Visibility EditionControlButtonsVisibility
+        private bool editionControlButtonsVisibility;
+        public bool EditionControlButtonsVisibility
         {
             get
             {
@@ -121,8 +119,8 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private Visibility creationControlButtonsVisibility;
-        public Visibility CreationControlButtonsVisibility
+        private bool creationControlButtonsVisibility;
+        public bool CreationControlButtonsVisibility
         {
             get
             {
@@ -176,12 +174,19 @@ namespace PasswordManager.ViewModel
         {
             this.databaseRepository = databaseRepository;
             this.passwordService = passwordService;
+
+            backupPasswordEntry = new PasswordEntryModel();
+            Categories = new ObservableCollection<string>();
+            UserControlVisibility = false;
+            DeletionConfimationVisibility = false;
+
             Messenger.Default.Register<DatabaseUnloadedMessage>(this, DatabaseUnloadedHandler);
             Messenger.Default.Register<EntrySelectedMessage>(this, EntrySelectedHandler);
             Messenger.Default.Register<ShowNewEntryViewMessage>(this, StartEntryCreation);
             Messenger.Default.Register<CategoryAddedMessage>(this, HandleNewCategory);
             Messenger.Default.Register<CategoryDeletedMessage>(this, CategoryDeletedHandler);
             Messenger.Default.Register<CategoryEditedMessage>(this, CategoryEditedHandler);
+
             DeleteEntryCommand = new RelayCommand(DeleteEntry);
             ValidateDeletionCommand = new RelayCommand(ValidateDeletion);
             CancelDeletionCommand = new RelayCommand(CancelDeletion);
@@ -193,12 +198,6 @@ namespace PasswordManager.ViewModel
             CopyPasswordCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Password)));
             CopyUsernameCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Username)));
             CopyWebsiteCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Website)));
-
-            backupPasswordEntry = new PasswordEntryModel();
-            Categories = new ObservableCollection<string>();
-
-            UserControlVisibility = Visibility.Hidden;
-            DeletionConfimationVisibility = false;
         }
 
         private void DatabaseUnloadedHandler(DatabaseUnloadedMessage obj)
@@ -214,7 +213,7 @@ namespace PasswordManager.ViewModel
             AddCategories();
             PasswordEntry = obj.passwordEntry;
 
-            UserControlVisibility = Visibility.Visible;
+            UserControlVisibility = true;
             SetElementsVisibility(ViewModes.View);
         }
 
@@ -227,7 +226,7 @@ namespace PasswordManager.ViewModel
         {
             databaseRepository.DeletePasswordEntry(PasswordEntry);
             Messenger.Default.Send(new EntryDeletedMessage(this, PasswordEntry));
-            UserControlVisibility = Visibility.Hidden;
+            UserControlVisibility = false;
             DeletionConfimationVisibility = false;
         }
 
@@ -264,7 +263,7 @@ namespace PasswordManager.ViewModel
         {
             AddCategories();
             PasswordEntry = new PasswordEntryModel();
-            UserControlVisibility = Visibility.Visible;
+            UserControlVisibility = true;
             SetElementsVisibility(ViewModes.Creation);
         }
 
@@ -278,7 +277,7 @@ namespace PasswordManager.ViewModel
 
         private void CancelCreation()
         {
-            UserControlVisibility = Visibility.Hidden;
+            UserControlVisibility = false;
         }
 
         private void SetElementsVisibility(ViewModes mode)
@@ -286,28 +285,28 @@ namespace PasswordManager.ViewModel
             switch (mode)
             {
                 case ViewModes.View:
-                    EntryDataVisibility = Visibility.Visible;
-                    DeleteButtonVisibility = Visibility.Visible;
-                    EditionButtonVisibility = Visibility.Visible;
-                    EditionFormVisibility = Visibility.Hidden;
-                    EditionControlButtonsVisibility = Visibility.Hidden;
-                    CreationControlButtonsVisibility = Visibility.Hidden;
+                    EntryDataVisibility = true;
+                    DeleteButtonVisibility = true;
+                    EditionButtonVisibility = true;
+                    EditionFormVisibility = false;
+                    EditionControlButtonsVisibility = false;
+                    CreationControlButtonsVisibility = false;
                     break;
                 case ViewModes.Edition:
-                    EntryDataVisibility = Visibility.Hidden;
-                    DeleteButtonVisibility = Visibility.Hidden;
-                    EditionButtonVisibility = Visibility.Hidden;
-                    EditionFormVisibility = Visibility.Visible;
-                    EditionControlButtonsVisibility = Visibility.Visible;
-                    CreationControlButtonsVisibility = Visibility.Hidden;
+                    EntryDataVisibility = false;
+                    DeleteButtonVisibility = false;
+                    EditionButtonVisibility = false;
+                    EditionFormVisibility = true;
+                    EditionControlButtonsVisibility = true;
+                    CreationControlButtonsVisibility = false;
                     break;
                 case ViewModes.Creation:
-                    EntryDataVisibility = Visibility.Hidden;
-                    DeleteButtonVisibility = Visibility.Hidden;
-                    EditionButtonVisibility = Visibility.Hidden;
-                    EditionFormVisibility = Visibility.Visible;
-                    EditionControlButtonsVisibility = Visibility.Hidden;
-                    CreationControlButtonsVisibility = Visibility.Visible;
+                    EntryDataVisibility = false;
+                    DeleteButtonVisibility = false;
+                    EditionButtonVisibility = false;
+                    EditionFormVisibility = true;
+                    EditionControlButtonsVisibility = false;
+                    CreationControlButtonsVisibility = true;
                     break;
             }
         }

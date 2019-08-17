@@ -15,6 +15,7 @@ namespace PasswordManager.ViewModel
         public SettingsViewModel(ISettingsService settingsService)
         {
             this.settingsService = settingsService;
+
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
         }
 

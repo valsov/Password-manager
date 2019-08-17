@@ -82,6 +82,8 @@ namespace PasswordManager.ViewModel
         /// </summary>
         public EntryListViewModel()
         {
+            basePasswordEntries = new List<PasswordEntryModel>();
+
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
             Messenger.Default.Register<DatabaseUnloadedMessage>(this, DatabaseUnloadedHandler);
             Messenger.Default.Register<EntryEditedMessage>(this, EntryEditedHandler);
@@ -90,7 +92,7 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Register<CategorySelectedMessage>(this, CategorySelectedHandler);
             Messenger.Default.Register<CategoryDeletedMessage>(this, CategoryDeletedHandler);
             Messenger.Default.Register<CategoryEditedMessage>(this, CategoryEditedHandler);
-            basePasswordEntries = new List<PasswordEntryModel>();
+
             SelectEntryCommand = new RelayCommand<PasswordEntryModel>(SelectEntry);
             AddEntryCommand = new RelayCommand(AddEntry);
             CopyPasswordCommand = new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Password)));
