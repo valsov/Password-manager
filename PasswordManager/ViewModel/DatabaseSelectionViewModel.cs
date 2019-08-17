@@ -15,6 +15,9 @@ namespace PasswordManager.ViewModel
         IDatabaseRepository databaseRepository;
 
         private string databasePath;
+        /// <summary>
+        /// Path of the database to open
+        /// </summary>
         public string DatabasePath
         {
             get
@@ -47,6 +50,9 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        /// <summary>
+        /// Indicates wether the databasePath property is filled
+        /// </summary>
         public bool PasswordEnabled
         {
             get
@@ -56,7 +62,7 @@ namespace PasswordManager.ViewModel
         }
 
         /// <summary>
-        /// Indicates wether all the required fields are filled
+        /// Indicates wether the password property is filled
         /// </summary>
         public bool TryOpenDatabaseEnabled
         {
@@ -84,6 +90,9 @@ namespace PasswordManager.ViewModel
         }
 
         private bool databaseOpeningInProgress;
+        /// <summary>
+        /// Indicate if the database is being opened
+        /// </summary>
         public bool DatabaseOpeningInProgress
         {
             get
@@ -98,6 +107,9 @@ namespace PasswordManager.ViewModel
         }
 
         private bool userControlVisibility;
+        /// <summary>
+        /// DatabaseSelection UserControl visibility
+        /// </summary>
         public bool UserControlVisibility
         {
             get
@@ -117,6 +129,10 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand OpenDatabaseCreationViewCommand { get; private set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="databaseRepository"></param>
         public DatabaseSelectionViewModel(IDatabaseRepository databaseRepository)
         {
             this.databaseRepository = databaseRepository;
@@ -130,6 +146,10 @@ namespace PasswordManager.ViewModel
             OpenDatabaseCreationViewCommand = new RelayCommand(OpenDatabaseCreationView);
         }
 
+        /// <summary>
+        /// Display the UserControl and set the database path
+        /// </summary>
+        /// <param name="obj"></param>
         private void ShowUserControl(ShowDatabaseSelectionViewMessage obj)
         {
             DatabasePath = obj.Path;
@@ -138,6 +158,9 @@ namespace PasswordManager.ViewModel
             UserControlVisibility = true;
         }
 
+        /// <summary>
+        /// Open a file dialog to select a database file
+        /// </summary>
         private void SelectDatabaseFile()
         {
             var fileDialog = new OpenFileDialog()
@@ -154,6 +177,9 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        /// <summary>
+        /// Set a timer to avoid bruteforce on the database opening and display an animation
+        /// </summary>
         void TryOpenDatabase()
         {
             if (DatabaseOpeningInProgress) return;
@@ -188,6 +214,9 @@ namespace PasswordManager.ViewModel
             DatabaseOpeningInProgress = false;
         }
 
+        /// <summary>
+        /// Switch to the database creation view
+        /// </summary>
         private void OpenDatabaseCreationView()
         {
             UserControlVisibility = false;

@@ -1,5 +1,8 @@
 ﻿namespace PasswordManager.Model
 {
+    /// <summary>
+    /// Enumeration describing the different password security levels
+    /// </summary>
     public enum PasswordStrength
     {
         Blank = 0,

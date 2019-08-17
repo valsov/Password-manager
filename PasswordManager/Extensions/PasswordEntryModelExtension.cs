@@ -4,13 +4,21 @@ using System.Windows;
 
 namespace PasswordManager.Extensions
 {
+    /// <summary>
+    /// Extension methods for the PasswordEntryModel class
+    /// </summary>
     public static class PasswordEntryModelExtension
     {
+        const int clipboardTimerDuration = 7000;
+
         private static Timer clipboardTimer;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         static PasswordEntryModelExtension()
         {
-            clipboardTimer = new Timer(7000)
+            clipboardTimer = new Timer(clipboardTimerDuration)
             {
                 AutoReset = false,
                 Enabled = false
@@ -18,6 +26,11 @@ namespace PasswordManager.Extensions
             clipboardTimer.Elapsed += ClipboardTimerElapsed;
         }
 
+        /// <summary>
+        /// Create a copy of a PasswordEntryModel
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static PasswordEntryModel Copy(this PasswordEntryModel entry)
         {
             return new PasswordEntryModel()
@@ -33,6 +46,11 @@ namespace PasswordManager.Extensions
             };
         }
 
+        /// <summary>
+        /// Copy to the clipboard the given property of a PasswordEntryModel
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="property"></param>
         public static void CopyDataToClipboard(this PasswordEntryModel entry, string property)
         {
             clipboardTimer.Stop();
@@ -55,6 +73,11 @@ namespace PasswordManager.Extensions
             clipboardTimer.Start();
         }
 
+        /// <summary>
+        /// Method called when clipboardTimer raises the Elapsed event, reset the clipboard content
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void ClipboardTimerElapsed(object sender, ElapsedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() => Clipboard.SetText(string.Empty));

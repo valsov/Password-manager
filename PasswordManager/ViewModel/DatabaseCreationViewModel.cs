@@ -14,26 +14,9 @@ namespace PasswordManager.ViewModel
     {
         IDatabaseRepository databaseRepository;
 
-        private bool userControlVisibility;
-        /// <summary>
-        /// DatabaseCreation UserControl visibility
-        /// </summary>
-        public bool UserControlVisibility
-        {
-            get
-            {
-                return userControlVisibility;
-            }
-            set
-            {
-                userControlVisibility = value;
-                RaisePropertyChanged(nameof(userControlVisibility));
-            }
-        }
-
         private string databasePath;
         /// <summary>
-        /// Database file location
+        /// Database file location, returns the filename only
         /// </summary>
         public string DatabasePath
         {
@@ -111,11 +94,25 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private bool userControlVisibility;
+        /// <summary>
+        /// DatabaseCreation UserControl visibility
+        /// </summary>
+        public bool UserControlVisibility
+        {
+            get
+            {
+                return userControlVisibility;
+            }
+            set
+            {
+                userControlVisibility = value;
+                RaisePropertyChanged(nameof(userControlVisibility));
+            }
+        }
+
         public RelayCommand SelectDatabaseFileCommand { get; private set; }
 
-        /// <summary>
-        /// Command to create a database
-        /// </summary>
         public RelayCommand CreateDatabaseCommand { get; private set; }
 
         public RelayCommand CancelDatabaseCreationCommand { get; private set; }
@@ -137,6 +134,9 @@ namespace PasswordManager.ViewModel
             CancelDatabaseCreationCommand = new RelayCommand(CancelDatabaseCreation);
         }
 
+        /// <summary>
+        /// Open a file dialog to select a database file
+        /// </summary>
         private void SelectDatabaseFile()
         {
             var fileDialog = new SaveFileDialog()
@@ -183,6 +183,9 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        /// <summary>
+        /// Switch the view to the database selection view
+        /// </summary>
         private void CancelDatabaseCreation()
         {
             UserControlVisibility = false;

@@ -5,6 +5,12 @@ using System.Windows.Data;
 
 namespace PasswordManager.Converters
 {
+    /// <summary>
+    /// Convert a string value to a visibility
+    /// </summary>
+    /// <remarks>
+    /// null or empty string => Visibility.Hidden
+    /// </remarks>
     public class EmptyStringToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

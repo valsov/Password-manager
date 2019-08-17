@@ -4,6 +4,9 @@ using System.Windows.Data;
 
 namespace PasswordManager.Converters
 {
+    /// <summary>
+    /// Checking for equality between 2 values
+    /// </summary>
     public class EqualityConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

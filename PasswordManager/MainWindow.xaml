@@ -7,6 +7,7 @@
         xmlns:view="clr-namespace:PasswordManager.View"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+        xmlns:converters="clr-namespace:PasswordManager.Converters"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000"
@@ -22,8 +23,11 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
+        <Grid.Resources>
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </Grid.Resources>
         <Border
-            Visibility="{Binding MainViewVisibility}"
+            Visibility="{Binding MainViewVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
             Background="#3B4045"
             BorderBrush="#3A4758"
             BorderThickness="1">

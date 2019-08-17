@@ -35,6 +35,9 @@ namespace PasswordManager.ViewModel
         }
 
         private string newCategoryName;
+        /// <summary>
+        /// Name of the category to be added
+        /// </summary>
         public string NewCategoryName
         {
             get
@@ -48,10 +51,20 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        /// <summary>
+        /// Copy of the category name before edition
+        /// </summary>
         private string originalCategoryInEdition;
+
+        /// <summary>
+        /// Name of the category currently being edited
+        /// </summary>
         public string CategoryInEdition { get; set; }
 
         private bool newCategoryFormVisibility;
+        /// <summary>
+        /// Visibility of the form to create a new category
+        /// </summary>
         public bool NewCategoryFormVisibility
         {
             get
@@ -66,6 +79,9 @@ namespace PasswordManager.ViewModel
         }
 
         private bool categoryEditionFormVisibility;
+        /// <summary>
+        /// Visibility of the form to edit a category
+        /// </summary>
         public bool CategoryEditionFormVisibility
         {
             get
@@ -81,6 +97,9 @@ namespace PasswordManager.ViewModel
 
         private string categoryToDelete;
         private bool categoryDeletionConfimationVisibility;
+        /// <summary>
+        /// Visibility of the category delete confirmation dialog
+        /// </summary>
         public bool CategoryDeletionConfimationVisibility
         {
             get
@@ -94,9 +113,6 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        /// <summary>
-        /// Command to select a category and filter password entries by this criteria
-        /// </summary>
         public RelayCommand<string> SelectCategoryCommand { get; private set; }
 
         public RelayCommand ShowNewCategoryFormCommand { get; private set; }
@@ -157,6 +173,10 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        /// <summary>
+        /// Empty all database related ressources
+        /// </summary>
+        /// <param name="obj"></param>
         private void DatabaseUnloadedHandler(DatabaseUnloadedMessage obj)
         {
             CategoryList.Clear();
@@ -169,7 +189,7 @@ namespace PasswordManager.ViewModel
         }
 
         /// <summary>
-        /// Set SelectedCategory
+        /// Send a CategorySelectedMessage
         /// </summary>
         /// <param name="selectedCategory"></param>
         private void SelectCategory(string selectedCategory)
@@ -178,6 +198,9 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Send(new CategorySelectedMessage(this, SelectedCategory));
         }
 
+        /// <summary>
+        /// Add a new category
+        /// </summary>
         private void AddCategory()
         {
             if (string.IsNullOrWhiteSpace(NewCategoryName))
@@ -190,12 +213,19 @@ namespace PasswordManager.ViewModel
             StopAddCategory();
         }
 
+        /// <summary>
+        /// Cancel the new category procedure
+        /// </summary>
         private void StopAddCategory()
         {
             NewCategoryName = string.Empty;
             NewCategoryFormVisibility = false;
         }
 
+        /// <summary>
+        /// Setup the category edition form
+        /// </summary>
+        /// <param name="category"></param>
         private void EditCategory(string category)
         {
             originalCategoryInEdition = category;
@@ -204,6 +234,9 @@ namespace PasswordManager.ViewModel
             CategoryEditionFormVisibility = true;
         }
 
+        /// <summary>
+        /// Commit the category edition
+        /// </summary>
         private void ValidateCategoryEdition()
         {
             var index = CategoryList.IndexOf(originalCategoryInEdition);
@@ -217,17 +250,27 @@ namespace PasswordManager.ViewModel
             CategoryEditionFormVisibility = false;
         }
 
+        /// <summary>
+        /// Hide the category edition form
+        /// </summary>
         private void CancelCategoryEdition()
         {
             CategoryEditionFormVisibility = false;
         }
 
+        /// <summary>
+        /// Show the category delete confirmation dialog
+        /// </summary>
+        /// <param name="category"></param>
         private void DeleteCategory(string category)
         {
             categoryToDelete = category;
             CategoryDeletionConfimationVisibility = true;
         }
 
+        /// <summary>
+        /// Commit the category deletion
+        /// </summary>
         private void ValidateCategoryDeletion()
         {
             if (SelectedCategory == categoryToDelete)
@@ -240,6 +283,9 @@ namespace PasswordManager.ViewModel
             CategoryDeletionConfimationVisibility = false;
         }
 
+        /// <summary>
+        /// Hide the category delete confirmation dialog
+        /// </summary>
         private void CancelCategoryDeletion()
         {
             CategoryDeletionConfimationVisibility = false;

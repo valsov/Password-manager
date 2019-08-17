@@ -5,6 +5,12 @@ using System.Windows.Data;
 
 namespace PasswordManager.Converters
 {
+    /// <summary>
+    /// Convert a boolean value to a visibility
+    /// </summary>
+    /// <remarks>
+    /// true => Visibility.Visible, false => Visibility.Hidden
+    /// </remarks>
     public class BooleanToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

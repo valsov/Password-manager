@@ -17,9 +17,15 @@ namespace PasswordManager.ViewModel
 
         IPasswordService passwordService;
 
+        /// <summary>
+        /// Password entry used to backup before an edition
+        /// </summary>
         private PasswordEntryModel backupPasswordEntry;
 
         private PasswordEntryModel passwordEntry;
+        /// <summary>
+        /// Password entry being viewed / edited / created
+        /// </summary>
         public PasswordEntryModel PasswordEntry
         {
             get
@@ -169,6 +175,11 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand CopyWebsiteCommand { get; private set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="databaseRepository"></param>
+        /// <param name="passwordService"></param>
         public EntryViewModel(IDatabaseRepository databaseRepository,
                               IPasswordService passwordService)
         {
@@ -200,6 +211,10 @@ namespace PasswordManager.ViewModel
             CopyWebsiteCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Website)));
         }
 
+        /// <summary>
+        /// Reset the view and the database related ressources
+        /// </summary>
+        /// <param name="obj"></param>
         private void DatabaseUnloadedHandler(DatabaseUnloadedMessage obj)
         {
             Categories.Clear();
@@ -208,6 +223,10 @@ namespace PasswordManager.ViewModel
             SetElementsVisibility(ViewModes.View);
         }
 
+        /// <summary>
+        /// Show the selected entry
+        /// </summary>
+        /// <param name="obj"></param>
         private void EntrySelectedHandler(EntrySelectedMessage obj)
         {
             AddCategories();
@@ -217,11 +236,17 @@ namespace PasswordManager.ViewModel
             SetElementsVisibility(ViewModes.View);
         }
 
+        /// <summary>
+        /// Show the deletion confirmation dialog
+        /// </summary>
         private void DeleteEntry()
         {
             DeletionConfimationVisibility = true;
         }
 
+        /// <summary>
+        /// Commit the deletion
+        /// </summary>
         private void ValidateDeletion()
         {
             databaseRepository.DeletePasswordEntry(PasswordEntry);
@@ -230,17 +255,26 @@ namespace PasswordManager.ViewModel
             DeletionConfimationVisibility = false;
         }
 
+        /// <summary>
+        /// Hide the deletion confirmation dialog
+        /// </summary>
         private void CancelDeletion()
         {
             DeletionConfimationVisibility = false;
         }
 
+        /// <summary>
+        /// Set the view mode to edition
+        /// </summary>
         private void StartEdition()
         {
             backupPasswordEntry = PasswordEntry.Copy();
             SetElementsVisibility(ViewModes.Edition);
         }
 
+        /// <summary>
+        /// Commit the edition
+        /// </summary>
         private void ValidateEdition()
         {
             PasswordEntry.PasswordStrength = passwordService.CheckPasswordStrength(PasswordEntry.Password);
@@ -253,12 +287,19 @@ namespace PasswordManager.ViewModel
             SetElementsVisibility(ViewModes.View);
         }
 
+        /// <summary>
+        /// Reset the password model to the backup one and set the view mode to view
+        /// </summary>
         private void CancelEdition()
         {
             PasswordEntry = backupPasswordEntry.Copy();
             SetElementsVisibility(ViewModes.View);
         }
 
+        /// <summary>
+        /// Set the view mode to edition
+        /// </summary>
+        /// <param name="obj"></param>
         private void StartEntryCreation(ShowNewEntryViewMessage obj)
         {
             AddCategories();
@@ -267,6 +308,9 @@ namespace PasswordManager.ViewModel
             SetElementsVisibility(ViewModes.Creation);
         }
 
+        /// <summary>
+        /// Commit password entry creation
+        /// </summary>
         private void CreateEntry()
         {
             PasswordEntry.PasswordStrength = passwordService.CheckPasswordStrength(PasswordEntry.Password);
@@ -275,11 +319,18 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Send(new EntryAddedMessage(this, copy));
         }
 
+        /// <summary>
+        /// Hide the view
+        /// </summary>
         private void CancelCreation()
         {
             UserControlVisibility = false;
         }
 
+        /// <summary>
+        /// Set view mode
+        /// </summary>
+        /// <param name="mode"></param>
         private void SetElementsVisibility(ViewModes mode)
         {
             switch (mode)
@@ -311,20 +362,28 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        /// <summary>
+        /// Fill categories combobox if this wasn't already done
+        /// </summary>
         private void AddCategories()
         {
-            // Fill categories combobox if this wasn't already done
             if (!Categories.Any())
             {
-                // string.Empty for no category
-                Categories.Add(string.Empty);
-                foreach (var category in databaseRepository.GetDatabase().Categories)
-                {
-                    Categories.Add(category);
-                }
+                return;
+            }
+
+            // string.Empty for no category
+            Categories.Add(string.Empty);
+            foreach (var category in databaseRepository.GetDatabase().Categories)
+            {
+                Categories.Add(category);
             }
         }
 
+        /// <summary>
+        /// Add new category in the categories combobox
+        /// </summary>
+        /// <param name="obj"></param>
         private void HandleNewCategory(CategoryAddedMessage obj)
         {
             if (Categories.Any())
@@ -333,6 +392,10 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        /// <summary>
+        /// Edit the category in the categories combobox
+        /// </summary>
+        /// <param name="obj"></param>
         private void CategoryEditedHandler(CategoryEditedMessage obj)
         {
             if (PasswordEntry is null) return;
@@ -351,11 +414,19 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        /// <summary>
+        /// Delete the category in the categories combobox
+        /// </summary>
+        /// <param name="obj"></param>
         private void CategoryDeletedHandler(CategoryDeletedMessage obj)
         {
             Categories.Remove(obj.Category);
         }
 
+        /// <summary>
+        /// Call the CopyDataToClipboard extension method
+        /// </summary>
+        /// <param name="property"></param>
         private void CopyToClipboard(string property)
         {
             PasswordEntry.CopyDataToClipboard(property);

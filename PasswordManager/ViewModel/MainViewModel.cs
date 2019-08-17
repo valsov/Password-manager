@@ -4,7 +4,6 @@ using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Messengers;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
-using System.Windows;
 
 namespace PasswordManager.ViewModel
 {
@@ -18,6 +17,9 @@ namespace PasswordManager.ViewModel
         IDatabaseRepository databaseRepository;
 
         private string databaseName;
+        /// <summary>
+        /// Name of the loaded database, to be displayed to the user
+        /// </summary>
         public string DatabaseName
         {
             get
@@ -31,8 +33,11 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private Visibility mainViewVisibility;
-        public Visibility MainViewVisibility
+        private bool mainViewVisibility;
+        /// <summary>
+        /// Visibility of the main view
+        /// </summary>
+        public bool MainViewVisibility
         {
             get
             {
@@ -50,7 +55,7 @@ namespace PasswordManager.ViewModel
         public RelayCommand CloseDatabaseCommand { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
+        /// Initializes a new instance of the MainViewModel class
         /// </summary>
         public MainViewModel(ISettingsService settingsService,
                              IDatabaseRepository databaseRepository)
@@ -58,7 +63,7 @@ namespace PasswordManager.ViewModel
             this.settingsService = settingsService;
             this.databaseRepository = databaseRepository;
 
-            MainViewVisibility = Visibility.Hidden;
+            MainViewVisibility = false;
 
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
 
@@ -66,21 +71,31 @@ namespace PasswordManager.ViewModel
             CloseDatabaseCommand = new RelayCommand(CloseDatabase);
         }
 
+        /// <summary>
+        /// Show the main view
+        /// </summary>
+        /// <param name="obj"></param>
         private void DatabaseLoadedHandler(DatabaseLoadedMessage obj)
         {
             DatabaseName = obj.DatabaseModel.Name;
-            MainViewVisibility = Visibility.Visible;
+            MainViewVisibility = true;
         }
 
+        /// <summary>
+        /// Show the database selection view when the view is loaded
+        /// </summary>
         void ViewLoadedHandler()
         {
             var path = settingsService.GetDatabasePath();
             Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this, path));
         }
 
+        /// <summary>
+        /// Reset the view to the database selection view and remove all the database related ressources
+        /// </summary>
         private void CloseDatabase()
         {
-            MainViewVisibility = Visibility.Hidden;
+            MainViewVisibility = false;
             DatabaseName = string.Empty;
             var path = settingsService.GetDatabasePath();
             databaseRepository.UnloadDatabase();

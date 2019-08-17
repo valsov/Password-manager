@@ -7,6 +7,9 @@ using System.Text;
 
 namespace PasswordManager.Service
 {
+    /// <summary>
+    /// Implementation of IEncryptionService interface, service handling the data encryption and decryption
+    /// </summary>
     public class EncryptionService : IEncryptionService
     {
         // This constant is used to determine the keysize of the encryption algorithm in bits.
@@ -16,17 +19,12 @@ namespace PasswordManager.Service
         // This constant determines the number of iterations for the password bytes generation function.
         const int ITERATIONS = 1000;
 
-        byte[] Generate256BitsOfRandomEntropy()
-        {
-            var randomBytes = new byte[32]; // 32 Bytes will give us 256 bits.
-            using (var rngCsp = new RNGCryptoServiceProvider())
-            {
-                // Fill the array with cryptographically secure random bytes.
-                rngCsp.GetBytes(randomBytes);
-            }
-            return randomBytes;
-        }
-
+        /// <summary>
+        /// Encrypt the given string with the given password
+        /// </summary>
+        /// <param name="plainText"></param>
+        /// <param name="passPhrase"></param>
+        /// <returns></returns>
         public string Encrypt(string plainText, string passPhrase)
         {
             // Salt and IV is randomly generated each time, but is preprended to encrypted cipher text
@@ -64,6 +62,12 @@ namespace PasswordManager.Service
             }
         }
 
+        /// <summary>
+        /// Decrypt the given string with the given password
+        /// </summary>
+        /// <param name="cipherText"></param>
+        /// <param name="passPhrase"></param>
+        /// <returns></returns>
         public string Decrypt(string cipherText, string passPhrase)
         {
             // Get the complete stream of bytes that represent:
@@ -100,6 +104,21 @@ namespace PasswordManager.Service
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Generate a randomly filled byte[] of 256 bit
+        /// </summary>
+        /// <returns></returns>
+        byte[] Generate256BitsOfRandomEntropy()
+        {
+            var randomBytes = new byte[32]; // 32 Bytes will give us 256 bits.
+            using (var rngCsp = new RNGCryptoServiceProvider())
+            {
+                // Fill the array with cryptographically secure random bytes.
+                rngCsp.GetBytes(randomBytes);
+            }
+            return randomBytes;
         }
     }
 }

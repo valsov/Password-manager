@@ -6,6 +6,9 @@ using System.Windows.Media;
 
 namespace PasswordManager.Converters
 {
+    /// <summary>
+    /// Convert a password strength to a corresponding color
+    /// </summary>
     public class PasswordStrengthToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -48,6 +48,9 @@ namespace PasswordManager.ViewModel
         }
 
         private string searchValue;
+        /// <summary>
+        /// Value to search filter the password entries
+        /// </summary>
         public string SearchValue
         {
             get
@@ -61,14 +64,8 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        /// <summary>
-        /// Command to select an entry
-        /// </summary>
         public RelayCommand<PasswordEntryModel> SelectEntryCommand { get; private set; }
 
-        /// <summary>
-        /// Command to open the entry creation view
-        /// </summary>
         public RelayCommand AddEntryCommand { get; private set; }
 
         public RelayCommand<PasswordEntryModel> CopyPasswordCommand { get; private set; }
@@ -113,6 +110,10 @@ namespace PasswordManager.ViewModel
             RaisePropertyChanged(nameof(PasswordEntryList));
         }
 
+        /// <summary>
+        /// Empty all database related ressources
+        /// </summary>
+        /// <param name="obj"></param>
         private void DatabaseUnloadedHandler(DatabaseUnloadedMessage obj)
         {
             basePasswordEntries.Clear();
@@ -152,6 +153,10 @@ namespace PasswordManager.ViewModel
             SelectEntry(obj.Entry);
         }
 
+        /// <summary>
+        /// Remove the given entry from the list
+        /// </summary>
+        /// <param name="obj"></param>
         private void EntryDeletedHandler(EntryDeletedMessage obj)
         {
             basePasswordEntries.RemoveAll(x => x.Id == obj.Entry.Id);
@@ -159,7 +164,7 @@ namespace PasswordManager.ViewModel
         }
 
         /// <summary>
-        /// Set SelectedCategory
+        /// Set SelectedCategory to filter the entry list
         /// </summary>
         /// <param name="selectedCategory"></param>
         private void CategorySelectedHandler(CategorySelectedMessage obj)
@@ -168,6 +173,10 @@ namespace PasswordManager.ViewModel
             RaisePropertyChanged(nameof(PasswordEntryList));
         }
 
+        /// <summary>
+        /// Update the given category in the entry list objects
+        /// </summary>
+        /// <param name="obj"></param>
         private void CategoryEditedHandler(CategoryEditedMessage obj)
         {
             foreach (var entry in basePasswordEntries.Where(x => x.Category == obj.BaseCategory))
@@ -176,6 +185,10 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        /// <summary>
+        /// Delete the category in the entry list objects
+        /// </summary>
+        /// <param name="obj"></param>
         private void CategoryDeletedHandler(CategoryDeletedMessage obj)
         {
             foreach(var entry in basePasswordEntries.Where(x => x.Category == obj.Category))
@@ -203,6 +216,11 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Send(new ShowNewEntryViewMessage(this));
         }
 
+        /// <summary>
+        /// Call the CopyDataToClipboard extension method
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="property"></param>
         private void CopyToClipboard(PasswordEntryModel obj, string property)
         {
             obj.CopyDataToClipboard(property);

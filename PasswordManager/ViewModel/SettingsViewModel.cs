@@ -19,9 +19,12 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
         }
 
+        /// <summary>
+        /// Save the database path
+        /// </summary>
+        /// <param name="message"></param>
         void DatabaseLoadedHandler(DatabaseLoadedMessage message)
         {
-            // Save database path
             settingsService.SaveDatabasePath(message.DatabaseModel.Path);
         }
     }
