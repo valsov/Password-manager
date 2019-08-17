@@ -34,7 +34,7 @@
 
             <ScrollViewer
                 Grid.Row="1"
-                Margin="15 0 0 0"
+                Margin="15 0 0 5"
                 VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.RowDefinitions>

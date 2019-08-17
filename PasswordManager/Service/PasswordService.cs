@@ -44,6 +44,8 @@ namespace PasswordManager.Service
         {
             int score = 0;
 
+            if (password is null) return PasswordStrength.Blank;
+
             if (password.Length < 1)
                 return PasswordStrength.Blank;
             if (password.Length < 4)

@@ -57,6 +57,7 @@
 
                 <ScrollViewer
                     Grid.Row="1"
+                    Margin="0 5 0 5"
                     VerticalScrollBarVisibility="Auto">
                     <ItemsControl
                         ItemsSource="{Binding PasswordEntryList}">
