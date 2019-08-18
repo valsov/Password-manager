@@ -24,7 +24,7 @@ namespace PasswordManager
                 ContextMenu = new ContextMenu(new MenuItem[]
                 {
                     new MenuItem("Show", (x,y) => this.Show()),
-                    new MenuItem("Quit", (x,y) => System.Windows.Application.Current.Shutdown())
+                    new MenuItem("Exit", (x,y) => this.Close())
                 })
             };
             trayIcon.Click += delegate

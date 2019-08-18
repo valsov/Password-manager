@@ -1,9 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MaterialDesignThemes.Wpf.Transitions;
 using Microsoft.Win32;
 using PasswordManager.Messengers;
 using PasswordManager.Repository.Interfaces;
+using System;
 using System.IO;
 using System.Timers;
 using System.Windows;
@@ -140,6 +142,7 @@ namespace PasswordManager.ViewModel
             UserControlVisibility = false;
 
             Messenger.Default.Register<ShowDatabaseSelectionViewMessage>(this, ShowUserControl);
+            Messenger.Default.Register<DatabaseLoadedMessage>(this, HideUserControl);
 
             SelectDatabaseFileCommand = new RelayCommand(SelectDatabaseFile);
             TryOpenDatabaseCommand = new RelayCommand(TryOpenDatabase);
@@ -156,6 +159,11 @@ namespace PasswordManager.ViewModel
             Password = string.Empty;
             Error = string.Empty;
             UserControlVisibility = true;
+        }
+
+        private void HideUserControl(DatabaseLoadedMessage obj)
+        {
+            UserControlVisibility = false;
         }
 
         /// <summary>
@@ -219,7 +227,7 @@ namespace PasswordManager.ViewModel
         /// </summary>
         private void OpenDatabaseCreationView()
         {
-            UserControlVisibility = false;
+            Transitioner.MoveNextCommand.Execute(null, null);
             Messenger.Default.Send(new ShowDatabaseCreationViewMessage(this));
         }
     }

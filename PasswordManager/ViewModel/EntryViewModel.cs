@@ -290,7 +290,7 @@ namespace PasswordManager.ViewModel
             backupPasswordEntry = null;
             PasswordEntry = null;
             SetElementsVisibility(ViewModes.View);
-            PasswordEntry.PropertyChanged -= PasswordPropertyChanged;
+            UserControlVisibility = false;
         }
 
         /// <summary>
