@@ -190,7 +190,7 @@ namespace PasswordManager.ViewModel
         /// </summary>
         void TryOpenDatabase()
         {
-            if (DatabaseOpeningInProgress) return;
+            if (!TryOpenDatabaseEnabled || DatabaseOpeningInProgress) return;
 
             DatabaseOpeningInProgress = true;
             // Wait 1.5 sec before performing the operation

@@ -159,7 +159,7 @@ namespace PasswordManager.ViewModel
         /// </summary>
         void CreateDatabase()
         {
-            if (string.IsNullOrEmpty(databasePath) || string.IsNullOrEmpty(DatabaseName) || string.IsNullOrEmpty(Password))
+            if (!IsCreateDatabaseEnabled)
             {
                 return;
             }

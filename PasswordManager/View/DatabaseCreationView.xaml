@@ -102,7 +102,13 @@
                     FontSize="14"
                     Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                     materialDesign:HintAssist.Hint="Password"
-                    materialDesign:HintAssist.IsFloating="True" />
+                    materialDesign:HintAssist.IsFloating="True">
+                    <TextBox.InputBindings>
+                        <KeyBinding
+                            Key="Return"
+                            Command="{Binding CreateDatabaseCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
                 <Button
                     Margin="0 50 0 0"
                     Content="Create Database"
