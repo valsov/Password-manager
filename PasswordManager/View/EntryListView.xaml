@@ -11,6 +11,7 @@
              DataContext="{Binding EntryList, Source={StaticResource Locator}}">
     <UserControl.Resources>
         <converters:EqualityConverter x:Key="EqualityConverter" />
+        <converters:UrlToIconBitmapSourceConverter x:Key="UrlToIconBitmapSourceConverter" />
         <local:BindingProxy x:Key="proxy" Data="{Binding}" />
     </UserControl.Resources>
     <Grid>
@@ -66,20 +67,39 @@
                                 <Grid>
                                     <Grid
                                         Margin="15,4,0,4">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Ellipse
+                                                Grid.Column="0"
+                                                Width="30"
+                                                Height="30"
+                                                HorizontalAlignment="Left">
+                                                <Ellipse.Fill>
+                                                    <ImageBrush
+                                                        ImageSource="{Binding Website, Converter={StaticResource UrlToIconBitmapSourceConverter}}"
+                                                        Stretch="None"/>
+                                                </Ellipse.Fill>
+                                            </Ellipse>
+                                            <Grid Grid.Column="1">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
 
-                                        <TextBlock
-                                            Grid.Row="0"
-                                            Text="{Binding Name}"
-                                            FontSize="18"
-                                            FontWeight="DemiBold"/>
-                                        <TextBlock
-                                            Grid.Row="1"
-                                            Text="{Binding Username}"
-                                            FontSize="16" />
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Text="{Binding Name}"
+                                                    FontSize="18"
+                                                    FontWeight="DemiBold"/>
+                                                <TextBlock
+                                                    Grid.Row="1"
+                                                    Text="{Binding Username}"
+                                                    FontSize="16" />
+                                            </Grid>
+                                        </Grid>
                                     </Grid>
 
                                     <Grid.Style>
@@ -128,8 +148,8 @@
                                                 Command="{Binding Data.CopyUsernameCommand, Source={StaticResource proxy}}"
                                                 CommandParameter="{Binding}" />
                                             <MenuItem
-                                                Header="Copy Website"
-                                                Command="{Binding Data.CopyWebsiteCommand, Source={StaticResource proxy}}"
+                                                Header="Open Website"
+                                                Command="{Binding Data.OpenWebsiteCommand, Source={StaticResource proxy}}"
                                                 CommandParameter="{Binding}" />
                                         </ContextMenu>
                                     </Grid.ContextMenu>

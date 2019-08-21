@@ -23,12 +23,14 @@ namespace PasswordManager.ViewModel
             // Register Repositories
             SimpleIoc.Default.Register<ISettingsRepository, SettingsRepository>();
             SimpleIoc.Default.Register<IDatabaseRepository, DatabaseRepository>();
+            SimpleIoc.Default.Register<IIconsRepository, IconsRepository>();
 
             // Register Services
             SimpleIoc.Default.Register<IEncryptionService, EncryptionService>();
             SimpleIoc.Default.Register<IPasswordService, PasswordService>();
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();
             SimpleIoc.Default.Register<ISyncService, SyncService>();
+            SimpleIoc.Default.Register<IIconsService, IconsService>();
 
             // Register ViewModels
             SimpleIoc.Default.Register<MainViewModel>();

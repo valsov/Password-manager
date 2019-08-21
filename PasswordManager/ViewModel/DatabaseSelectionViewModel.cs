@@ -4,9 +4,12 @@ using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf.Transitions;
 using Microsoft.Win32;
 using PasswordManager.Messengers;
+using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
+using PasswordManager.Service.Interfaces;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 
@@ -15,6 +18,14 @@ namespace PasswordManager.ViewModel
     public class DatabaseSelectionViewModel : ViewModelBase
     {
         IDatabaseRepository databaseRepository;
+
+        IIconsService iconsService;
+
+        private bool databaseOpeningResult;
+
+        private DateTime databaseOpeningStartTime;
+
+        private DatabaseModel database;
 
         private string databasePath;
         /// <summary>
@@ -135,9 +146,13 @@ namespace PasswordManager.ViewModel
         /// Constructor
         /// </summary>
         /// <param name="databaseRepository"></param>
-        public DatabaseSelectionViewModel(IDatabaseRepository databaseRepository)
+        public DatabaseSelectionViewModel(IDatabaseRepository databaseRepository,
+                                          IIconsService iconsService)
         {
             this.databaseRepository = databaseRepository;
+            this.iconsService = iconsService;
+
+            iconsService.IconsLoadedEvent += IconsLoadedEventHandler;
 
             UserControlVisibility = false;
 
@@ -156,11 +171,16 @@ namespace PasswordManager.ViewModel
         private void ShowUserControl(ShowDatabaseSelectionViewMessage obj)
         {
             DatabasePath = obj.Path;
+            database = null;
             Password = string.Empty;
             Error = string.Empty;
             UserControlVisibility = true;
         }
 
+        /// <summary>
+        /// Set UserControlVisibility to false
+        /// </summary>
+        /// <param name="obj"></param>
         private void HideUserControl(DatabaseLoadedMessage obj)
         {
             UserControlVisibility = false;
@@ -186,37 +206,70 @@ namespace PasswordManager.ViewModel
         }
 
         /// <summary>
-        /// Set a timer to avoid bruteforce on the database opening and display an animation
+        /// Try to decrypt the database with the given password
         /// </summary>
         void TryOpenDatabase()
         {
             if (!TryOpenDatabaseEnabled || DatabaseOpeningInProgress) return;
 
             DatabaseOpeningInProgress = true;
-            // Wait 1.5 sec before performing the operation
-            var timer = new Timer(2000)
-            {
-                Enabled = true,
-                AutoReset = false
-            };
-            timer.Elapsed += OpenDatabaseTimerElapsed;
-        }
+            databaseOpeningStartTime = DateTime.Now;
 
-        /// <summary>
-        /// Try to decrypt the current database with the input password
-        /// </summary>
-        private void OpenDatabaseTimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            var databaseModel = databaseRepository.LoadDatabase(databasePath, Password);
-            if (databaseModel is null)
+            database = databaseRepository.LoadDatabase(databasePath, Password);
+            if (database is null)
             {
-                Error = "Couldn't open the database";
+                databaseOpeningResult = false;
+                // Call this even if the icons aren't loaded
+                IconsLoadedEventHandler(this, null);
             }
             else
             {
+                databaseOpeningResult = true;
+                iconsService.LoadIcons(Password);
+            }
+        }
+
+        /// <summary>
+        /// Icons loaded event handler, wait for 2 seconds in total to display data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IconsLoadedEventHandler(object sender, EventArgs e)
+        {
+            var timespan = DateTime.Now - databaseOpeningStartTime;
+
+            var remaining = 2000 - timespan.TotalMilliseconds;
+            if (remaining > 0)
+            {
+                // Set a timer to avoid bruteforce on the database opening
+                var timer = new Timer(remaining)
+                {
+                    Enabled = true,
+                    AutoReset = false
+                };
+                timer.Elapsed += OpenDatabaseTimerElapsed;
+            }
+            else
+            {
+                OpenDatabaseTimerElapsed(this, null);
+            }
+        }
+
+        /// <summary>
+        /// Display the data opening attempt informations (open or show error)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenDatabaseTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (databaseOpeningResult)
+            {
                 UserControlVisibility = false;
-                // Need to use dispatcher because timers run in another thread
-                Application.Current.Dispatcher.Invoke(() => Messenger.Default.Send(new DatabaseLoadedMessage(this, databaseModel)));
+                Application.Current.Dispatcher.Invoke(() => Messenger.Default.Send(new DatabaseLoadedMessage(this, database)));
+            }
+            else
+            {
+                Error = "Couldn't open the database";
             }
 
             DatabaseOpeningInProgress = false;

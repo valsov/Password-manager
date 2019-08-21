@@ -20,6 +20,8 @@ namespace PasswordManager.ViewModel
 
         IPasswordService passwordService;
 
+        IIconsService iconsService;
+
         /// <summary>
         /// Password entry used to backup before an edition
         /// </summary>
@@ -232,7 +234,7 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand CopyUsernameCommand { get; private set; }
 
-        public RelayCommand CopyWebsiteCommand { get; private set; }
+        public RelayCommand OpenWebsiteCommand { get; private set; }
 
         public RelayCommand OpenPasswordGenerationDialogCommand { get; private set; }
 
@@ -246,10 +248,14 @@ namespace PasswordManager.ViewModel
         /// <param name="databaseRepository"></param>
         /// <param name="passwordService"></param>
         public EntryViewModel(IDatabaseRepository databaseRepository,
-                              IPasswordService passwordService)
+                              IPasswordService passwordService,
+                              IIconsService iconsService)
         {
             this.databaseRepository = databaseRepository;
             this.passwordService = passwordService;
+            this.iconsService = iconsService;
+
+            iconsService.IconDownloadedEvent += IconDownloadedEventHandler;
 
             backupPasswordEntry = new PasswordEntryModel();
             Categories = new ObservableCollection<string>();
@@ -274,7 +280,7 @@ namespace PasswordManager.ViewModel
             CancelEntryCreationCommand = new RelayCommand(CancelCreation);
             CopyPasswordCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Password)));
             CopyUsernameCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Username)));
-            CopyWebsiteCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Website)));
+            OpenWebsiteCommand = new RelayCommand(OpenWebsite);
             OpenPasswordGenerationDialogCommand = new RelayCommand(OpenPasswordGenerationDialog);
             GeneratePasswordCommand = new RelayCommand(GeneratePassword);
             CancelPasswordGenerationCommand = new RelayCommand(CancelPasswordGeneration);
@@ -351,7 +357,9 @@ namespace PasswordManager.ViewModel
             // Copy to avoid same instance manipulation
             var copy = PasswordEntry.Copy();
             databaseRepository.UpdatePasswordEntry(copy);
+            iconsService.DownloadIcon(copy.Website, databaseRepository.GetDatabase().MainPassword);
             Messenger.Default.Send(new EntryEditedMessage(this, copy));
+            RaisePropertyChanged(nameof(PasswordEntry));
             SetElementsVisibility(ViewModes.View);
         }
 
@@ -386,6 +394,7 @@ namespace PasswordManager.ViewModel
         {
             var copy = PasswordEntry.Copy();
             databaseRepository.AddPasswordEntry(copy);
+            iconsService.DownloadIcon(copy.Website, databaseRepository.GetDatabase().MainPassword);
             Messenger.Default.Send(new EntryAddedMessage(this, copy));
         }
 
@@ -503,6 +512,15 @@ namespace PasswordManager.ViewModel
         }
 
         /// <summary>
+        /// Call the OpenWebsite extension method
+        /// </summary>
+        /// <param name="obj"></param>
+        private void OpenWebsite()
+        {
+            PasswordEntry.OpenWebsite();
+        }
+
+        /// <summary>
         /// Setup and open the password generation dialog
         /// </summary>
         private void OpenPasswordGenerationDialog()
@@ -539,6 +557,16 @@ namespace PasswordManager.ViewModel
         private void PasswordPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             PasswordEntry.PasswordStrength = passwordService.CheckPasswordStrength(PasswordEntry.Password);
+            RaisePropertyChanged(nameof(PasswordEntry));
+        }
+
+        /// <summary>
+        /// When an icon is loaded, update the view to display it
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IconDownloadedEventHandler(object sender, EventArgs e)
+        {
             RaisePropertyChanged(nameof(PasswordEntry));
         }
     }

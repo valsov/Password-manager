@@ -6,6 +6,9 @@ using System.Windows.Data;
 
 namespace PasswordManager.Converters
 {
+    /// <summary>
+    /// Convert an enum value to its description attribute data
+    /// </summary>
     public class EnumToDescriptionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

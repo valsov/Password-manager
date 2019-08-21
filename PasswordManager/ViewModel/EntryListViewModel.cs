@@ -4,6 +4,8 @@ using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Extensions;
 using PasswordManager.Messengers;
 using PasswordManager.Model;
+using PasswordManager.Service.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,6 +13,8 @@ namespace PasswordManager.ViewModel
 {
     public class EntryListViewModel : ViewModelBase
     {
+        private IIconsService iconsService;
+
         private string selectedCategory;
 
         /// <summary>
@@ -72,13 +76,17 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand<PasswordEntryModel> CopyUsernameCommand { get; private set; }
 
-        public RelayCommand<PasswordEntryModel> CopyWebsiteCommand { get; private set; }
+        public RelayCommand<PasswordEntryModel> OpenWebsiteCommand { get; private set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public EntryListViewModel()
+        public EntryListViewModel(IIconsService iconsService)
         {
+            this.iconsService = iconsService;
+
+            iconsService.IconDownloadedEvent += IconDownloadedEventHandler;
+
             basePasswordEntries = new List<PasswordEntryModel>();
 
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
@@ -94,7 +102,7 @@ namespace PasswordManager.ViewModel
             AddEntryCommand = new RelayCommand(AddEntry);
             CopyPasswordCommand = new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Password)));
             CopyUsernameCommand = new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Username)));
-            CopyWebsiteCommand = new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Website)));
+            OpenWebsiteCommand = new RelayCommand<PasswordEntryModel>(OpenWebsite);
         }
 
         /// <summary>
@@ -224,6 +232,25 @@ namespace PasswordManager.ViewModel
         private void CopyToClipboard(PasswordEntryModel obj, string property)
         {
             obj.CopyDataToClipboard(property);
+        }
+
+        /// <summary>
+        /// Call the OpenWebsite extension method
+        /// </summary>
+        /// <param name="obj"></param>
+        private void OpenWebsite(PasswordEntryModel obj)
+        {
+            obj.OpenWebsite();
+        }
+
+        /// <summary>
+        /// When an icon is loaded, update the view to display it
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IconDownloadedEventHandler(object sender, EventArgs e)
+        {
+            RaisePropertyChanged(nameof(PasswordEntryList));
         }
     }
 }

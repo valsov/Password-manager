@@ -27,11 +27,24 @@ namespace PasswordManager.Service
         /// <returns></returns>
         public string Encrypt(string plainText, string passPhrase)
         {
+            var plainBytes = Encoding.UTF8.GetBytes(plainText);
+            var cipherBytes = Encrypt(plainBytes, passPhrase);
+            return Convert.ToBase64String(cipherBytes);
+        }
+
+        /// <summary>
+        /// Encrypt the given byte array with the given password
+        /// </summary>
+        /// <param name="plainText"></param>
+        /// <param name="passPhrase"></param>
+        /// <returns></returns>
+        public byte[] Encrypt(byte[] plainBytes, string passPhrase)
+        {
             // Salt and IV is randomly generated each time, but is preprended to encrypted cipher text
-            // so that the same Salt and IV values can be used when decrypting.  
+            // so that the same Salt and IV values can be used when decrypting.
             var saltStringBytes = Generate256BitsOfRandomEntropy();
             var ivStringBytes = Generate256BitsOfRandomEntropy();
-            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+
             using (var password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, ITERATIONS))
             {
                 var keyBytes = password.GetBytes(KEYSIZE / 8);
@@ -46,7 +59,7 @@ namespace PasswordManager.Service
                         {
                             using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
                             {
-                                cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
+                                cryptoStream.Write(plainBytes, 0, plainBytes.Length);
                                 cryptoStream.FlushFinalBlock();
                                 // Create the final bytes as a concatenation of the random salt bytes, the random iv bytes and the cipher bytes.
                                 var cipherTextBytes = saltStringBytes;
@@ -54,7 +67,7 @@ namespace PasswordManager.Service
                                 cipherTextBytes = cipherTextBytes.Concat(memoryStream.ToArray()).ToArray();
                                 memoryStream.Close();
                                 cryptoStream.Close();
-                                return Convert.ToBase64String(cipherTextBytes);
+                                return cipherTextBytes;
                             }
                         }
                     }
@@ -73,12 +86,24 @@ namespace PasswordManager.Service
             // Get the complete stream of bytes that represent:
             // [32 bytes of Salt] + [32 bytes of IV] + [n bytes of CipherText]
             var cipherTextBytesWithSaltAndIv = Convert.FromBase64String(cipherText);
+            var plainBytes = Decrypt(cipherTextBytesWithSaltAndIv, passPhrase);
+            return Encoding.UTF8.GetString(plainBytes);
+        }
+
+        /// <summary>
+        /// Decrypt the given byte array with the given password
+        /// </summary>
+        /// <param name="cipherText"></param>
+        /// <param name="passPhrase"></param>
+        /// <returns></returns>
+        public byte[] Decrypt(byte[] cipherBytes, string passPhrase)
+        {
             // Get the saltbytes by extracting the first 32 bytes from the supplied cipherText bytes.
-            var saltStringBytes = cipherTextBytesWithSaltAndIv.Take(KEYSIZE / 8).ToArray();
+            var saltStringBytes = cipherBytes.Take(KEYSIZE / 8).ToArray();
             // Get the IV bytes by extracting the next 32 bytes from the supplied cipherText bytes.
-            var ivStringBytes = cipherTextBytesWithSaltAndIv.Skip(KEYSIZE / 8).Take(KEYSIZE / 8).ToArray();
+            var ivStringBytes = cipherBytes.Skip(KEYSIZE / 8).Take(KEYSIZE / 8).ToArray();
             // Get the actual cipher text bytes by removing the first 64 bytes from the cipherText string.
-            var cipherTextBytes = cipherTextBytesWithSaltAndIv.Skip((KEYSIZE / 8) * 2).Take(cipherTextBytesWithSaltAndIv.Length - ((KEYSIZE / 8) * 2)).ToArray();
+            var cipherTextBytes = cipherBytes.Skip((KEYSIZE / 8) * 2).Take(cipherBytes.Length - ((KEYSIZE / 8) * 2)).ToArray();
 
             using (var password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, ITERATIONS))
             {
@@ -98,7 +123,7 @@ namespace PasswordManager.Service
                                 var decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
                                 memoryStream.Close();
                                 cryptoStream.Close();
-                                return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
+                                return plainTextBytes.Take(decryptedByteCount).ToArray();
                             }
                         }
                     }

@@ -53,8 +53,6 @@ namespace PasswordManager.Extensions
         /// <param name="property"></param>
         public static void CopyDataToClipboard(this PasswordEntryModel entry, string property)
         {
-            clipboardTimer.Stop();
-
             var data = string.Empty;
             switch (property)
             {
@@ -69,6 +67,10 @@ namespace PasswordManager.Extensions
                     break;
             }
 
+            if (data is null)
+                return;
+
+            clipboardTimer.Stop();
             Clipboard.SetText(data);
             clipboardTimer.Start();
         }
@@ -81,6 +83,27 @@ namespace PasswordManager.Extensions
         private static void ClipboardTimerElapsed(object sender, ElapsedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() => Clipboard.SetText(string.Empty));
+        }
+
+        /// <summary>
+        /// Open the Website property of the given PasswordEntryModel in the default browser
+        /// </summary>
+        /// <param name="entry"></param>
+        public static void OpenWebsite(this PasswordEntryModel entry)
+        {
+            var url = entry.Website;
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return;
+            }
+
+            // Need to add the protocol to be considered as a website url
+            if (!url.StartsWith("https://") || !url.StartsWith("http://"))
+            {
+                url = $"https://{url}";
+            }
+
+            System.Diagnostics.Process.Start(url);
         }
     }
 }
