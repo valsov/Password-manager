@@ -11,8 +11,6 @@ namespace PasswordManager.Repository
     /// </summary>
     public class SettingsRepository : ISettingsRepository
     {
-        const string SETTINGS_FILE_NAME = "settings.json";
-
         SettingsModel cache;
 
         /// <summary>
@@ -47,7 +45,7 @@ namespace PasswordManager.Repository
         {
             try
             {
-                var data = File.ReadAllText(SETTINGS_FILE_NAME);
+                var data = File.ReadAllText(Constants.SettingsFileName);
                 return JsonConvert.DeserializeObject<SettingsModel>(data);
             }
             catch (Exception)
@@ -65,7 +63,7 @@ namespace PasswordManager.Repository
             try
             {
                 var json = JsonConvert.SerializeObject(cache);
-                File.WriteAllText(SETTINGS_FILE_NAME, json);
+                File.WriteAllText(Constants.SettingsFileName, json);
                 return true;
             }
             catch (Exception)

@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -21,18 +20,6 @@ namespace PasswordManager.Service
         private IEncryptionService encryptionService;
 
         private IIconsRepository iconsRepository;
-
-        const string iconsPath = "icons";
-
-        const string iconsMappingFile = "mapping";
-
-        // Alternative : https://icons.duckduckgo.com/ip2/
-        const string iconsQueryUrl = "https://logo.clearbit.com/";
-
-        /// <summary>
-        /// Mapping data : [GUID, hostname]
-        /// </summary>
-        Dictionary<string, string> mapping;
 
         /// <summary>
         /// Triggered when the icons are loaded
@@ -53,7 +40,6 @@ namespace PasswordManager.Service
         {
             this.encryptionService = encryptionService;
             this.iconsRepository = iconsRepository;
-            mapping = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -93,7 +79,7 @@ namespace PasswordManager.Service
 
             var client = new WebClient();
             client.DownloadDataCompleted += DownloadFileCompleted(hostname);
-            var uri = new Uri(string.Concat(iconsQueryUrl, hostname, "?size=30"));
+            var uri = new Uri(string.Concat(Constants.IconsQueryUrl, hostname, "?size=30"));
             client.DownloadDataAsync(uri);
         }
 
@@ -115,16 +101,16 @@ namespace PasswordManager.Service
         {
             CheckIconsDirectory();
 
-            if (!LoadMapping())
+            if (!iconsRepository.LoadMapping())
             {
                 // No mapping file was loaded, can't load the icons
                 IconsLoadedEvent?.Invoke(this, new EventArgs());
                 return;
             }
 
-            foreach (var file in Directory.GetFiles(iconsPath))
+            foreach (var file in Directory.GetFiles(Constants.IconsPath))
             {
-                if (!mapping.TryGetValue(Path.GetFileName(file), out string hostname))
+                if (!iconsRepository.TryGetMappingValue(Path.GetFileName(file), out string hostname))
                 {
                     // File isn't listed in mapping, skip
                     continue;
@@ -149,54 +135,6 @@ namespace PasswordManager.Service
             }
 
             IconsLoadedEvent?.Invoke(this, new EventArgs());
-        }
-
-        /// <summary>
-        /// Load mapping data from disk
-        /// </summary>
-        /// <returns></returns>
-        private bool LoadMapping()
-        {
-            var path = Path.Combine(iconsPath, iconsMappingFile);
-            if (!File.Exists(path))
-            {
-                return false;
-            }
-
-            try
-            {
-                var encryptedContent = File.ReadAllText(path);
-                var json = encryptionService.Decrypt(encryptedContent);
-                mapping = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Update mapping data and mapping file
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="hostname"></param>
-        private void UpdateMapping(string key, string hostname)
-        {
-            var path = Path.Combine(iconsPath, iconsMappingFile);
-            mapping.Add(key, hostname);
-
-            try
-            {
-                var json = JsonConvert.SerializeObject(mapping);
-                var encryptedData = encryptionService.Encrypt(json);
-                File.WriteAllText(path, encryptedData);
-            }
-            catch (Exception)
-            {
-                // Ignore
-            }
         }
 
         /// <summary>
@@ -249,14 +187,14 @@ namespace PasswordManager.Service
         /// </summary>
         void CheckIconsDirectory()
         {
-            if (!Directory.Exists(iconsPath))
+            if (!Directory.Exists(Constants.IconsPath))
             {
-                Directory.CreateDirectory(iconsPath);
+                Directory.CreateDirectory(Constants.IconsPath);
             }
         }
 
         /// <summary>
-        /// Download file completed event handler, update the mapping and load the bitmap into the repository
+        /// Download file completed event handler, load the bitmap into the repository
         /// </summary>
         /// <param name="hostname"></param>
         /// <returns></returns>
@@ -265,10 +203,10 @@ namespace PasswordManager.Service
             Action<object, DownloadDataCompletedEventArgs> action = (sender, e) =>
             {
                 var _hostname = hostname;
+                BitmapSource bitmapSource;
                 try
                 {
-                    var bitmapSource = ConvertBytesToBitmapSource(e.Result);
-                    iconsRepository.AddIcon(bitmapSource, _hostname);
+                    bitmapSource = ConvertBytesToBitmapSource(e.Result);
                 }
                 catch (Exception)
                 {
@@ -276,10 +214,9 @@ namespace PasswordManager.Service
                     return;
                 }
 
+                var guid = iconsRepository.AddIcon(bitmapSource, _hostname);
                 var encryptedBytes = encryptionService.Encrypt(e.Result);
-                var guid = Guid.NewGuid().ToString();
-                File.WriteAllBytes(Path.Combine(iconsPath, guid), encryptedBytes);
-                UpdateMapping(guid, _hostname);
+                File.WriteAllBytes(Path.Combine(Constants.IconsPath, guid), encryptedBytes);
 
                 IconDownloadedEvent?.Invoke(this, new EventArgs());
             };

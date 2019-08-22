@@ -9,8 +9,6 @@ namespace PasswordManager.Extensions
     /// </summary>
     public static class PasswordEntryModelExtension
     {
-        const int clipboardTimerDuration = 7000;
-
         private static Timer clipboardTimer;
 
         /// <summary>
@@ -18,7 +16,7 @@ namespace PasswordManager.Extensions
         /// </summary>
         static PasswordEntryModelExtension()
         {
-            clipboardTimer = new Timer(clipboardTimerDuration)
+            clipboardTimer = new Timer(Constants.ClipboardTimerDuration)
             {
                 AutoReset = false,
                 Enabled = false
