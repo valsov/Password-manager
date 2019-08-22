@@ -27,11 +27,12 @@ namespace PasswordManager.Repository.Interfaces
         void UnloadDatabase();
 
         /// <summary>
-        /// Write the given batabase to the storage
+        /// Write the given batabase to the storage with the given encryption key
         /// </summary>
         /// <param name="database"></param>
+        /// <param name="password"></param>
         /// <returns></returns>
-        bool WriteDatabase(DatabaseModel database);
+        bool WriteDatabase(DatabaseModel database, string password);
 
         /// <summary>
         /// Update the cache's corresponding PasswordEntry with the given entry

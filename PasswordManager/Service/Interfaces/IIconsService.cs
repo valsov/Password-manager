@@ -21,8 +21,7 @@ namespace PasswordManager.Service.Interfaces
         /// <summary>
         /// Load the icons from their directory, async
         /// </summary>
-        /// <param name="password"></param>
-        void LoadIcons(string password);
+        void LoadIcons();
 
         /// <summary>
         /// Unload the icons from the memory
@@ -33,8 +32,7 @@ namespace PasswordManager.Service.Interfaces
         /// Download an icon and save it to the disk, encrypted
         /// </summary>
         /// <param name="url"></param>
-        /// <param name="password"></param>
-        void DownloadIcon(string url, string password);
+        void DownloadIcon(string url);
 
         /// <summary>
         /// Get an icon from the memory

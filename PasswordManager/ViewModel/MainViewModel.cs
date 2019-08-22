@@ -18,6 +18,8 @@ namespace PasswordManager.ViewModel
 
         IIconsService iconsService;
 
+        IEncryptionService encryptionService;
+
         private string databaseName;
         /// <summary>
         /// Name of the loaded database, to be displayed to the user
@@ -61,11 +63,13 @@ namespace PasswordManager.ViewModel
         /// </summary>
         public MainViewModel(ISettingsService settingsService,
                              IDatabaseRepository databaseRepository,
-                             IIconsService iconsService)
+                             IIconsService iconsService,
+                             IEncryptionService encryptionService)
         {
             this.settingsService = settingsService;
             this.databaseRepository = databaseRepository;
             this.iconsService = iconsService;
+            this.encryptionService = encryptionService;
 
             MainViewVisibility = false;
 
@@ -101,9 +105,12 @@ namespace PasswordManager.ViewModel
         {
             MainViewVisibility = false;
             DatabaseName = string.Empty;
+
             var path = settingsService.GetDatabasePath();
             databaseRepository.UnloadDatabase();
             iconsService.UnloadIcons();
+            encryptionService.Clear();
+
             Messenger.Default.Send(new DatabaseUnloadedMessage(this));
             Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this, path));
         }

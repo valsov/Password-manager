@@ -357,7 +357,7 @@ namespace PasswordManager.ViewModel
             // Copy to avoid same instance manipulation
             var copy = PasswordEntry.Copy();
             databaseRepository.UpdatePasswordEntry(copy);
-            iconsService.DownloadIcon(copy.Website, databaseRepository.GetDatabase().MainPassword);
+            iconsService.DownloadIcon(copy.Website);
             Messenger.Default.Send(new EntryEditedMessage(this, copy));
             RaisePropertyChanged(nameof(PasswordEntry));
             SetElementsVisibility(ViewModes.View);
@@ -394,7 +394,7 @@ namespace PasswordManager.ViewModel
         {
             var copy = PasswordEntry.Copy();
             databaseRepository.AddPasswordEntry(copy);
-            iconsService.DownloadIcon(copy.Website, databaseRepository.GetDatabase().MainPassword);
+            iconsService.DownloadIcon(copy.Website);
             Messenger.Default.Send(new EntryAddedMessage(this, copy));
         }
 

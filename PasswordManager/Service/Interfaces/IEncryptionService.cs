@@ -6,35 +6,42 @@
     public interface IEncryptionService
     {
         /// <summary>
-        /// Encrypt the given string with the given password
+        /// Convert the key to a byte array and store it into the repository
         /// </summary>
-        /// <param name="plainText"></param>
-        /// <param name="passPhrase"></param>
-        /// <returns></returns>
-        string Encrypt(string plainText, string passPhrase);
+        /// <param name="key"></param>
+        void Initialize(string key);
 
         /// <summary>
-        /// Encrypt the given byte array with the given password
+        /// Unload the key from the repository
+        /// </summary>
+        void Clear();
+
+        /// <summary>
+        /// Encrypt the given string
         /// </summary>
         /// <param name="plainText"></param>
-        /// <param name="passPhrase"></param>
         /// <returns></returns>
-        byte[] Encrypt(byte[] plainBytes, string passPhrase);
+        string Encrypt(string plainText);
+
+        /// <summary>
+        /// Encrypt the given byte array
+        /// </summary>
+        /// <param name="plainBytes"></param>
+        /// <returns></returns>
+        byte[] Encrypt(byte[] plainBytes);
         
         /// <summary>
-        /// Decrypt the given string with the given password
+        /// Decrypt the given string
         /// </summary>
         /// <param name="cipherText"></param>
-        /// <param name="passPhrase"></param>
         /// <returns></returns>
-        string Decrypt(string cipherText, string passPhrase);
+        string Decrypt(string cipherText);
 
         /// <summary>
-        /// Decrypt the given byte array with the given password
+        /// Decrypt the given byte array
         /// </summary>
-        /// <param name="cipherText"></param>
-        /// <param name="passPhrase"></param>
+        /// <param name="cypherBytes"></param>
         /// <returns></returns>
-        byte[] Decrypt(byte[] cypherBytes, string passPhrase);
+        byte[] Decrypt(byte[] cypherBytes);
     }
 }

@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 namespace PasswordManager.Repository
 {
     /// <summary>
-    /// Implementation of IIconsRepository interface, Provides an access to the user's websites icons
+    /// Implementation of IIconsRepository interface, provides an access to the user's websites icons
     /// </summary>
     public class IconsRepository : IIconsRepository
     {

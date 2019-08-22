@@ -173,7 +173,7 @@ namespace PasswordManager.ViewModel
                 MainPassword = Password
             };
 
-            var result = databaseRepository.WriteDatabase(databaseModel);
+            var result = databaseRepository.WriteDatabase(databaseModel, Password);
             if (result)
             {
                 UserControlVisibility = false;
@@ -182,7 +182,7 @@ namespace PasswordManager.ViewModel
             }
             else
             {
-                Error = "IO error: Couldn't create the database";
+                Error = "Couldn't create the database";
             }
         }
 

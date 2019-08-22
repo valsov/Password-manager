@@ -63,11 +63,18 @@ namespace PasswordManager.Repository
         /// Write the given batabase to the storage
         /// </summary>
         /// <param name="database"></param>
+        /// <param name="password"></param>
         /// <returns></returns>
-        public bool WriteDatabase(DatabaseModel database)
+        public bool WriteDatabase(DatabaseModel database, string password)
         {
+            encryptionService.Initialize(password);
             cache = database;
-            return InternalWriteDatabase();
+            var result = InternalWriteDatabase();
+            if (!result)
+            {
+                encryptionService.Clear();
+            }
+            return result;
         }
 
         /// <summary>
@@ -181,7 +188,9 @@ namespace PasswordManager.Repository
             try
             {
                 var encryptedJson = File.ReadAllText(path);
-                var json = encryptionService.Decrypt(encryptedJson, password);
+                // Initialize Encryption service with the given key
+                encryptionService.Initialize(password);
+                var json = encryptionService.Decrypt(encryptedJson);
                 if (string.IsNullOrEmpty(json))
                 {
                     throw new Exception();
@@ -190,6 +199,7 @@ namespace PasswordManager.Repository
             }
             catch (Exception)
             {
+                encryptionService.Clear();
                 return null;
             }
         }
@@ -203,7 +213,7 @@ namespace PasswordManager.Repository
             try
             {
                 var json = JsonConvert.SerializeObject(cache);
-                var encryptedJson = encryptionService.Encrypt(json, cache.MainPassword);
+                var encryptedJson = encryptionService.Encrypt(json);
                 File.WriteAllText(cache.Path, encryptedJson);
                 return true;
             }

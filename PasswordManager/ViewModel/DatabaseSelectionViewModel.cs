@@ -225,7 +225,7 @@ namespace PasswordManager.ViewModel
             else
             {
                 databaseOpeningResult = true;
-                iconsService.LoadIcons(Password);
+                iconsService.LoadIcons();
             }
         }
 

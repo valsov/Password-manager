@@ -24,6 +24,7 @@ namespace PasswordManager.ViewModel
             SimpleIoc.Default.Register<ISettingsRepository, SettingsRepository>();
             SimpleIoc.Default.Register<IDatabaseRepository, DatabaseRepository>();
             SimpleIoc.Default.Register<IIconsRepository, IconsRepository>();
+            SimpleIoc.Default.Register<ISecurityRepository, SecurityRepository>();
 
             // Register Services
             SimpleIoc.Default.Register<IEncryptionService, EncryptionService>();

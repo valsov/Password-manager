@@ -59,10 +59,9 @@ namespace PasswordManager.Service
         /// <summary>
         /// Load the icons from their directory, async
         /// </summary>
-        /// <param name="password"></param>
-        public void LoadIcons(string password)
+        public void LoadIcons()
         {
-            Task.Run(() => InternalLoadIcons(password));
+            Task.Run(() => InternalLoadIcons());
         }
 
         /// <summary>
@@ -77,8 +76,7 @@ namespace PasswordManager.Service
         /// Download an icon and save it to the disk, encrypted
         /// </summary>
         /// <param name="url"></param>
-        /// <param name="password"></param>
-        public void DownloadIcon(string url, string password)
+        public void DownloadIcon(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
             {
@@ -94,7 +92,7 @@ namespace PasswordManager.Service
             }
 
             var client = new WebClient();
-            client.DownloadDataCompleted += DownloadFileCompleted(hostname, password);
+            client.DownloadDataCompleted += DownloadFileCompleted(hostname);
             var uri = new Uri(string.Concat(iconsQueryUrl, hostname, "?size=30"));
             client.DownloadDataAsync(uri);
         }
@@ -113,12 +111,11 @@ namespace PasswordManager.Service
         /// <summary>
         /// Load the mapping file and then load the icons based on it
         /// </summary>
-        /// <param name="password"></param>
-        void InternalLoadIcons(string password)
+        void InternalLoadIcons()
         {
             CheckIconsDirectory();
 
-            if (!LoadMapping(password))
+            if (!LoadMapping())
             {
                 // No mapping file was loaded, can't load the icons
                 IconsLoadedEvent?.Invoke(this, new EventArgs());
@@ -134,7 +131,7 @@ namespace PasswordManager.Service
                 }
 
                 var encryptedBytes = File.ReadAllBytes(file);
-                var iconBytes = encryptionService.Decrypt(encryptedBytes, password);
+                var iconBytes = encryptionService.Decrypt(encryptedBytes);
 
                 BitmapSource bitmapSource;
                 try
@@ -157,9 +154,8 @@ namespace PasswordManager.Service
         /// <summary>
         /// Load mapping data from disk
         /// </summary>
-        /// <param name="password"></param>
         /// <returns></returns>
-        private bool LoadMapping(string password)
+        private bool LoadMapping()
         {
             var path = Path.Combine(iconsPath, iconsMappingFile);
             if (!File.Exists(path))
@@ -170,7 +166,7 @@ namespace PasswordManager.Service
             try
             {
                 var encryptedContent = File.ReadAllText(path);
-                var json = encryptionService.Decrypt(encryptedContent, password);
+                var json = encryptionService.Decrypt(encryptedContent);
                 mapping = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
             }
             catch (Exception)
@@ -186,8 +182,7 @@ namespace PasswordManager.Service
         /// </summary>
         /// <param name="key"></param>
         /// <param name="hostname"></param>
-        /// <param name="password"></param>
-        private void UpdateMapping(string key, string hostname, string password)
+        private void UpdateMapping(string key, string hostname)
         {
             var path = Path.Combine(iconsPath, iconsMappingFile);
             mapping.Add(key, hostname);
@@ -195,7 +190,7 @@ namespace PasswordManager.Service
             try
             {
                 var json = JsonConvert.SerializeObject(mapping);
-                var encryptedData = encryptionService.Encrypt(json, password);
+                var encryptedData = encryptionService.Encrypt(json);
                 File.WriteAllText(path, encryptedData);
             }
             catch (Exception)
@@ -264,9 +259,8 @@ namespace PasswordManager.Service
         /// Download file completed event handler, update the mapping and load the bitmap into the repository
         /// </summary>
         /// <param name="hostname"></param>
-        /// <param name="password"></param>
         /// <returns></returns>
-        DownloadDataCompletedEventHandler DownloadFileCompleted(string hostname, string password)
+        DownloadDataCompletedEventHandler DownloadFileCompleted(string hostname)
         {
             Action<object, DownloadDataCompletedEventArgs> action = (sender, e) =>
             {
@@ -282,10 +276,10 @@ namespace PasswordManager.Service
                     return;
                 }
 
-                var encryptedBytes = encryptionService.Encrypt(e.Result, password);
+                var encryptedBytes = encryptionService.Encrypt(e.Result);
                 var guid = Guid.NewGuid().ToString();
                 File.WriteAllBytes(Path.Combine(iconsPath, guid), encryptedBytes);
-                UpdateMapping(guid, _hostname, password);
+                UpdateMapping(guid, _hostname);
 
                 IconDownloadedEvent?.Invoke(this, new EventArgs());
             };
