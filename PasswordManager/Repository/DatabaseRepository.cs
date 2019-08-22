@@ -35,10 +35,6 @@ namespace PasswordManager.Repository
         public DatabaseModel LoadDatabase(string path, string password)
         {
             cache = InternalGetDatabase(path, password);
-            if (cache != null)
-            {
-                cache.MainPassword = password;
-            }
             return cache;
         }
 

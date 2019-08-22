@@ -169,8 +169,7 @@ namespace PasswordManager.ViewModel
                 Name = DatabaseName,
                 Path = databasePath,
                 Categories = new List<string>(),
-                PasswordEntries = new List<PasswordEntryModel>(),
-                MainPassword = Password
+                PasswordEntries = new List<PasswordEntryModel>()
             };
 
             var result = databaseRepository.WriteDatabase(databaseModel, Password);

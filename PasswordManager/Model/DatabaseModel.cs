@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PasswordManager.Model
 {
@@ -27,11 +26,5 @@ namespace PasswordManager.Model
         /// List of categories
         /// </summary>
         public List<string> Categories { get; set; }
-
-        /// <summary>
-        /// Password used to encrypt the database, it is never written on disk
-        /// </summary>
-        [JsonIgnore]
-        public string MainPassword { get; set; }
     }
 }
