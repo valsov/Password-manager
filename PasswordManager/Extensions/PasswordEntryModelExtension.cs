@@ -1,4 +1,5 @@
 ﻿using PasswordManager.Model;
+using System;
 using System.Timers;
 using System.Windows;
 
@@ -10,6 +11,16 @@ namespace PasswordManager.Extensions
     public static class PasswordEntryModelExtension
     {
         private static Timer clipboardTimer;
+
+        /// <summary>
+        /// Copy data started event
+        /// </summary>
+        public static event EventHandler CopyDataStart;
+
+        /// <summary>
+        /// Copy data ended event
+        /// </summary>
+        public static event EventHandler CopyDataEnd;
 
         /// <summary>
         /// Constructor
@@ -70,6 +81,7 @@ namespace PasswordManager.Extensions
 
             clipboardTimer.Stop();
             Clipboard.SetText(data);
+            CopyDataStart?.Invoke(null, null);
             clipboardTimer.Start();
         }
 
@@ -80,6 +92,7 @@ namespace PasswordManager.Extensions
         /// <param name="e"></param>
         private static void ClipboardTimerElapsed(object sender, ElapsedEventArgs e)
         {
+            Application.Current.Dispatcher.Invoke(() => CopyDataEnd.Invoke(null, null));
             Application.Current.Dispatcher.Invoke(() => Clipboard.SetText(string.Empty));
         }
 

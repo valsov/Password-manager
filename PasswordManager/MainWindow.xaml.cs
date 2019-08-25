@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows;
-using System.Windows.Forms;
+using System.Windows.Controls;
+using Forms = System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
+using PasswordManager.Extensions;
+using System.Windows.Shell;
+using System.Diagnostics;
 
 namespace PasswordManager
 {
@@ -11,20 +16,20 @@ namespace PasswordManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        NotifyIcon trayIcon;
+        Forms.NotifyIcon trayIcon;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            trayIcon = new NotifyIcon()
+            trayIcon = new Forms.NotifyIcon()
             {
                 Visible = true,
                 Text = "Password manager",
-                ContextMenu = new ContextMenu(new MenuItem[]
+                ContextMenu = new Forms.ContextMenu(new Forms.MenuItem[]
                 {
-                    new MenuItem("Show", (x,y) => this.Show()),
-                    new MenuItem("Exit", (x,y) => this.Close())
+                    new Forms.MenuItem("Show", (x,y) => this.Show()),
+                    new Forms.MenuItem("Exit", (x,y) => this.Close())
                 })
             };
             trayIcon.Click += delegate
@@ -39,6 +44,13 @@ namespace PasswordManager
             {
                 trayIcon.Icon = new Icon(iconStream);
             }
+            TaskbarItemInfo = new TaskbarItemInfo()
+            {
+                ProgressState = TaskbarItemProgressState.Normal
+            };
+
+            PasswordEntryModelExtension.CopyDataStart += CopyDataStartEventHandler;
+            PasswordEntryModelExtension.CopyDataEnd += CopyDataEndEventHandler;
         }
 
         public void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -55,6 +67,31 @@ namespace PasswordManager
         {
             trayIcon.Dispose();
             this.Close();
+        }
+
+        private void CopyDataStartEventHandler(object sender, EventArgs e)
+        {
+            DataCopyDecayProgressBar.Value = 100;
+            DataCopyDecayProgressBar.Visibility = Visibility.Visible;
+
+            // Stop eventual previous animation
+            DataCopyDecayProgressBar.BeginAnimation(ProgressBar.ValueProperty, null);
+
+            // Start new animation
+            var doubleAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromSeconds(7)));
+            DataCopyDecayProgressBar.BeginAnimation(ProgressBar.ValueProperty, doubleAnimation);
+        }
+
+        private void CopyDataEndEventHandler(object sender, EventArgs e)
+        {
+            DataCopyDecayProgressBar.Visibility = Visibility.Collapsed;
+            DataCopyDecayProgressBar.Value = 100;
+        }
+
+        private void DataCopyDecayProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Debug.WriteLine((e.NewValue / 100).ToString());
+            TaskbarItemInfo.ProgressValue = e.NewValue / 100;
         }
     }
 }

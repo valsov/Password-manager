@@ -25,6 +25,7 @@
     <Grid>
         <Grid.Resources>
             <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter" />
         </Grid.Resources>
         <Border
             Visibility="{Binding MainViewVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -95,22 +96,32 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid
-                    Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="4*" />
-                        <ColumnDefinition Width="6*" />
-                    </Grid.ColumnDefinitions>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="6*" />
+                        </Grid.ColumnDefinitions>
 
-                    <view:CategoryListView
-                    Grid.Column="0"/>
+                        <view:CategoryListView Grid.Column="0"/>
 
-                    <view:EntryListView
-                    Grid.Column="1"/>
+                        <view:EntryListView Grid.Column="1"/>
 
-                    <view:EntryView
-                    Grid.Column="2" />
+                        <view:EntryView Grid.Column="2" />
+                    </Grid>
+
+                    <ProgressBar
+                        Grid.Row="1"
+                        Name="DataCopyDecayProgressBar"
+                        Visibility="Collapsed"
+                        ValueChanged="DataCopyDecayProgressBar_ValueChanged"
+                        materialDesign:TransitionAssist.DisableTransitions="True" />
                 </Grid>
             </Grid>
         </Border>
