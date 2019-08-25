@@ -7,7 +7,6 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using PasswordManager.Extensions;
 using System.Windows.Shell;
-using System.Diagnostics;
 
 namespace PasswordManager
 {
@@ -40,7 +39,7 @@ namespace PasswordManager
                 }
             };
 
-            using (var iconStream = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/icon.ico")).Stream)
+            using (var iconStream = Application.GetResourceStream(new Uri("pack://application:,,,/icon.ico")).Stream)
             {
                 trayIcon.Icon = new Icon(iconStream);
             }
@@ -90,7 +89,6 @@ namespace PasswordManager
 
         private void DataCopyDecayProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Debug.WriteLine((e.NewValue / 100).ToString());
             TaskbarItemInfo.ProgressValue = e.NewValue / 100;
         }
     }
