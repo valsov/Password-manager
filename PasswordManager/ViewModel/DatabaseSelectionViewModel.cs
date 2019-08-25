@@ -9,7 +9,6 @@ using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 
@@ -60,6 +59,23 @@ namespace PasswordManager.ViewModel
                 password = value;
                 RaisePropertyChanged(nameof(Password));
                 RaisePropertyChanged(nameof(TryOpenDatabaseEnabled));
+            }
+        }
+
+        private bool showPassword;
+        /// <summary>
+        /// Should display password as plaintext or confidentiality dots
+        /// </summary>
+        public bool ShowPassword
+        {
+            get
+            {
+                return showPassword;
+            }
+            set
+            {
+                showPassword = value;
+                RaisePropertyChanged(nameof(ShowPassword));
             }
         }
 
@@ -170,9 +186,15 @@ namespace PasswordManager.ViewModel
         /// <param name="obj"></param>
         private void ShowUserControl(ShowDatabaseSelectionViewMessage obj)
         {
-            DatabasePath = obj.Path;
+            if(!(obj.Sender is DatabaseCreationViewModel))
+            {
+                // Don't lose the path on back and forth navigation
+                DatabasePath = obj.Path;
+            }
+
             database = null;
             Password = string.Empty;
+            ShowPassword = false;
             Error = string.Empty;
             UserControlVisibility = true;
         }

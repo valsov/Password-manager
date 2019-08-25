@@ -6,17 +6,17 @@ using System.Windows.Data;
 namespace PasswordManager.Converters
 {
     /// <summary>
-    /// Convert a string value to a visibility
+    /// Convert a boolean value to a visibility
     /// </summary>
     /// <remarks>
-    /// null or empty string => Visibility.Hidden
+    /// true => Visibility.Collapsed, false => Visibility.Visible
     /// </remarks>
-    public class EmptyStringToVisibilityConverter : IValueConverter
+    public class InvertedBooleanToCollapsedVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var data = value as string;
-            return string.IsNullOrEmpty(data) ? Visibility.Collapsed : Visibility.Visible;
+            var booleanValue = (bool)value;
+            return booleanValue ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

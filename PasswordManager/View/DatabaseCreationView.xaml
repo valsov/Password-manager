@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PasswordManager.View"
+             xmlns:styles="clr-namespace:PasswordManager.Style"
              xmlns:converters="clr-namespace:PasswordManager.Converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
@@ -11,6 +12,8 @@
              DataContext="{Binding DatabaseCreation, Source={StaticResource Locator}}">
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter" />
+        <converters:InvertedBooleanToCollapsedVisibilityConverter x:Key="InvertedBooleanToCollapsedVisibilityConverter" />
     </UserControl.Resources>
     <Grid
         Background="White"
@@ -102,13 +105,36 @@
                     FontSize="14"
                     Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                     materialDesign:HintAssist.Hint="Password"
-                    materialDesign:HintAssist.IsFloating="True">
+                    materialDesign:HintAssist.IsFloating="True"
+                    Visibility="{Binding ShowPassword, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
                     <TextBox.InputBindings>
                         <KeyBinding
                             Key="Return"
                             Command="{Binding CreateDatabaseCommand}" />
                     </TextBox.InputBindings>
                 </TextBox>
+                <styles:BindablePasswordBox
+                    Margin="0 10 0 0"
+                    FontSize="14"
+                    materialDesign:HintAssist.Hint="Password"
+                    materialDesign:HintAssist.IsFloating="True"
+                    Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                    Visibility="{Binding ShowPassword, Converter={StaticResource InvertedBooleanToCollapsedVisibilityConverter}}">
+                    <styles:BindablePasswordBox.InputBindings>
+                        <KeyBinding
+                            Key="Return"
+                            Command="{Binding CreateDatabaseCommand}" />
+                    </styles:BindablePasswordBox.InputBindings>
+                </styles:BindablePasswordBox>
+
+                <CheckBox
+                    Margin="0 5 0 0"
+                    Width="60"
+                    HorizontalAlignment="Left"
+                    Content="Show"
+                    Cursor="Hand"
+                    IsChecked="{Binding ShowPassword}" />
+                
                 <Button
                     Margin="0 50 0 0"
                     Content="Create Database"

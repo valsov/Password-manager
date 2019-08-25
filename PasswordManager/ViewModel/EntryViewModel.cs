@@ -49,6 +49,23 @@ namespace PasswordManager.ViewModel
         /// </summary>
         public ObservableCollection<string> Categories { get; set; }
 
+        private bool showPassword;
+        /// <summary>
+        /// Should display password as plaintext or confidentiality dots
+        /// </summary>
+        public bool ShowPassword
+        {
+            get
+            {
+                return showPassword;
+            }
+            set
+            {
+                showPassword = value;
+                RaisePropertyChanged(nameof(ShowPassword));
+            }
+        }
+
         /// <summary>
         /// List of password types for password generation
         /// </summary>
@@ -412,6 +429,8 @@ namespace PasswordManager.ViewModel
         /// <param name="mode"></param>
         private void SetElementsVisibility(ViewModes mode)
         {
+            ShowPassword = false;
+
             switch (mode)
             {
                 case ViewModes.View:

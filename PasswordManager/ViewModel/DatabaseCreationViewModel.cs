@@ -63,7 +63,25 @@ namespace PasswordManager.ViewModel
             set
             {
                 password = value;
+                RaisePropertyChanged(nameof(Password));
                 RaisePropertyChanged(nameof(IsCreateDatabaseEnabled));
+            }
+        }
+
+        private bool showPassword;
+        /// <summary>
+        /// Should display password as plaintext or confidentiality dots
+        /// </summary>
+        public bool ShowPassword
+        {
+            get
+            {
+                return showPassword;
+            }
+            set
+            {
+                showPassword = value;
+                RaisePropertyChanged(nameof(ShowPassword));
             }
         }
 
@@ -200,6 +218,8 @@ namespace PasswordManager.ViewModel
         /// <param name="message"></param>
         void ShowUserControl(ShowDatabaseCreationViewMessage message)
         {
+            Password = string.Empty;
+            ShowPassword = false;
             UserControlVisibility = true;
         }
 
