@@ -54,6 +54,23 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private bool databaseOpeningGroupVisibility;
+        /// <summary>
+        /// Visibility of the group containing database opening and creation views
+        /// </summary>
+        public bool DatabaseOpeningGroupVisibility
+        {
+            get
+            {
+                return databaseOpeningGroupVisibility;
+            }
+            set
+            {
+                databaseOpeningGroupVisibility = value;
+                RaisePropertyChanged(nameof(DatabaseOpeningGroupVisibility));
+            }
+        }
+
         public RelayCommand LoadedCommand { get; private set; }
 
         public RelayCommand CloseDatabaseCommand { get; private set; }
@@ -72,6 +89,7 @@ namespace PasswordManager.ViewModel
             this.encryptionService = encryptionService;
 
             MainViewVisibility = false;
+            DatabaseOpeningGroupVisibility = true;
 
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
 
@@ -86,6 +104,7 @@ namespace PasswordManager.ViewModel
         private void DatabaseLoadedHandler(DatabaseLoadedMessage obj)
         {
             DatabaseName = obj.DatabaseModel.Name;
+            DatabaseOpeningGroupVisibility = false;
             MainViewVisibility = true;
         }
 
@@ -104,6 +123,7 @@ namespace PasswordManager.ViewModel
         private void CloseDatabase()
         {
             MainViewVisibility = false;
+            DatabaseOpeningGroupVisibility = true;
             DatabaseName = string.Empty;
 
             var path = settingsService.GetDatabasePath();

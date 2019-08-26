@@ -135,23 +135,6 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private bool userControlVisibility;
-        /// <summary>
-        /// DatabaseSelection UserControl visibility
-        /// </summary>
-        public bool UserControlVisibility
-        {
-            get
-            {
-                return userControlVisibility;
-            }
-            set
-            {
-                userControlVisibility = value;
-                RaisePropertyChanged(nameof(UserControlVisibility));
-            }
-        }
-
         public RelayCommand SelectDatabaseFileCommand { get; private set; }
 
         public RelayCommand TryOpenDatabaseCommand { get; private set; }
@@ -170,10 +153,7 @@ namespace PasswordManager.ViewModel
 
             iconsService.IconsLoadedEvent += IconsLoadedEventHandler;
 
-            UserControlVisibility = false;
-
-            Messenger.Default.Register<ShowDatabaseSelectionViewMessage>(this, ShowUserControl);
-            Messenger.Default.Register<DatabaseLoadedMessage>(this, HideUserControl);
+            Messenger.Default.Register<ShowDatabaseSelectionViewMessage>(this, InitUserControl);
 
             SelectDatabaseFileCommand = new RelayCommand(SelectDatabaseFile);
             TryOpenDatabaseCommand = new RelayCommand(TryOpenDatabase);
@@ -181,10 +161,10 @@ namespace PasswordManager.ViewModel
         }
 
         /// <summary>
-        /// Display the UserControl and set the database path
+        /// Init the UserControl, set the database path
         /// </summary>
         /// <param name="obj"></param>
-        private void ShowUserControl(ShowDatabaseSelectionViewMessage obj)
+        private void InitUserControl(ShowDatabaseSelectionViewMessage obj)
         {
             if(!(obj.Sender is DatabaseCreationViewModel))
             {
@@ -196,16 +176,51 @@ namespace PasswordManager.ViewModel
             Password = string.Empty;
             ShowPassword = false;
             Error = string.Empty;
-            UserControlVisibility = true;
         }
 
         /// <summary>
-        /// Set UserControlVisibility to false
+        /// Icons loaded event handler, wait for 2 seconds in total to display data
         /// </summary>
-        /// <param name="obj"></param>
-        private void HideUserControl(DatabaseLoadedMessage obj)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IconsLoadedEventHandler(object sender, EventArgs e)
         {
-            UserControlVisibility = false;
+            var timespan = DateTime.Now - databaseOpeningStartTime;
+
+            var remaining = 2000 - timespan.TotalMilliseconds;
+            if (remaining > 0)
+            {
+                // Set a timer to avoid bruteforce on the database opening
+                var timer = new Timer(remaining)
+                {
+                    Enabled = true,
+                    AutoReset = false
+                };
+                timer.Elapsed += OpenDatabaseTimerElapsed;
+            }
+            else
+            {
+                OpenDatabaseTimerElapsed(this, null);
+            }
+        }
+
+        /// <summary>
+        /// Display the data opening attempt informations (open or show error)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenDatabaseTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (databaseOpeningResult)
+            {
+                Application.Current.Dispatcher.Invoke(() => Messenger.Default.Send(new DatabaseLoadedMessage(this, database)));
+            }
+            else
+            {
+                Error = "Couldn't open the database";
+            }
+
+            DatabaseOpeningInProgress = false;
         }
 
         /// <summary>
@@ -249,52 +264,6 @@ namespace PasswordManager.ViewModel
                 databaseOpeningResult = true;
                 iconsService.LoadIcons();
             }
-        }
-
-        /// <summary>
-        /// Icons loaded event handler, wait for 2 seconds in total to display data
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void IconsLoadedEventHandler(object sender, EventArgs e)
-        {
-            var timespan = DateTime.Now - databaseOpeningStartTime;
-
-            var remaining = 2000 - timespan.TotalMilliseconds;
-            if (remaining > 0)
-            {
-                // Set a timer to avoid bruteforce on the database opening
-                var timer = new Timer(remaining)
-                {
-                    Enabled = true,
-                    AutoReset = false
-                };
-                timer.Elapsed += OpenDatabaseTimerElapsed;
-            }
-            else
-            {
-                OpenDatabaseTimerElapsed(this, null);
-            }
-        }
-
-        /// <summary>
-        /// Display the data opening attempt informations (open or show error)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OpenDatabaseTimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            if (databaseOpeningResult)
-            {
-                UserControlVisibility = false;
-                Application.Current.Dispatcher.Invoke(() => Messenger.Default.Send(new DatabaseLoadedMessage(this, database)));
-            }
-            else
-            {
-                Error = "Couldn't open the database";
-            }
-
-            DatabaseOpeningInProgress = false;
         }
 
         /// <summary>

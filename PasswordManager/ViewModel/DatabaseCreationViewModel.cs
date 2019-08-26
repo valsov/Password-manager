@@ -113,23 +113,6 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        private bool userControlVisibility;
-        /// <summary>
-        /// DatabaseCreation UserControl visibility
-        /// </summary>
-        public bool UserControlVisibility
-        {
-            get
-            {
-                return userControlVisibility;
-            }
-            set
-            {
-                userControlVisibility = value;
-                RaisePropertyChanged(nameof(userControlVisibility));
-            }
-        }
-
         public RelayCommand SelectDatabaseFileCommand { get; private set; }
 
         public RelayCommand CreateDatabaseCommand { get; private set; }
@@ -144,14 +127,21 @@ namespace PasswordManager.ViewModel
         {
             this.databaseRepository = databaseRepository;
 
-            UserControlVisibility = false;
-
-            Messenger.Default.Register<ShowDatabaseCreationViewMessage>(this, ShowUserControl);
-            Messenger.Default.Register<DatabaseLoadedMessage>(this, HideUserControl);
+            Messenger.Default.Register<ShowDatabaseCreationViewMessage>(this, InitUserControl);
 
             SelectDatabaseFileCommand = new RelayCommand(SelectDatabaseFile);
             CreateDatabaseCommand = new RelayCommand(CreateDatabase);
             CancelDatabaseCreationCommand = new RelayCommand(CancelDatabaseCreation);
+        }
+
+        /// <summary>
+        /// Init the UserControl properties
+        /// </summary>
+        /// <param name="message"></param>
+        void InitUserControl(ShowDatabaseCreationViewMessage message)
+        {
+            Password = string.Empty;
+            ShowPassword = false;
         }
 
         /// <summary>
@@ -193,7 +183,6 @@ namespace PasswordManager.ViewModel
             var result = databaseRepository.WriteDatabase(databaseModel, Password);
             if (result)
             {
-                UserControlVisibility = false;
                 Transitioner.MovePreviousCommand.Execute(null, null);
                 Messenger.Default.Send(new DatabaseLoadedMessage(this, databaseModel));
             }
@@ -210,22 +199,6 @@ namespace PasswordManager.ViewModel
         {
             Transitioner.MovePreviousCommand.Execute(null, null);
             Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this, string.Empty));
-        }
-
-        /// <summary>
-        /// Show the linked UserControl : DatabaseCreationView
-        /// </summary>
-        /// <param name="message"></param>
-        void ShowUserControl(ShowDatabaseCreationViewMessage message)
-        {
-            Password = string.Empty;
-            ShowPassword = false;
-            UserControlVisibility = true;
-        }
-
-        private void HideUserControl(DatabaseLoadedMessage obj)
-        {
-            UserControlVisibility = false;
         }
     }
 }

@@ -25,7 +25,6 @@
     <Grid>
         <Grid.Resources>
             <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <converters:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter" />
         </Grid.Resources>
         <Border
             Visibility="{Binding MainViewVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -127,6 +126,7 @@
         </Border>
 
         <materialDesign:TransitioningContent
+            Visibility="{Binding DatabaseOpeningGroupVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
             OpeningEffect="{materialDesign:TransitionEffect ExpandIn}">
             <materialDesign:Transitioner
                 SelectedIndex="0">

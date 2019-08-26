@@ -11,13 +11,10 @@
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding DatabaseCreation, Source={StaticResource Locator}}">
     <UserControl.Resources>
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter" />
         <converters:InvertedBooleanToCollapsedVisibilityConverter x:Key="InvertedBooleanToCollapsedVisibilityConverter" />
     </UserControl.Resources>
-    <Grid
-        Background="White"
-        Visibility="{Binding UserControlVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+    <Grid Background="White">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35" />
