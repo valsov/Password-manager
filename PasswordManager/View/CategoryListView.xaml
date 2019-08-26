@@ -147,8 +147,14 @@
                         VerticalAlignment="Top"
                         materialDesign:HintAssist.Hint="New category"
                         materialDesign:HintAssist.IsFloating="True"
-                        Text="{Binding NewCategoryName, UpdateSourceTrigger=PropertyChanged}" />
-                    
+                        Text="{Binding NewCategoryName, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding
+                                Key="Return"
+                                Command="{Binding AddCategoryCommand}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+
                     <StackPanel
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
@@ -190,7 +196,13 @@
                         VerticalAlignment="Top"
                         materialDesign:HintAssist.Hint="New category"
                         materialDesign:HintAssist.IsFloating="True"
-                        Text="{Binding CategoryInEdition, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding CategoryInEdition, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding
+                                Key="Return"
+                                Command="{Binding ValidateCategoryEditionCommand}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
 
                     <StackPanel
                         Orientation="Horizontal"
