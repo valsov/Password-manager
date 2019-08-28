@@ -25,13 +25,13 @@ namespace PasswordManager.View
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
             GetWindow();
-            window.MinimizeWindow(sender, e);
+            window.WindowState = WindowState.Minimized;
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             GetWindow();
-            window.CloseWindow(sender, e);
+            window.Close();
         }
 
         private void GetWindow()
