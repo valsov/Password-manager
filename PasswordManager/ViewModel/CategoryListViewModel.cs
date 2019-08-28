@@ -61,6 +61,23 @@ namespace PasswordManager.ViewModel
         /// </summary>
         public string CategoryInEdition { get; set; }
 
+        private string formError;
+        /// <summary>
+        /// Error label for category edition and creation
+        /// </summary>
+        public string FormError
+        {
+            get
+            {
+                return formError;
+            }
+            set
+            {
+                formError = value;
+                RaisePropertyChanged(nameof(FormError));
+            }
+        }
+
         private bool newCategoryFormVisibility;
         /// <summary>
         /// Visibility of the form to create a new category
@@ -205,8 +222,15 @@ namespace PasswordManager.ViewModel
         {
             if (string.IsNullOrWhiteSpace(NewCategoryName))
             {
+                FormError = "Category name is empty";
                 return;
             }
+            if(CategoryList.FirstOrDefault(x => x == NewCategoryName) != null)
+            {
+                FormError = "Category exists";
+                return;
+            }
+
             databaseRepository.AddCategory(NewCategoryName);
             Messenger.Default.Send(new CategoryAddedMessage(this, NewCategoryName));
             CategoryList.Add(NewCategoryName);
@@ -218,6 +242,7 @@ namespace PasswordManager.ViewModel
         /// </summary>
         private void StopAddCategory()
         {
+            FormError = string.Empty;
             NewCategoryName = string.Empty;
             NewCategoryFormVisibility = false;
         }
@@ -239,6 +264,17 @@ namespace PasswordManager.ViewModel
         /// </summary>
         private void ValidateCategoryEdition()
         {
+            if (string.IsNullOrWhiteSpace(CategoryInEdition))
+            {
+                FormError = "Category name is empty";
+                return;
+            }
+            if (CategoryList.FirstOrDefault(x => x == CategoryInEdition) != null && CategoryInEdition != originalCategoryInEdition)
+            {
+                FormError = "Category exists";
+                return;
+            }
+
             var index = CategoryList.IndexOf(originalCategoryInEdition);
             CategoryList[index] = CategoryInEdition;
             databaseRepository.UpdateCategory(originalCategoryInEdition, CategoryInEdition);
@@ -255,6 +291,7 @@ namespace PasswordManager.ViewModel
         /// </summary>
         private void CancelCategoryEdition()
         {
+            FormError = string.Empty;
             CategoryEditionFormVisibility = false;
         }
 
