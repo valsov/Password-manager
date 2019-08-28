@@ -31,7 +31,7 @@ namespace PasswordManager.View
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             GetWindow();
-            window.Close();
+            window.CloseWindow(sender, e);
         }
 
         private void GetWindow()

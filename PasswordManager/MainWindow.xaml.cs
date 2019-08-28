@@ -57,15 +57,15 @@ namespace PasswordManager
             this.DragMove();
         }
 
-        private void MinimizeWindow(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
-        }
-
-        private void CloseWindow(object sender, RoutedEventArgs e)
+        public void CloseWindow(object sender, RoutedEventArgs e)
         {
             trayIcon.Dispose();
             this.Close();
+        }
+
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
         }
 
         private void CopyDataStartEventHandler(object sender, EventArgs e)
