@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 namespace PasswordManager.Service
 {
     /// <summary>
-    /// Implementation of IIconsService interface, service handling the user's websites icons management
+    /// Service handling the user's websites icons management
     /// </summary>
     public class IconsService : IIconsService
     {
@@ -47,7 +47,7 @@ namespace PasswordManager.Service
         /// </summary>
         public void LoadIcons()
         {
-            Task.Run(() => InternalLoadIcons());
+            Task.Run(InternalLoadIcons);
         }
 
         /// <summary>

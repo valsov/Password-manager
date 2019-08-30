@@ -120,7 +120,7 @@ namespace PasswordManager.ViewModel
 
         private bool databaseOpeningInProgress;
         /// <summary>
-        /// Indicate if the database is being opened
+        /// Indicates if the database is being opened
         /// </summary>
         public bool DatabaseOpeningInProgress
         {
@@ -141,6 +141,8 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand OpenDatabaseCreationViewCommand { get; private set; }
 
+        public RelayCommand OpenSyncOpeningViewCommand { get; private set; }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -158,6 +160,7 @@ namespace PasswordManager.ViewModel
             SelectDatabaseFileCommand = new RelayCommand(SelectDatabaseFile);
             TryOpenDatabaseCommand = new RelayCommand(TryOpenDatabase);
             OpenDatabaseCreationViewCommand = new RelayCommand(OpenDatabaseCreationView);
+            OpenSyncOpeningViewCommand = new RelayCommand(OpenSyncOpeningView);
         }
 
         /// <summary>
@@ -166,7 +169,7 @@ namespace PasswordManager.ViewModel
         /// <param name="obj"></param>
         private void InitUserControl(ShowDatabaseSelectionViewMessage obj)
         {
-            if(!(obj.Sender is DatabaseCreationViewModel))
+            if (obj.Sender is MainViewModel || obj.Sender is SyncOpeningViewModel)
             {
                 // Don't lose the path on back and forth navigation
                 DatabasePath = obj.Path;
@@ -247,7 +250,10 @@ namespace PasswordManager.ViewModel
         /// </summary>
         void TryOpenDatabase()
         {
-            if (!TryOpenDatabaseEnabled || DatabaseOpeningInProgress) return;
+            if (!TryOpenDatabaseEnabled || DatabaseOpeningInProgress)
+            {
+                return;
+            }
 
             DatabaseOpeningInProgress = true;
             databaseOpeningStartTime = DateTime.Now;
@@ -273,6 +279,15 @@ namespace PasswordManager.ViewModel
         {
             Transitioner.MoveNextCommand.Execute(null, null);
             Messenger.Default.Send(new ShowDatabaseCreationViewMessage(this));
+        }
+
+        /// <summary>
+        /// Switch to the sync opening view
+        /// </summary>
+        private void OpenSyncOpeningView()
+        {
+            Transitioner.MoveLastCommand.Execute(null, null);
+            Messenger.Default.Send(new ShowSyncOpeningViewMessage(this));
         }
     }
 }

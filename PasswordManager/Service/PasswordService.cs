@@ -6,7 +6,7 @@ using System.Linq;
 namespace PasswordManager.Service
 {
     /// <summary>
-    /// Implementation of IPasswordService interface, service handling password generation and management
+    /// Service handling password generation and management
     /// </summary>
     public class PasswordService : IPasswordService
     {

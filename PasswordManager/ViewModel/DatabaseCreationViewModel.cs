@@ -117,7 +117,9 @@ namespace PasswordManager.ViewModel
 
         public RelayCommand CreateDatabaseCommand { get; private set; }
 
-        public RelayCommand CancelDatabaseCreationCommand { get; private set; }
+        public RelayCommand OpenDatabaseSelectionViewCommand { get; private set; }
+
+        public RelayCommand OpenSyncOpeningViewCommand { get; private set; }
 
         /// <summary>
         /// Constructor
@@ -131,7 +133,8 @@ namespace PasswordManager.ViewModel
 
             SelectDatabaseFileCommand = new RelayCommand(SelectDatabaseFile);
             CreateDatabaseCommand = new RelayCommand(CreateDatabase);
-            CancelDatabaseCreationCommand = new RelayCommand(CancelDatabaseCreation);
+            OpenDatabaseSelectionViewCommand = new RelayCommand(OpenDatabaseSelectionView);
+            OpenSyncOpeningViewCommand = new RelayCommand(OpenSyncOpeningView);
         }
 
         /// <summary>
@@ -140,8 +143,11 @@ namespace PasswordManager.ViewModel
         /// <param name="message"></param>
         void InitUserControl(ShowDatabaseCreationViewMessage message)
         {
+            DatabasePath = string.Empty;
+            DatabaseName = string.Empty;
             Password = string.Empty;
             ShowPassword = false;
+            Error = string.Empty;
         }
 
         /// <summary>
@@ -195,10 +201,19 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Switch the view to the database selection view
         /// </summary>
-        private void CancelDatabaseCreation()
+        private void OpenDatabaseSelectionView()
         {
             Transitioner.MovePreviousCommand.Execute(null, null);
             Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this, string.Empty));
+        }
+
+        /// <summary>
+        /// Switch the view to the sync opening view
+        /// </summary>
+        private void OpenSyncOpeningView()
+        {
+            Transitioner.MoveLastCommand.Execute(null, null);
+            Messenger.Default.Send(new ShowSyncOpeningViewMessage(this));
         }
     }
 }

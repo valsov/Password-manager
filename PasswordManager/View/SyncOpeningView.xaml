@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PasswordManager.View.DatabaseSelectionView"
+﻿<UserControl x:Class="PasswordManager.View.SyncOpeningView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,8 +9,9 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             DataContext="{Binding DatabaseSelection, Source={StaticResource Locator}}">
+             DataContext="{Binding SyncOpening, Source={StaticResource Locator}}">
     <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter" />
         <converters:InvertedBooleanToCollapsedVisibilityConverter x:Key="InvertedBooleanToCollapsedVisibilityConverter" />
     </UserControl.Resources>
@@ -23,17 +24,17 @@
             Grid.Row="0"
             Background="#3B4045">
             <TextBlock
-                Text="Open database"
+                Text="Open database with Sync"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Margin="15 0 0 0"
                 Foreground="Gray"
                 FontSize="15" />
-            
+
             <Border
                 Background="Transparent"
                 MouseDown="Border_MouseDown" />
-            
+
             <StackPanel
                 Orientation="Horizontal"
                 VerticalAlignment="Center"
@@ -104,58 +105,27 @@
                 <TextBox
                     Margin="0 20 0 0"
                     FontSize="14"
-                    Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                    materialDesign:HintAssist.Hint="Password"
-                    materialDesign:HintAssist.IsFloating="True"
-                    IsEnabled="{Binding PasswordEnabled}"
-                    Visibility="{Binding ShowPassword, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
-                    <TextBox.InputBindings>
-                        <KeyBinding
-                            Key="Return"
-                            Command="{Binding TryOpenDatabaseCommand}" />
-                    </TextBox.InputBindings>
-                </TextBox>
+                    Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
+                    materialDesign:HintAssist.Hint="Mega folder url"
+                    materialDesign:HintAssist.IsFloating="True" />
 
-                <styles:BindablePasswordBox
-                    Margin="0 20 0 0"
-                    FontSize="14"
-                    materialDesign:HintAssist.Hint="Password"
-                    materialDesign:HintAssist.IsFloating="True"
-                    Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                    IsEnabled="{Binding PasswordEnabled}"
-                    Visibility="{Binding ShowPassword, Converter={StaticResource InvertedBooleanToCollapsedVisibilityConverter}}">
-                    <styles:BindablePasswordBox.InputBindings>
-                        <KeyBinding
-                            Key="Return"
-                            Command="{Binding TryOpenDatabaseCommand}" />
-                    </styles:BindablePasswordBox.InputBindings>
-                </styles:BindablePasswordBox>
-
-                <CheckBox
-                    Margin="0 5 0 0"
-                    Width="60"
-                    HorizontalAlignment="Left"
-                    Content="Show"
-                    Cursor="Hand"
-                    IsChecked="{Binding ShowPassword}" />
-                
                 <TextBlock
                     Margin="0 10 0 0"
                     FontSize="14"
                     Text="{Binding Error}"
                     Foreground="Red" />
-                    
+
                 <Button
                     Margin="0 15 0 0"
                     Style="{DynamicResource MaterialDesignFloatingActionButton}"
-                    Command="{Binding TryOpenDatabaseCommand}"
-                    IsEnabled="{Binding TryOpenDatabaseEnabled}"
+                    Command="{Binding SyncDatabaseCommand}"
+                    IsEnabled="{Binding IsSyncEnabled}"
                     materialDesign:ButtonProgressAssist.IndicatorForeground="Black"
-                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding DatabaseOpeningInProgress}"
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding SyncInProgress}"
                     materialDesign:ButtonProgressAssist.IsIndeterminate="True"
                     materialDesign:ButtonProgressAssist.Value="30">
                     <materialDesign:PackIcon
-                        Kind="Key"
+                        Kind="CloudDownload"
                         Height="22"
                         Width="22" />
                 </Button>
@@ -191,21 +161,21 @@
                 HorizontalAlignment="Right"
                 Width="100"
                 Margin="10 10 40 10"
-                Command="{Binding OpenSyncOpeningViewCommand}">
+                Command="{Binding OpenDatabaseSelectionViewCommand}">
                 <Grid>
                     <TextBlock
-                        Text="Sync"
+                        Text="Open"
                         Margin="-30 2 0 0" />
                     <Ellipse
                         Fill="Black"
                         Width="20"
                         Height="20"
-                        Margin="0 0 -48 0" />
+                        Margin="0 0 -52 0" />
                     <materialDesign:PackIcon
-                        Kind="Sync"
+                        Kind="LockOpen"
                         Foreground="DeepSkyBlue"
-                        Width="20"
-                        Height="20"
+                        Width="18"
+                        Height="18"
                         HorizontalAlignment="Right"
                         Margin="0 0 -34 0"/>
                 </Grid>

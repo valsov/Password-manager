@@ -23,9 +23,18 @@
             <Grid
                 Grid.Row="0"
                 Background="#3B4045">
+                <TextBlock
+                    Text="Create database"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    Margin="15 0 0 0"
+                    Foreground="Gray"
+                    FontSize="15" />
+
                 <Border
                     Background="Transparent"
                     MouseDown="Border_MouseDown" />
+                
                 <StackPanel
                     Orientation="Horizontal"
                     VerticalAlignment="Center"
@@ -143,13 +152,59 @@
                     FontSize="14"
                     Text="{Binding Error}"
                     Foreground="Red"/>
-
-                <Button
-                    Margin="0 30 0 0"
-                    Width="100"
-                    Content="Cancel"
-                    Command="{Binding CancelDatabaseCreationCommand}" />
             </StackPanel>
+
+            <Button
+                Grid.Row="1"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Left"
+                Width="100"
+                Margin="40 10 10 10"
+                Command="{Binding OpenDatabaseSelectionViewCommand}">
+                <Grid>
+                    <TextBlock
+                        Text="Open"
+                        Margin="-30 2 0 0" />
+                    <Ellipse
+                        Fill="Black"
+                        Width="20"
+                        Height="20"
+                        Margin="0 0 -52 0" />
+                    <materialDesign:PackIcon
+                        Kind="LockOpen"
+                        Foreground="DeepSkyBlue"
+                        Width="18"
+                        Height="18"
+                        HorizontalAlignment="Right"
+                        Margin="0 0 -34 0"/>
+                </Grid>
+            </Button>
+
+            <Button
+                Grid.Row="1"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Width="100"
+                Margin="10 10 40 10"
+                Command="{Binding OpenSyncOpeningViewCommand}">
+                <Grid>
+                    <TextBlock
+                        Text="Sync"
+                        Margin="-30 2 0 0" />
+                    <Ellipse
+                        Fill="Black"
+                        Width="20"
+                        Height="20"
+                        Margin="0 0 -48 0" />
+                    <materialDesign:PackIcon
+                        Kind="Sync"
+                        Foreground="DeepSkyBlue"
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Right"
+                        Margin="0 0 -34 0"/>
+                </Grid>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>

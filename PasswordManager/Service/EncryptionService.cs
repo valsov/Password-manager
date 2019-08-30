@@ -9,7 +9,7 @@ using System.Text;
 namespace PasswordManager.Service
 {
     /// <summary>
-    /// Implementation of IEncryptionService interface, service handling the data encryption and decryption
+    /// Service handling the data encryption and decryption
     /// </summary>
     public class EncryptionService : IEncryptionService
     {

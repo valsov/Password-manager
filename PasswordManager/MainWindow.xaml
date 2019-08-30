@@ -144,8 +144,21 @@
                     <materialDesign:TransitionerSlide.BackwardWipe>
                         <materialDesign:SlideOutWipe />
                     </materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:TransitionerSlide.ForwardWipe>
+                        <materialDesign:SlideOutWipe />
+                    </materialDesign:TransitionerSlide.ForwardWipe>
 
                     <view:DatabaseCreationView
+                        Width="300"
+                        Height="400" />
+                </materialDesign:TransitionerSlide>
+
+                <materialDesign:TransitionerSlide>
+                    <materialDesign:TransitionerSlide.BackwardWipe>
+                        <materialDesign:SlideOutWipe />
+                    </materialDesign:TransitionerSlide.BackwardWipe>
+
+                    <view:SyncOpeningView
                         Width="300"
                         Height="400" />
                 </materialDesign:TransitionerSlide>

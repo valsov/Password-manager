@@ -41,6 +41,7 @@ namespace PasswordManager.ViewModel
             SimpleIoc.Default.Register<EntryListViewModel>();
             SimpleIoc.Default.Register<EntryViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
+            SimpleIoc.Default.Register<SyncOpeningViewModel>();
         }
 
         public MainViewModel Main
@@ -96,6 +97,14 @@ namespace PasswordManager.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<SettingsViewModel>();
+            }
+        }
+
+        public SyncOpeningViewModel SyncOpening
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<SyncOpeningViewModel>();
             }
         }
 

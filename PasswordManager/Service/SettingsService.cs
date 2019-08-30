@@ -4,7 +4,7 @@ using PasswordManager.Service.Interfaces;
 namespace PasswordManager.Service
 {
     /// <summary>
-    /// Implementation of ISettingsService interface, service Handling the user's settings
+    /// Service Handling the user's settings
     /// </summary>
     public class SettingsService : ISettingsService
     {
