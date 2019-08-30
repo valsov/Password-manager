@@ -71,9 +71,21 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        public RelayCommand LoadedCommand { get; private set; }
+        public RelayCommand LoadedCommand
+        {
+            get
+            {
+                return new RelayCommand(ViewLoadedHandler);
+            }
+        }
 
-        public RelayCommand CloseDatabaseCommand { get; private set; }
+        public RelayCommand CloseDatabaseCommand
+        {
+            get
+            {
+                return new RelayCommand(CloseDatabase);
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class
@@ -92,9 +104,6 @@ namespace PasswordManager.ViewModel
             DatabaseOpeningGroupVisibility = true;
 
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
-
-            LoadedCommand = new RelayCommand(ViewLoadedHandler);
-            CloseDatabaseCommand = new RelayCommand(CloseDatabase);
         }
 
         /// <summary>

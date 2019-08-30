@@ -113,13 +113,37 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        public RelayCommand SelectDatabaseFileCommand { get; private set; }
+        public RelayCommand SelectDatabaseFileCommand
+        {
+            get
+            {
+                return new RelayCommand(SelectDatabaseFile);
+            }
+        }
 
-        public RelayCommand CreateDatabaseCommand { get; private set; }
+        public RelayCommand CreateDatabaseCommand
+        {
+            get
+            {
+                return new RelayCommand(CreateDatabase);
+            }
+        }
 
-        public RelayCommand OpenDatabaseSelectionViewCommand { get; private set; }
+        public RelayCommand OpenDatabaseSelectionViewCommand
+        {
+            get
+            {
+                return new RelayCommand(OpenDatabaseSelectionView);
+            }
+        }
 
-        public RelayCommand OpenSyncOpeningViewCommand { get; private set; }
+        public RelayCommand OpenSyncOpeningViewCommand
+        {
+            get
+            {
+                return new RelayCommand(OpenSyncOpeningView);
+            }
+        }
 
         /// <summary>
         /// Constructor
@@ -130,11 +154,6 @@ namespace PasswordManager.ViewModel
             this.databaseRepository = databaseRepository;
 
             Messenger.Default.Register<ShowDatabaseCreationViewMessage>(this, InitUserControl);
-
-            SelectDatabaseFileCommand = new RelayCommand(SelectDatabaseFile);
-            CreateDatabaseCommand = new RelayCommand(CreateDatabase);
-            OpenDatabaseSelectionViewCommand = new RelayCommand(OpenDatabaseSelectionView);
-            OpenSyncOpeningViewCommand = new RelayCommand(OpenSyncOpeningView);
         }
 
         /// <summary>

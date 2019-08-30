@@ -96,13 +96,37 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        public RelayCommand SelectDatabaseFileCommand { get; private set; }
+        public RelayCommand SelectDatabaseFileCommand
+        {
+            get
+            {
+                return new RelayCommand(SelectDatabaseFile);
+            }
+        }
 
-        public RelayCommand SyncDatabaseCommand { get; private set; }
+        public RelayCommand SyncDatabaseCommand
+        {
+            get
+            {
+                return new RelayCommand(DownloadDatabase);
+            }
+        }
 
-        public RelayCommand OpenDatabaseCreationViewCommand { get; private set; }
+        public RelayCommand OpenDatabaseCreationViewCommand
+        {
+            get
+            {
+                return new RelayCommand(OpenDatabaseCreationView);
+            }
+        }
 
-        public RelayCommand OpenDatabaseSelectionViewCommand { get; private set; }
+        public RelayCommand OpenDatabaseSelectionViewCommand
+        {
+            get
+            {
+                return new RelayCommand(() => OpenDatabaseSelectionView());
+            }
+        }
 
         /// <summary>
         /// Constructor
@@ -113,11 +137,6 @@ namespace PasswordManager.ViewModel
             this.syncService = syncService;
 
             Messenger.Default.Register<ShowSyncOpeningViewMessage>(this, InitUserControl);
-
-            SelectDatabaseFileCommand = new RelayCommand(SelectDatabaseFile);
-            SyncDatabaseCommand = new RelayCommand(DownloadDatabase);
-            OpenDatabaseCreationViewCommand = new RelayCommand(OpenDatabaseCreationView);
-            OpenDatabaseSelectionViewCommand = new RelayCommand(() => OpenDatabaseSelectionView());
 
             syncService.DatabaseDownloadEnded += DatabaseDownloadEndedHandler;
         }

@@ -231,33 +231,117 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        public RelayCommand StartEditionCommand { get; private set; }
+        public RelayCommand StartEditionCommand
+        {
+            get
+            {
+                return new RelayCommand(StartEdition);
+            }
+        }
 
-        public RelayCommand ValidateEditionCommand { get; private set; }
+        public RelayCommand ValidateEditionCommand
+        {
+            get
+            {
+                return new RelayCommand(ValidateEdition);
+            }
+        }
 
-        public RelayCommand CancelEditionCommand { get; private set; }
+        public RelayCommand CancelEditionCommand
+        {
+            get
+            {
+                return new RelayCommand(CancelEdition);
+            }
+        }
 
-        public RelayCommand DeleteEntryCommand { get; private set; }
+        public RelayCommand DeleteEntryCommand
+        {
+            get
+            {
+                return new RelayCommand(DeleteEntry);
+            }
+        }
 
-        public RelayCommand ValidateDeletionCommand { get; private set; }
+        public RelayCommand ValidateDeletionCommand
+        {
+            get
+            {
+                return new RelayCommand(ValidateDeletion);
+            }
+        }
 
-        public RelayCommand CancelDeletionCommand { get; private set; }
+        public RelayCommand CancelDeletionCommand
+        {
+            get
+            {
+                return new RelayCommand(CancelDeletion);
+            }
+        }
 
-        public RelayCommand CreateEntryCommand { get; private set; }
+        public RelayCommand CreateEntryCommand
+        {
+            get
+            {
+                return new RelayCommand(CreateEntry);
+            }
+        }
 
-        public RelayCommand CancelEntryCreationCommand { get; private set; }
+        public RelayCommand CancelEntryCreationCommand
+        {
+            get
+            {
+                return new RelayCommand(CancelCreation);
+            }
+        }
 
-        public RelayCommand CopyPasswordCommand { get; private set; }
+        public RelayCommand CopyPasswordCommand
+        {
+            get
+            {
+                return new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Password)));
+            }
+        }
 
-        public RelayCommand CopyUsernameCommand { get; private set; }
+        public RelayCommand CopyUsernameCommand
+        {
+            get
+            {
+                return new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Username)));
+            }
+        }
 
-        public RelayCommand OpenWebsiteCommand { get; private set; }
+        public RelayCommand OpenWebsiteCommand
+        {
+            get
+            {
+                return new RelayCommand(OpenWebsite);
+            }
+        }
 
-        public RelayCommand OpenPasswordGenerationDialogCommand { get; private set; }
+        public RelayCommand OpenPasswordGenerationDialogCommand
+        {
+            get
+            {
+                return new RelayCommand(OpenPasswordGenerationDialog);
+            }
+        }
 
-        public RelayCommand GeneratePasswordCommand { get; private set; }
+        public RelayCommand GeneratePasswordCommand
+        {
+            get
+            {
+                return new RelayCommand(GeneratePassword);
+            }
+        }
 
-        public RelayCommand CancelPasswordGenerationCommand { get; private set; }
+        public RelayCommand CancelPasswordGenerationCommand
+        {
+            get
+            {
+                return new RelayCommand(CancelPasswordGeneration);
+            }
+        }
 
         /// <summary>
         /// Constructor
@@ -286,21 +370,6 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Register<CategoryAddedMessage>(this, HandleNewCategory);
             Messenger.Default.Register<CategoryDeletedMessage>(this, CategoryDeletedHandler);
             Messenger.Default.Register<CategoryEditedMessage>(this, CategoryEditedHandler);
-
-            DeleteEntryCommand = new RelayCommand(DeleteEntry);
-            ValidateDeletionCommand = new RelayCommand(ValidateDeletion);
-            CancelDeletionCommand = new RelayCommand(CancelDeletion);
-            StartEditionCommand = new RelayCommand(StartEdition);
-            ValidateEditionCommand = new RelayCommand(ValidateEdition);
-            CancelEditionCommand = new RelayCommand(CancelEdition);
-            CreateEntryCommand = new RelayCommand(CreateEntry);
-            CancelEntryCreationCommand = new RelayCommand(CancelCreation);
-            CopyPasswordCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Password)));
-            CopyUsernameCommand = new RelayCommand(() => CopyToClipboard(nameof(PasswordEntryModel.Username)));
-            OpenWebsiteCommand = new RelayCommand(OpenWebsite);
-            OpenPasswordGenerationDialogCommand = new RelayCommand(OpenPasswordGenerationDialog);
-            GeneratePasswordCommand = new RelayCommand(GeneratePassword);
-            CancelPasswordGenerationCommand = new RelayCommand(CancelPasswordGeneration);
         }
 
         /// <summary>

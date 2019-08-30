@@ -130,25 +130,85 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        public RelayCommand<string> SelectCategoryCommand { get; private set; }
+        public RelayCommand<string> SelectCategoryCommand
+        {
+            get
+            {
+                return new RelayCommand<string>(SelectCategory);
+            }
+        }
 
-        public RelayCommand ShowNewCategoryFormCommand { get; private set; }
+        public RelayCommand ShowNewCategoryFormCommand
+        {
+            get
+            {
+                return new RelayCommand(() => NewCategoryFormVisibility = true);
+            }
+        }
 
-        public RelayCommand CancelAddCategoryCommand { get; private set; }
+        public RelayCommand CancelAddCategoryCommand
+        {
+            get
+            {
+                return new RelayCommand(StopAddCategory);
+            }
+        }
 
-        public RelayCommand AddCategoryCommand { get; private set; }
+        public RelayCommand AddCategoryCommand
+        {
+            get
+            {
+                return new RelayCommand(AddCategory);
+            }
+        }
 
-        public RelayCommand<string> EditCategoryCommand { get; private set; }
+        public RelayCommand<string> EditCategoryCommand
+        {
+            get
+            {
+                return new RelayCommand<string>(EditCategory);
+            }
+        }
 
-        public RelayCommand<string> DeleteCategoryCommand { get; private set; }
+        public RelayCommand<string> DeleteCategoryCommand
+        {
+            get
+            {
+                return new RelayCommand<string>(DeleteCategory);
+            }
+        }
 
-        public RelayCommand CancelCategoryEditionCommand { get; private set; }
+        public RelayCommand CancelCategoryEditionCommand
+        {
+            get
+            {
+                return new RelayCommand(CancelCategoryEdition);
+            }
+        }
 
-        public RelayCommand ValidateCategoryEditionCommand { get; private set; }
+        public RelayCommand ValidateCategoryEditionCommand
+        {
+            get
+            {
+                return new RelayCommand(ValidateCategoryEdition);
+            }
+        }
 
-        public RelayCommand CancelCategoryDeletionCommand { get; private set; }
+        public RelayCommand CancelCategoryDeletionCommand
+        {
+            get
+            {
+                return new RelayCommand(CancelCategoryDeletion);
+            }
+        }
 
-        public RelayCommand ValidateCategoryDeletionCommand { get; private set; }
+        public RelayCommand ValidateCategoryDeletionCommand
+        {
+            get
+            {
+                return new RelayCommand(ValidateCategoryDeletion);
+            }
+        }
 
         /// <summary>
         /// Constructor
@@ -165,17 +225,6 @@ namespace PasswordManager.ViewModel
 
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
             Messenger.Default.Register<DatabaseUnloadedMessage>(this, DatabaseUnloadedHandler);
-
-            SelectCategoryCommand = new RelayCommand<string>(SelectCategory);
-            ShowNewCategoryFormCommand = new RelayCommand(() => NewCategoryFormVisibility = true);
-            CancelAddCategoryCommand = new RelayCommand(StopAddCategory);
-            AddCategoryCommand = new RelayCommand(AddCategory);
-            EditCategoryCommand = new RelayCommand<string>(EditCategory);
-            CancelCategoryEditionCommand = new RelayCommand(CancelCategoryEdition);
-            ValidateCategoryEditionCommand = new RelayCommand(ValidateCategoryEdition);
-            DeleteCategoryCommand = new RelayCommand<string>(DeleteCategory);
-            CancelCategoryDeletionCommand = new RelayCommand(CancelCategoryDeletion);
-            ValidateCategoryDeletionCommand = new RelayCommand(ValidateCategoryDeletion);
         }
 
         /// <summary>

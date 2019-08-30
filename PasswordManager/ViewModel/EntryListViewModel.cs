@@ -68,15 +68,45 @@ namespace PasswordManager.ViewModel
             }
         }
 
-        public RelayCommand<PasswordEntryModel> SelectEntryCommand { get; private set; }
+        public RelayCommand<PasswordEntryModel> SelectEntryCommand
+        {
+            get
+            {
+                return new RelayCommand<PasswordEntryModel>(SelectEntry);
+            }
+        }
 
-        public RelayCommand AddEntryCommand { get; private set; }
+        public RelayCommand AddEntryCommand
+        {
+            get
+            {
+                return new RelayCommand(AddEntry);
+            }
+        }
 
-        public RelayCommand<PasswordEntryModel> CopyPasswordCommand { get; private set; }
+        public RelayCommand<PasswordEntryModel> CopyPasswordCommand
+        {
+            get
+            {
+                return new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Password)));
+            }
+        }
 
-        public RelayCommand<PasswordEntryModel> CopyUsernameCommand { get; private set; }
+        public RelayCommand<PasswordEntryModel> CopyUsernameCommand
+        {
+            get
+            {
+                return new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Username)));
+            }
+        }
 
-        public RelayCommand<PasswordEntryModel> OpenWebsiteCommand { get; private set; }
+        public RelayCommand<PasswordEntryModel> OpenWebsiteCommand
+        {
+            get
+            {
+                return new RelayCommand<PasswordEntryModel>(OpenWebsite);
+            }
+        }
 
         /// <summary>
         /// Constructor
@@ -97,12 +127,6 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Register<CategorySelectedMessage>(this, CategorySelectedHandler);
             Messenger.Default.Register<CategoryDeletedMessage>(this, CategoryDeletedHandler);
             Messenger.Default.Register<CategoryEditedMessage>(this, CategoryEditedHandler);
-
-            SelectEntryCommand = new RelayCommand<PasswordEntryModel>(SelectEntry);
-            AddEntryCommand = new RelayCommand(AddEntry);
-            CopyPasswordCommand = new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Password)));
-            CopyUsernameCommand = new RelayCommand<PasswordEntryModel>((obj) => CopyToClipboard(obj, nameof(PasswordEntryModel.Username)));
-            OpenWebsiteCommand = new RelayCommand<PasswordEntryModel>(OpenWebsite);
         }
 
         /// <summary>
