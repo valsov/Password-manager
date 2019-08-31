@@ -5,7 +5,7 @@
     /// </summary>
     public class ShowDatabaseSelectionViewMessage : BaseMessage
     {
-        public string Path { get; set; }
+        public string Path { get; private set; }
 
         public ShowDatabaseSelectionViewMessage(object sender, string path)
             : base(sender)

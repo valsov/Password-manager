@@ -25,6 +25,7 @@
     <Grid>
         <Grid.Resources>
             <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <view:BindingProxy x:Key="proxy" Data="{Binding}" />
         </Grid.Resources>
         <Border
             Visibility="{Binding MainViewVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -55,15 +56,31 @@
                         MouseDown="Border_MouseDown" />
 
                     <Button
-                        Command="{Binding CloseDatabaseCommand}"
                         Style="{DynamicResource MaterialDesignFloatingActionButton}"
                         Background="Gray"
                         BorderBrush="Transparent"
                         Margin="5 0 0 0"
                         Width="30"
                         Height="30"
-                        HorizontalAlignment="Left">
-                        <materialDesign:PackIcon Kind="Lock" />
+                        HorizontalAlignment="Left"
+                        Click="OptionsButton_Click">
+                        <Button.ContextMenu>
+                            <ContextMenu Name="OptionsContextMenu">
+                                <MenuItem
+                                    Header="Settings"
+                                    Command="{Binding Data.OpenSettingsViewCommand, Source={StaticResource proxy}}"
+                                    CommandParameter="{Binding}" />
+                                <MenuItem
+                                    Header="Sync"
+                                    Command="{Binding Data.OpenSyncViewCommand, Source={StaticResource proxy}}"
+                                    CommandParameter="{Binding}" />
+                                <MenuItem
+                                    Header="Lock"
+                                    Command="{Binding Data.CloseDatabaseCommand, Source={StaticResource proxy}}"
+                                    CommandParameter="{Binding}" />
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                        <materialDesign:PackIcon Kind="Gear" />
                     </Button>
 
                     <StackPanel
@@ -165,7 +182,13 @@
             </materialDesign:Transitioner>
         </materialDesign:TransitioningContent>
 
-        <view:SettingsView />
+        <materialDesign:DialogHost IsOpen="{Binding SettingsVisibility}">
+            <materialDesign:DialogHost.DialogContent>
+                <view:SettingsView
+                    Width="500"
+                    Height="450"/>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
 
     </Grid>
 </Window>

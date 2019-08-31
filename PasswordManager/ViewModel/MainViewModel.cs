@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Messengers;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
+using System;
 
 namespace PasswordManager.ViewModel
 {
@@ -12,13 +13,15 @@ namespace PasswordManager.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        ISettingsService settingsService;
-
         IDatabaseRepository databaseRepository;
 
         IIconsService iconsService;
 
         IEncryptionService encryptionService;
+
+        public ISettingsService settingsService { get; set; }
+
+        public IClipboardService clipboardService { get; set; }
 
         private string databaseName;
         /// <summary>
@@ -71,11 +74,41 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private bool settingsVisibility;
+        public bool SettingsVisibility
+        {
+            get
+            {
+                return settingsVisibility;
+            }
+            set
+            {
+                settingsVisibility = value;
+                RaisePropertyChanged(nameof(SettingsVisibility));
+            }
+        }
+
         public RelayCommand LoadedCommand
         {
             get
             {
                 return new RelayCommand(ViewLoadedHandler);
+            }
+        }
+
+        public RelayCommand OpenSettingsViewCommand
+        {
+            get
+            {
+                return new RelayCommand(OpenSettingsView);
+            }
+        }
+
+        public RelayCommand OpenSyncViewCommand
+        {
+            get
+            {
+                return new RelayCommand(OpenSyncView);
             }
         }
 
@@ -88,22 +121,31 @@ namespace PasswordManager.ViewModel
         }
 
         /// <summary>
-        /// Initializes a new instance of the MainViewModel class
+        /// Constructor
         /// </summary>
+        /// <param name="settingsService"></param>
+        /// <param name="databaseRepository"></param>
+        /// <param name="iconsService"></param>
+        /// <param name="encryptionService"></param>
+        /// <param name="clipboardService"></param>
         public MainViewModel(ISettingsService settingsService,
                              IDatabaseRepository databaseRepository,
                              IIconsService iconsService,
-                             IEncryptionService encryptionService)
+                             IEncryptionService encryptionService,
+                             IClipboardService clipboardService)
         {
             this.settingsService = settingsService;
             this.databaseRepository = databaseRepository;
             this.iconsService = iconsService;
             this.encryptionService = encryptionService;
+            this.clipboardService = clipboardService;
 
             MainViewVisibility = false;
             DatabaseOpeningGroupVisibility = true;
+            SettingsVisibility = false;
 
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
+            Messenger.Default.Register<ToggleSettingsViewMessage>(this, SettingsViewVisibilityHandler);
         }
 
         /// <summary>
@@ -115,6 +157,15 @@ namespace PasswordManager.ViewModel
             DatabaseName = obj.DatabaseModel.Name;
             DatabaseOpeningGroupVisibility = false;
             MainViewVisibility = true;
+        }
+
+        /// <summary>
+        /// Handle the settings view toggle
+        /// </summary>
+        /// <param name="obj"></param>
+        private void SettingsViewVisibilityHandler(ToggleSettingsViewMessage obj)
+        {
+            SettingsVisibility = obj.Visibility;
         }
 
         /// <summary>
@@ -142,6 +193,22 @@ namespace PasswordManager.ViewModel
 
             Messenger.Default.Send(new DatabaseUnloadedMessage(this));
             Messenger.Default.Send(new ShowDatabaseSelectionViewMessage(this, path));
+        }
+
+        /// <summary>
+        /// Show the settings view modal
+        /// </summary>
+        private void OpenSettingsView()
+        {
+            Messenger.Default.Send(new ToggleSettingsViewMessage(this, true));
+        }
+
+        /// <summary>
+        /// Show the sync view modal
+        /// </summary>
+        private void OpenSyncView()
+        {
+            throw new NotImplementedException();
         }
     }
 }

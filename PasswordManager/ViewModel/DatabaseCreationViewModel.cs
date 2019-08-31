@@ -148,7 +148,7 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="databaseService"></param>
+        /// <param name="databaseRepository"></param>
         public DatabaseCreationViewModel(IDatabaseRepository databaseRepository)
         {
             this.databaseRepository = databaseRepository;

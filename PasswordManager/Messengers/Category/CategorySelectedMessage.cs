@@ -5,7 +5,7 @@
     /// </summary>
     public class CategorySelectedMessage : BaseMessage
     {
-        public string SelectedCategory { get; set; }
+        public string SelectedCategory { get; private set; }
 
         public CategorySelectedMessage(object sender, string category)
             : base(sender)

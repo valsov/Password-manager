@@ -5,7 +5,7 @@
     /// </summary>
     public class CategoryDeletedMessage : BaseMessage
     {
-        public string Category { get; set; }
+        public string Category { get; private set; }
 
         public CategoryDeletedMessage(object sender, string category)
             : base(sender)

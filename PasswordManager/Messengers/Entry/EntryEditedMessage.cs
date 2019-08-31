@@ -7,7 +7,7 @@ namespace PasswordManager.Messengers
     /// </summary>
     public class EntryEditedMessage : BaseMessage
     {
-        public PasswordEntryModel Entry { get; set; }
+        public PasswordEntryModel Entry { get; private set; }
 
         public EntryEditedMessage(object sender, PasswordEntryModel entry)
             :base(sender)

@@ -171,6 +171,7 @@ namespace PasswordManager.ViewModel
         /// Constructor
         /// </summary>
         /// <param name="databaseRepository"></param>
+        /// <param name="iconsService"></param>
         public DatabaseSelectionViewModel(IDatabaseRepository databaseRepository,
                                           IIconsService iconsService)
         {

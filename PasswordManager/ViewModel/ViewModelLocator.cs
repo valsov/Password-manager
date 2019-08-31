@@ -32,6 +32,7 @@ namespace PasswordManager.ViewModel
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();
             SimpleIoc.Default.Register<ISyncService, SyncService>();
             SimpleIoc.Default.Register<IIconsService, IconsService>();
+            SimpleIoc.Default.Register<IClipboardService, ClipboardService>();
 
             // Register ViewModels
             SimpleIoc.Default.Register<MainViewModel>();

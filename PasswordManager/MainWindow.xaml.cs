@@ -5,8 +5,8 @@ using System.Windows.Controls;
 using Forms = System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using PasswordManager.Extensions;
 using System.Windows.Shell;
+using PasswordManager.ViewModel;
 
 namespace PasswordManager
 {
@@ -48,8 +48,9 @@ namespace PasswordManager
                 ProgressState = TaskbarItemProgressState.Normal
             };
 
-            PasswordEntryModelExtension.CopyDataStart += CopyDataStartEventHandler;
-            PasswordEntryModelExtension.CopyDataEnd += CopyDataEndEventHandler;
+            var vm = (DataContext as MainViewModel);
+            vm.clipboardService.CopyDataStart += CopyDataStartEventHandler;
+            vm.clipboardService.CopyDataEnd += CopyDataEndEventHandler;
         }
 
         public void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -77,7 +78,7 @@ namespace PasswordManager
             DataCopyDecayProgressBar.BeginAnimation(ProgressBar.ValueProperty, null);
 
             // Start new animation
-            var doubleAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromSeconds(7)));
+            var doubleAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromSeconds((DataContext as MainViewModel).settingsService.GetClipboardTimerDuration())));
             DataCopyDecayProgressBar.BeginAnimation(ProgressBar.ValueProperty, doubleAnimation);
         }
 
@@ -90,6 +91,11 @@ namespace PasswordManager
         private void DataCopyDecayProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             TaskbarItemInfo.ProgressValue = e.NewValue / 100;
+        }
+
+        private void OptionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            OptionsContextMenu.IsOpen = true;
         }
     }
 }

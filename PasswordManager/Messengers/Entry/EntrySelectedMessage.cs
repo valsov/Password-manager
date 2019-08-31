@@ -7,7 +7,7 @@ namespace PasswordManager.Messengers
     /// </summary>
     public class EntrySelectedMessage : BaseMessage
     {
-        public PasswordEntryModel passwordEntry { get; set; }
+        public PasswordEntryModel passwordEntry { get; private set; }
 
         public EntrySelectedMessage(object sender, PasswordEntryModel model)
             : base(sender)

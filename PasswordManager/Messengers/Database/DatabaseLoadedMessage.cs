@@ -7,7 +7,7 @@ namespace PasswordManager.Messengers
     /// </summary>
     public class DatabaseLoadedMessage : BaseMessage
     {
-        public DatabaseModel DatabaseModel { get; set; }
+        public DatabaseModel DatabaseModel { get; private set; }
 
         public DatabaseLoadedMessage(object sender, DatabaseModel model)
             : base(sender)

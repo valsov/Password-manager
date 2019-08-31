@@ -1,5 +1,8 @@
 ﻿namespace PasswordManager.Model
 {
+    /// <summary>
+    /// Application-wide constants
+    /// </summary>
     public class Constants
     {
         public const string SettingsFileName = "settings.json";
@@ -8,9 +11,6 @@
 
         public const string IconsMappingFile = "mapping";
 
-        // Alternative : https://icons.duckduckgo.com/ip2/
-        public const string IconsQueryUrl = "https://logo.clearbit.com/";
-
-        public const int ClipboardTimerDuration = 7000;
+        public const string IconsQueryUrl = "https://logo.clearbit.com/";   // Alternative : https://icons.duckduckgo.com/ip2/
     }
 }

@@ -35,6 +35,7 @@ namespace PasswordManager.Service
         /// Constructor
         /// </summary>
         /// <param name="encryptionService"></param>
+        /// <param name="iconsRepository"></param>
         public IconsService(IEncryptionService encryptionService,
                             IIconsRepository iconsRepository)
         {

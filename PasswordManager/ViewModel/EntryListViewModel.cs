@@ -15,6 +15,8 @@ namespace PasswordManager.ViewModel
     {
         private IIconsService iconsService;
 
+        private IClipboardService clipboardService;
+
         private string selectedCategory;
 
         /// <summary>
@@ -111,9 +113,13 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
-        public EntryListViewModel(IIconsService iconsService)
+        /// <param name="iconsService"></param>
+        /// <param name="clipboardService"></param>
+        public EntryListViewModel(IIconsService iconsService,
+                                  IClipboardService clipboardService)
         {
             this.iconsService = iconsService;
+            this.clipboardService = clipboardService;
 
             iconsService.IconDownloadedEvent += IconDownloadedEventHandler;
 
@@ -255,7 +261,7 @@ namespace PasswordManager.ViewModel
         /// <param name="property"></param>
         private void CopyToClipboard(PasswordEntryModel obj, string property)
         {
-            obj.CopyDataToClipboard(property);
+            clipboardService.CopyDataToClipboard(obj, property);
         }
 
         /// <summary>

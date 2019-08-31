@@ -25,6 +25,7 @@ namespace PasswordManager.Service
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="securityRepository"></param>
         public EncryptionService(ISecurityRepository securityRepository)
         {
             this.securityRepository = securityRepository;

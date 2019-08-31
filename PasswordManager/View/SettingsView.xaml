@@ -4,10 +4,150 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PasswordManager.View"
+             xmlns:converters="clr-namespace:PasswordManager.Converters"
+             xmlns:model="clr-namespace:PasswordManager.Model"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="450" d:DesignWidth="500"
              DataContext="{Binding Settings, Source={StaticResource Locator}}">
-    <Grid>
-            
+    <UserControl.Resources>
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
+        <converters:IntegerToTimeConverter x:Key="IntegerToTimeConverter" />
+    </UserControl.Resources>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid
+            Grid.Row="0"
+            Background="#3B4045">
+            <TextBlock
+                Text="Settings"
+                VerticalAlignment="Center"
+                Margin="20 0 0 0"
+                Foreground="Gray"
+                FontSize="20" />
+            <Button
+                Command="{Binding CloseCommand}"
+                Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                Background="#FF5F61"
+                BorderBrush="Transparent"
+                Width="30"
+                Height="30"
+                Margin="0 0 5 0"
+                HorizontalAlignment="Right">
+                <materialDesign:PackIcon Kind="Close" />
+            </Button>
+        </Grid>
+
+        <StackPanel
+            Grid.Row="1"
+            Orientation="Vertical"
+            Margin="20 10 20 0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock
+                    Text="Language"
+                    FontWeight="Bold"
+                    Foreground="#2c3a49"
+                    FontSize="30" />
+
+                <Border
+                    Height="1"
+                    BorderThickness="1"
+                    BorderBrush="LightGray"
+                    Margin="0 5" />
+
+                <ListBox
+                    ItemsSource="{Binding LanguagesList}"
+                    SelectedItem="{Binding SelectedLanguage}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Margin="10 0 10 0"
+                                Width="40"
+                                Height="40"
+                                BorderThickness="2"
+                                CornerRadius="20"
+                                BorderBrush="LightBlue">
+                                <Image Source="{Binding ., Converter={StaticResource EnumToDescriptionConverter}}"/>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel
+                Orientation="Vertical"
+                Margin="0 20 0 0">
+                <TextBlock
+                    Text="Color theme"
+                    FontWeight="Bold"
+                    Foreground="#2c3a49"
+                    FontSize="30" />
+
+                <Border
+                    Height="1"
+                    BorderThickness="1"
+                    BorderBrush="LightGray"
+                    Margin="0 5" />
+
+                <ListBox
+                    ItemsSource="{Binding ColorThemesList}"
+                    SelectedItem="{Binding SelectedColorTheme}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid
+                                Margin="10 0 10 0"
+                                Width="40"
+                                Height="40">
+                                <Ellipse Fill="{Binding ., Converter={StaticResource EnumToDescriptionConverter}}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel
+                Orientation="Vertical"
+                Margin="0 20 0 0">
+                <TextBlock
+                    Text="Data copy duration"
+                    FontWeight="Bold"
+                    Foreground="#2c3a49"
+                    FontSize="30" />
+
+                <Border
+                    Height="1"
+                    BorderThickness="1"
+                    BorderBrush="LightGray"
+                    Margin="0 5" />
+
+                <Slider
+                    Orientation="Horizontal"
+                    Minimum="0"
+                    Maximum="60"
+                    Style="{DynamicResource MaterialDesignDiscreteSlider}" 
+                    ToolTip="MaterialDesignDiscreteSlider"
+                    Value="{Binding ClipboardTimerDuration}" />
+
+                <TextBlock
+                    Text="{Binding ClipboardTimerDuration, Mode=OneWay, Converter={StaticResource IntegerToTimeConverter}}"
+                    HorizontalAlignment="Center"
+                    FontSize="20"
+                    Foreground="Gray" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

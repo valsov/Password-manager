@@ -10,6 +10,11 @@ namespace PasswordManager.Model
     public class PasswordEntryModel : INotifyPropertyChanged
     {
         /// <summary>
+        /// Property changed event
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
         /// Unique id (GUID)
         /// </summary>
         public string Id { get; set; }
@@ -61,11 +66,6 @@ namespace PasswordManager.Model
         /// Notes of the password entry
         /// </summary>
         public string Notes { get; set; }
-
-        /// <summary>
-        /// Property changed event
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Constructor, set GUID

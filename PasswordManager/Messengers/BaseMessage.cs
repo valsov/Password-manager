@@ -5,7 +5,7 @@
     /// </summary>
     public abstract class BaseMessage
     {
-        public object Sender { get; set; }
+        public object Sender { get; private set; }
 
         public BaseMessage(object sender)
         {

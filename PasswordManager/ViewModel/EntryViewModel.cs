@@ -22,6 +22,8 @@ namespace PasswordManager.ViewModel
 
         IIconsService iconsService;
 
+        IClipboardService clipboardService;
+
         /// <summary>
         /// Password entry used to backup before an edition
         /// </summary>
@@ -348,13 +350,17 @@ namespace PasswordManager.ViewModel
         /// </summary>
         /// <param name="databaseRepository"></param>
         /// <param name="passwordService"></param>
+        /// <param name="iconsService"></param>
+        /// <param name="clipboardService"></param>
         public EntryViewModel(IDatabaseRepository databaseRepository,
                               IPasswordService passwordService,
-                              IIconsService iconsService)
+                              IIconsService iconsService,
+                              IClipboardService clipboardService)
         {
             this.databaseRepository = databaseRepository;
             this.passwordService = passwordService;
             this.iconsService = iconsService;
+            this.clipboardService = clipboardService;
 
             iconsService.IconDownloadedEvent += IconDownloadedEventHandler;
 
@@ -596,7 +602,7 @@ namespace PasswordManager.ViewModel
         /// <param name="property"></param>
         private void CopyToClipboard(string property)
         {
-            PasswordEntry.CopyDataToClipboard(property);
+            clipboardService.CopyDataToClipboard(PasswordEntry, property);
         }
 
         /// <summary>

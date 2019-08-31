@@ -213,6 +213,7 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="databaseRepository"></param>
         public CategoryListViewModel(IDatabaseRepository databaseRepository)
         {
             this.databaseRepository = databaseRepository;
