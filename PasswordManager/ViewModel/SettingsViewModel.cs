@@ -104,6 +104,7 @@ namespace PasswordManager.ViewModel
             this.settingsService = settingsService;
 
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
+            Messenger.Default.Register<LanguageChangedMessage>(this, LanguageChangedHandler);
         }
 
         /// <summary>
@@ -113,6 +114,15 @@ namespace PasswordManager.ViewModel
         void DatabaseLoadedHandler(DatabaseLoadedMessage message)
         {
             settingsService.SaveDatabasePath(message.DatabaseModel.Path);
+        }
+
+        /// <summary>
+        /// Raise ClipboardTimerDuration property changed when the application's language change
+        /// </summary>
+        /// <param name="obj"></param>
+        private void LanguageChangedHandler(LanguageChangedMessage obj)
+        {
+            RaisePropertyChanged(nameof(ClipboardTimerDuration));
         }
     }
 }
