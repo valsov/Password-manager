@@ -9,7 +9,7 @@ using System.Linq;
 namespace PasswordManager.Repository
 {
     /// <summary>
-    /// Implementation of IDatabaseRepository interface, provides an access to the current password database
+    /// Provides an access to the current password database
     /// </summary>
     public class DatabaseRepository : IDatabaseRepository
     {

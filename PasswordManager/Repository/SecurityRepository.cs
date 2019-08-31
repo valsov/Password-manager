@@ -3,7 +3,7 @@
 namespace PasswordManager.Repository
 {
     /// <summary>
-    /// Implementation of ISecurityRepository interface, provides a storage for the current encryption/decryption key
+    /// Provides a storage for the current encryption/decryption key
     /// </summary>
     public class SecurityRepository : ISecurityRepository
     {

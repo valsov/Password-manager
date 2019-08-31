@@ -1,14 +1,14 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Messengers;
 using PasswordManager.Repository.Interfaces;
+using PasswordManager.Service.Interfaces;
 using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace PasswordManager.ViewModel
 {
-    public class CategoryListViewModel : ViewModelBase
+    public class CategoryListViewModel : BaseViewModel
     {
         private IDatabaseRepository databaseRepository;
 
@@ -213,8 +213,11 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="translationService"></param>
         /// <param name="databaseRepository"></param>
-        public CategoryListViewModel(IDatabaseRepository databaseRepository)
+        public CategoryListViewModel(ITranslationService translationService,
+                                     IDatabaseRepository databaseRepository)
+            : base(translationService)
         {
             this.databaseRepository = databaseRepository;
 

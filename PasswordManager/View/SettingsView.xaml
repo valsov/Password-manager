@@ -24,7 +24,7 @@
             Grid.Row="0"
             Background="#3B4045">
             <TextBlock
-                Text="Settings"
+                Text="{Binding [Settings]}"
                 VerticalAlignment="Center"
                 Margin="20 0 0 0"
                 Foreground="Gray"
@@ -48,7 +48,7 @@
             Margin="20 10 20 0">
             <StackPanel Orientation="Vertical">
                 <TextBlock
-                    Text="Language"
+                    Text="{Binding [Language]}"
                     FontWeight="Bold"
                     Foreground="#2c3a49"
                     FontSize="30" />
@@ -87,7 +87,7 @@
                 Orientation="Vertical"
                 Margin="0 20 0 0">
                 <TextBlock
-                    Text="Color theme"
+                    Text="{Binding [ColorTheme]}"
                     FontWeight="Bold"
                     Foreground="#2c3a49"
                     FontSize="30" />
@@ -123,7 +123,7 @@
                 Orientation="Vertical"
                 Margin="0 20 0 0">
                 <TextBlock
-                    Text="Data copy duration"
+                    Text="{Binding [DataCopyDuration]}"
                     FontWeight="Bold"
                     Foreground="#2c3a49"
                     FontSize="30" />

@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf.Transitions;
 using Microsoft.Win32;
@@ -14,11 +13,11 @@ using System.Windows;
 
 namespace PasswordManager.ViewModel
 {
-    public class DatabaseSelectionViewModel : ViewModelBase
+    public class DatabaseSelectionViewModel : BaseViewModel
     {
-        IDatabaseRepository databaseRepository;
+        private IDatabaseRepository databaseRepository;
 
-        IIconsService iconsService;
+        private IIconsService iconsService;
 
         private bool databaseOpeningResult;
 
@@ -172,8 +171,10 @@ namespace PasswordManager.ViewModel
         /// </summary>
         /// <param name="databaseRepository"></param>
         /// <param name="iconsService"></param>
-        public DatabaseSelectionViewModel(IDatabaseRepository databaseRepository,
+        public DatabaseSelectionViewModel(ITranslationService translationService,
+                                          IDatabaseRepository databaseRepository,
                                           IIconsService iconsService)
+            : base(translationService)
         {
             this.databaseRepository = databaseRepository;
             this.iconsService = iconsService;
@@ -189,7 +190,7 @@ namespace PasswordManager.ViewModel
         /// <param name="obj"></param>
         private void InitUserControl(ShowDatabaseSelectionViewMessage obj)
         {
-            if (obj.Sender is MainViewModel || obj.Sender is SyncOpeningViewModel)
+            if (obj.Sender is MainViewModel || (obj.Sender is SyncOpeningViewModel && !string.IsNullOrWhiteSpace(obj.Path)))
             {
                 // Don't lose the path on back and forth navigation
                 DatabasePath = obj.Path;

@@ -7,6 +7,8 @@
     {
         public const string SettingsFileName = "settings.json";
 
+        public const string TranslationsPath = "translations";
+
         public const string IconsPath = "icons";
 
         public const string IconsMappingFile = "mapping";

@@ -1,19 +1,19 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf.Transitions;
 using Microsoft.Win32;
 using PasswordManager.Messengers;
 using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
+using PasswordManager.Service.Interfaces;
 using System.Collections.Generic;
 using System.IO;
 
 namespace PasswordManager.ViewModel
 {
-    public class DatabaseCreationViewModel : ViewModelBase
+    public class DatabaseCreationViewModel : BaseViewModel
     {
-        IDatabaseRepository databaseRepository;
+        private IDatabaseRepository databaseRepository;
 
         private string databasePath;
         /// <summary>
@@ -148,8 +148,11 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="translationService"></param>
         /// <param name="databaseRepository"></param>
-        public DatabaseCreationViewModel(IDatabaseRepository databaseRepository)
+        public DatabaseCreationViewModel(ITranslationService translationService,
+                                         IDatabaseRepository databaseRepository)
+            : base(translationService)
         {
             this.databaseRepository = databaseRepository;
 

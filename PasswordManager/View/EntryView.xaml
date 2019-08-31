@@ -17,17 +17,14 @@
         <converters:InvertedBooleanToCollapsedVisibilityConverter x:Key="InvertedBooleanToCollapsedVisibilityConverter" />
         <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
         <converters:PasswordStrengthToColorConverter x:Key="PasswordStrengthToColorConverter" />
-        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
+        <converters:EnumToTranslatedDescriptionConverter x:Key="EnumToTranslatedDescriptionConverter" />
         <converters:UrlToIconBitmapSourceConverter x:Key="UrlToIconBitmapSourceConverter" />
         <converters:StringToPasswordCharsConverter x:Key="StringToPasswordCharsConverter" />
     </UserControl.Resources>
-    <Grid
-        Visibility="{Binding UserControlVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+    <Grid Visibility="{Binding UserControlVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
         
         <!-- View mode -->
-        <Grid
-            Visibility="{Binding EntryDataVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
-
+        <Grid Visibility="{Binding EntryDataVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel
                 Orientation="Horizontal"
                 Margin="20 30 0 0"
@@ -88,11 +85,10 @@
                     Orientation="Vertical"
                     Margin="15">
                     <TextBlock
-                        Text="username"
+                        Text="{Binding [EntryViewUsername]}"
                         Foreground="#636361"
                         FontSize="13" />
-                    <StackPanel
-                        Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock
                             Text="{Binding PasswordEntry.Username}"
                             FontSize="16"
@@ -112,16 +108,14 @@
                     </StackPanel>
 
                     <Grid>
-                        <StackPanel
-                            Orientation="Vertical">
+                        <StackPanel Orientation="Vertical">
                             <TextBlock
                                 Margin="0 10 0 0"
-                                Text="password"
+                                Text="{Binding [EntryViewPassword]}"
                                 Foreground="#636361"
                                 FontSize="13" />
 
-                            <StackPanel
-                                Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock
                                     Text="{Binding PasswordEntry.Password}"
                                     Visibility="{Binding ShowPassword, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}"
@@ -154,7 +148,7 @@
                             Margin="0 0 0 5">
                             <TextBlock
                                 Margin="0 0 5 0"
-                                Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource EnumToDescriptionConverter}}" />
+                                Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource EnumToTranslatedDescriptionConverter}}" />
                             <Ellipse
                                 Width="15"
                                 Height="15"
@@ -164,16 +158,16 @@
                     </Grid>
 
                     <CheckBox
-                        Width="60"
+                        Width="80"
                         HorizontalAlignment="Left"
-                        Content="Show"
+                        Content="{Binding [ShowPassword]}"
                         Cursor="Hand"
                         Visibility="{Binding PasswordEntry.Password, Converter={StaticResource EmptyStringToVisibilityConverter}}"
                         IsChecked="{Binding ShowPassword}" />
 
                     <TextBlock
                         Margin="0 10 0 0"
-                        Text="category"
+                        Text="{Binding [EntryViewCategory]}"
                         Foreground="#636361"
                         FontSize="13" />
                     <TextBlock
@@ -188,11 +182,10 @@
                 HorizontalAlignment="Left"
                 Margin="35 310 0 0">
                 <TextBlock
-                    Text="Website"
+                    Text="{Binding [EntryViewWebsite]}"
                     Foreground="#636361"
                     FontSize="14" />
-                <StackPanel
-                    Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
                     <TextBlock
                         Text="{Binding PasswordEntry.Website}"
                         FontSize="16"
@@ -213,7 +206,7 @@
 
                 <TextBlock
                     Margin="0 10 0 0"
-                    Text="Notes"
+                    Text="{Binding [EntryViewNotes]}"
                     Foreground="#636361"
                     FontSize="14" />
                 <TextBlock
@@ -223,8 +216,7 @@
         </Grid>
 
         <!-- Edition/creation mode -->
-        <Grid
-            Visibility="{Binding EditionFormVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Grid Visibility="{Binding EditionFormVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBox
                 Margin="30 30 0 0"
                 Width="300"
@@ -233,7 +225,7 @@
                 FontSize="25"
                 FontWeight="Bold"
                 Text="{Binding PasswordEntry.Name, UpdateSourceTrigger=PropertyChanged}"
-                materialDesign:HintAssist.Hint="Entry name" />
+                materialDesign:HintAssist.Hint="{Binding [EntryViewName]}" />
 
             <Border
                 Margin="20 100 20 20"
@@ -253,7 +245,7 @@
                         HorizontalAlignment="Left"
                         Text="{Binding PasswordEntry.Username, UpdateSourceTrigger=PropertyChanged}"
                         FontSize="16"
-                        materialDesign:HintAssist.Hint="Username"
+                        materialDesign:HintAssist.Hint="{Binding [EntryViewUsername]}"
                         materialDesign:HintAssist.IsFloating="True" />
 
                     <Grid>
@@ -264,7 +256,7 @@
                             Text="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}"
                             Visibility="{Binding ShowPassword, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}"
                             FontSize="16"
-                            materialDesign:HintAssist.Hint="Password"
+                            materialDesign:HintAssist.Hint="{Binding [EntryViewPassword]}"
                             materialDesign:HintAssist.IsFloating="True" />
 
                         <styles:BindablePasswordBox
@@ -274,7 +266,7 @@
                             Password="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}"
                             Visibility="{Binding ShowPassword, Converter={StaticResource InvertedBooleanToCollapsedVisibilityConverter}}"
                             FontSize="16"
-                            materialDesign:HintAssist.Hint="Password"
+                            materialDesign:HintAssist.Hint="{Binding [EntryViewPassword]}"
                             materialDesign:HintAssist.IsFloating="True" />
 
                         <Button
@@ -297,7 +289,7 @@
                             Margin="0 0 5 5">
                             <TextBlock
                                 Margin="0 0 5 0"
-                                Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource EnumToDescriptionConverter}}" />
+                                Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource EnumToTranslatedDescriptionConverter}}" />
                             <Ellipse
                                 Width="15"
                                 Height="15"
@@ -308,9 +300,9 @@
                     
                     <CheckBox
                         Margin="0 5 0 0"
-                        Width="60"
+                        Width="80"
                         HorizontalAlignment="Left"
-                        Content="Show"
+                        Content="{Binding [ShowPassword]}"
                         Cursor="Hand"
                         IsChecked="{Binding ShowPassword}" />
 
@@ -320,7 +312,7 @@
                         HorizontalAlignment="Left"
                         ItemsSource="{Binding Categories}"
                         SelectedValue="{Binding PasswordEntry.Category}"
-                        materialDesign:HintAssist.Hint="Category"
+                        materialDesign:HintAssist.Hint="{Binding [EntryViewCategory]}"
                         materialDesign:HintAssist.IsFloating="True" />
                 </StackPanel>
             </Border>
@@ -333,7 +325,7 @@
                 Width="300">
                 <TextBox
                     Text="{Binding PasswordEntry.Website, UpdateSourceTrigger=PropertyChanged}"
-                    materialDesign:HintAssist.Hint="Website"
+                    materialDesign:HintAssist.Hint="{Binding [EntryViewWebsite]}"
                     materialDesign:HintAssist.IsFloating="True"
                     FontSize="16" />
 
@@ -344,7 +336,7 @@
                     AcceptsTab="True"
                     MaxLines="5"
                     Text="{Binding PasswordEntry.Notes, UpdateSourceTrigger=PropertyChanged}"
-                    materialDesign:HintAssist.Hint="Notes"
+                    materialDesign:HintAssist.Hint="{Binding [EntryViewNotes]}"
                     materialDesign:HintAssist.IsFloating="True"
                     FontSize="16"/>
             </StackPanel>
@@ -414,7 +406,7 @@
                     Width="200"
                     Height="100">
                     <TextBlock
-                        Text="Confirm deletion ?"
+                        Text="{Binding [ConfirmDeletion]}"
                         FontSize="18"
                         HorizontalAlignment="Center"
                         Margin="0 20 0 0"/>
@@ -454,10 +446,9 @@
                 <Grid
                     Width="200"
                     Height="250">
-                    <StackPanel
-                        Orientation="Vertical">
+                    <StackPanel Orientation="Vertical">
                         <TextBlock
-                            Text="Generate password"
+                            Text="{Binding [GeneratePassword]}"
                             FontSize="18"
                             HorizontalAlignment="Center"
                             Margin="0 20 0 0" />
@@ -468,7 +459,7 @@
                             PreviewTextInput="TextBox_PreviewTextInput"
                             DataObject.Pasting="TextBox_Pasting"
                             Text="{Binding PasswordLength}"
-                            materialDesign:HintAssist.Hint="Password length"
+                            materialDesign:HintAssist.Hint="{Binding [PasswordLength]}"
                             materialDesign:HintAssist.IsFloating="True" />
 
                         <ComboBox
@@ -477,11 +468,11 @@
                             Margin="0 10 0 0"
                             ItemsSource="{Binding PasswordTypesList}"
                             SelectedValue="{Binding SelectedPasswordType}"
-                            materialDesign:HintAssist.Hint="Password type"
+                            materialDesign:HintAssist.Hint="{Binding [PasswordType]}"
                             materialDesign:HintAssist.IsFloating="True">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}" />
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToTranslatedDescriptionConverter}}" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>

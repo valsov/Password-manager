@@ -60,13 +60,11 @@
                     Grid.Row="1"
                     Margin="0 5 0 5"
                     VerticalScrollBarVisibility="Auto">
-                    <ItemsControl
-                        ItemsSource="{Binding PasswordEntryList}">
+                    <ItemsControl ItemsSource="{Binding PasswordEntryList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <Grid
-                                        Margin="15,4,0,4">
+                                    <Grid Margin="15,4,0,4">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="40" />
@@ -140,15 +138,15 @@
                                     <Grid.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem
-                                                Header="Copy Password"
+                                                Header="{Binding Data[CopyPassword], Source={StaticResource proxy}}"
                                                 Command="{Binding Data.CopyPasswordCommand, Source={StaticResource proxy}}"
                                                 CommandParameter="{Binding}" />
                                             <MenuItem
-                                                Header="Copy Username"
+                                                Header="{Binding Data[CopyUsername], Source={StaticResource proxy}}"
                                                 Command="{Binding Data.CopyUsernameCommand, Source={StaticResource proxy}}"
                                                 CommandParameter="{Binding}" />
                                             <MenuItem
-                                                Header="Open Website"
+                                                Header="{Binding Data[OpenWebsite], Source={StaticResource proxy}}"
                                                 Command="{Binding Data.OpenWebsiteCommand, Source={StaticResource proxy}}"
                                                 CommandParameter="{Binding}" />
                                         </ContextMenu>
@@ -162,7 +160,7 @@
                     Grid.Row="1"
                     Margin="0 20 0 0"
                     HorizontalAlignment="Center"
-                    Text="No entries"
+                    Text="{Binding [NoEntries]}"
                     FontSize="20">
                     <TextBlock.Style>
                         <Style>

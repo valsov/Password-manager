@@ -1,4 +1,3 @@
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Messengers;
@@ -11,13 +10,13 @@ namespace PasswordManager.ViewModel
     /// <summary>
     /// This class contains properties that the main View can data bind to
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : BaseViewModel
     {
-        IDatabaseRepository databaseRepository;
+        private IDatabaseRepository databaseRepository;
 
-        IIconsService iconsService;
+        private IIconsService iconsService;
 
-        IEncryptionService encryptionService;
+        private IEncryptionService encryptionService;
 
         public ISettingsService settingsService { get; set; }
 
@@ -123,16 +122,19 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="translationService"></param>
         /// <param name="settingsService"></param>
         /// <param name="databaseRepository"></param>
         /// <param name="iconsService"></param>
         /// <param name="encryptionService"></param>
         /// <param name="clipboardService"></param>
-        public MainViewModel(ISettingsService settingsService,
+        public MainViewModel(ITranslationService translationService,
+                             ISettingsService settingsService,
                              IDatabaseRepository databaseRepository,
                              IIconsService iconsService,
                              IEncryptionService encryptionService,
                              IClipboardService clipboardService)
+            : base(translationService)
         {
             this.settingsService = settingsService;
             this.databaseRepository = databaseRepository;

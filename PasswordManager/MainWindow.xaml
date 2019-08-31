@@ -67,15 +67,15 @@
                         <Button.ContextMenu>
                             <ContextMenu Name="OptionsContextMenu">
                                 <MenuItem
-                                    Header="Settings"
+                                    Header="{Binding Data[Settings], Source={StaticResource proxy}}"
                                     Command="{Binding Data.OpenSettingsViewCommand, Source={StaticResource proxy}}"
                                     CommandParameter="{Binding}" />
                                 <MenuItem
-                                    Header="Sync"
+                                    Header="{Binding Data[Sync], Source={StaticResource proxy}}"
                                     Command="{Binding Data.OpenSyncViewCommand, Source={StaticResource proxy}}"
                                     CommandParameter="{Binding}" />
                                 <MenuItem
-                                    Header="Lock"
+                                    Header="{Binding Data[Lock], Source={StaticResource proxy}}"
                                     Command="{Binding Data.CloseDatabaseCommand, Source={StaticResource proxy}}"
                                     CommandParameter="{Binding}" />
                             </ContextMenu>

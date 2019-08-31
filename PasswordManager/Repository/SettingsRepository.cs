@@ -7,7 +7,7 @@ using System.IO;
 namespace PasswordManager.Repository
 {
     /// <summary>
-    /// Implementation of ISettingsRepository interface, provides an access to the application's configuration
+    /// Provides an access to the application's configuration
     /// </summary>
     public class SettingsRepository : ISettingsRepository
     {

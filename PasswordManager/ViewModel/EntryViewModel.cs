@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Extensions;
 using PasswordManager.Messengers;
@@ -14,15 +13,15 @@ using System.Linq;
 
 namespace PasswordManager.ViewModel
 {
-    public class EntryViewModel : ViewModelBase
+    public class EntryViewModel : BaseViewModel
     {
-        IDatabaseRepository databaseRepository;
+        private IDatabaseRepository databaseRepository;
 
-        IPasswordService passwordService;
+        private IPasswordService passwordService;
 
-        IIconsService iconsService;
+        private IIconsService iconsService;
 
-        IClipboardService clipboardService;
+        private IClipboardService clipboardService;
 
         /// <summary>
         /// Password entry used to backup before an edition
@@ -348,14 +347,17 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="translationService"></param>
         /// <param name="databaseRepository"></param>
         /// <param name="passwordService"></param>
         /// <param name="iconsService"></param>
         /// <param name="clipboardService"></param>
-        public EntryViewModel(IDatabaseRepository databaseRepository,
+        public EntryViewModel(ITranslationService translationService,
+                              IDatabaseRepository databaseRepository,
                               IPasswordService passwordService,
                               IIconsService iconsService,
                               IClipboardService clipboardService)
+            : base(translationService)
         {
             this.databaseRepository = databaseRepository;
             this.passwordService = passwordService;
@@ -376,6 +378,7 @@ namespace PasswordManager.ViewModel
             Messenger.Default.Register<CategoryAddedMessage>(this, HandleNewCategory);
             Messenger.Default.Register<CategoryDeletedMessage>(this, CategoryDeletedHandler);
             Messenger.Default.Register<CategoryEditedMessage>(this, CategoryEditedHandler);
+            Messenger.Default.Register<LanguageChangedMessage>(this, LanguageChangedHandler);
         }
 
         /// <summary>
@@ -585,6 +588,22 @@ namespace PasswordManager.ViewModel
                 PasswordEntry.Category = obj.NewCategory;
                 RaisePropertyChanged(nameof(PasswordEntry));
             }
+        }
+
+        /// <summary>
+        /// Raise SelectedPasswordType, PasswordTypesList and PasswordEntry properties changed when the application's language change
+        /// </summary>
+        /// <param name="obj"></param>
+        private void LanguageChangedHandler(LanguageChangedMessage obj)
+        {
+            // Trick to reset the selected password type
+            var backupSelectedPasswordType = SelectedPasswordType;
+            SelectedPasswordType = PasswordTypes.Alpha;
+            SelectedPasswordType = PasswordTypes.AlphaAndNum;
+            SelectedPasswordType = backupSelectedPasswordType;
+
+            RaisePropertyChanged(nameof(PasswordTypesList));
+            RaisePropertyChanged(nameof(PasswordEntry));
         }
 
         /// <summary>

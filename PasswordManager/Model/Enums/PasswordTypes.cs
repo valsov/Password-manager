@@ -7,13 +7,13 @@ namespace PasswordManager.Model
     /// </summary>
     public enum PasswordTypes
     {
-        [Description("All characters")]
+        [Description("PasswordTypeAll")]
         Full,
 
-        [Description("Letters and numbers")]
+        [Description("PasswordTypeLettersNumbers")]
         AlphaAndNum,
 
-        [Description("Letters only")]
+        [Description("PasswordTypeLetters")]
         Alpha
     }
 }

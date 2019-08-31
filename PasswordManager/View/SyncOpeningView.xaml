@@ -24,7 +24,7 @@
             Grid.Row="0"
             Background="#3B4045">
             <TextBlock
-                Text="Open database with Sync"
+                Text="{Binding [SyncOpeningTitle]}"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Margin="15 0 0 0"
@@ -106,7 +106,7 @@
                     Margin="0 20 0 0"
                     FontSize="14"
                     Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
-                    materialDesign:HintAssist.Hint="Mega folder url"
+                    materialDesign:HintAssist.Hint="{Binding [MegaFolderUrl]}"
                     materialDesign:HintAssist.IsFloating="True" />
 
                 <TextBlock
@@ -139,7 +139,7 @@
                 Command="{Binding OpenDatabaseCreationViewCommand}">
                 <Grid>
                     <TextBlock
-                        Text="New"
+                        Text="{Binding [New]}"
                         Margin="-30 2 0 0" />
                     <Ellipse
                         Fill="Black"
@@ -164,7 +164,7 @@
                 Command="{Binding OpenDatabaseSelectionViewCommand}">
                 <Grid>
                     <TextBlock
-                        Text="Open"
+                        Text="{Binding [Open]}"
                         Margin="-30 2 0 0" />
                     <Ellipse
                         Fill="Black"

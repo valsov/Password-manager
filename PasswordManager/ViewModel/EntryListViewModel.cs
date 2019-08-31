@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Extensions;
 using PasswordManager.Messengers;
@@ -11,7 +10,7 @@ using System.Linq;
 
 namespace PasswordManager.ViewModel
 {
-    public class EntryListViewModel : ViewModelBase
+    public class EntryListViewModel : BaseViewModel
     {
         private IIconsService iconsService;
 
@@ -113,10 +112,13 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="translationService"></param>
         /// <param name="iconsService"></param>
         /// <param name="clipboardService"></param>
-        public EntryListViewModel(IIconsService iconsService,
+        public EntryListViewModel(ITranslationService translationService,
+                                  IIconsService iconsService,
                                   IClipboardService clipboardService)
+            : base(translationService)
         {
             this.iconsService = iconsService;
             this.clipboardService = clipboardService;

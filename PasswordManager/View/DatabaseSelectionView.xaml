@@ -23,7 +23,7 @@
             Grid.Row="0"
             Background="#3B4045">
             <TextBlock
-                Text="Open database"
+                Text="{Binding [DatabaseSelectionTitle]}"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Margin="15 0 0 0"
@@ -105,7 +105,7 @@
                     Margin="0 20 0 0"
                     FontSize="14"
                     Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                    materialDesign:HintAssist.Hint="Password"
+                    materialDesign:HintAssist.Hint="{Binding [Password]}"
                     materialDesign:HintAssist.IsFloating="True"
                     IsEnabled="{Binding PasswordEnabled}"
                     Visibility="{Binding ShowPassword, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
@@ -119,7 +119,7 @@
                 <styles:BindablePasswordBox
                     Margin="0 20 0 0"
                     FontSize="14"
-                    materialDesign:HintAssist.Hint="Password"
+                    materialDesign:HintAssist.Hint="{Binding [Password]}"
                     materialDesign:HintAssist.IsFloating="True"
                     Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                     IsEnabled="{Binding PasswordEnabled}"
@@ -133,9 +133,9 @@
 
                 <CheckBox
                     Margin="0 5 0 0"
-                    Width="60"
+                    Width="80"
                     HorizontalAlignment="Left"
-                    Content="Show"
+                    Content="{Binding [ShowPassword]}"
                     Cursor="Hand"
                     IsChecked="{Binding ShowPassword}" />
                 
@@ -169,7 +169,7 @@
                 Command="{Binding OpenDatabaseCreationViewCommand}">
                 <Grid>
                     <TextBlock
-                        Text="New"
+                        Text="{Binding [New]}"
                         Margin="-30 2 0 0" />
                     <Ellipse
                         Fill="Black"
@@ -194,7 +194,7 @@
                 Command="{Binding OpenSyncOpeningViewCommand}">
                 <Grid>
                     <TextBlock
-                        Text="Sync"
+                        Text="{Binding [Sync]}"
                         Margin="-30 2 0 0" />
                     <Ellipse
                         Fill="Black"

@@ -10,19 +10,19 @@ namespace PasswordManager.Model
         [Description("")]
         Blank = 0,
 
-        [Description("Very weak")]
+        [Description("PasswordStrengthVeryWeak")]
         VeryWeak = 1,
 
-        [Description("Weak")]
+        [Description("PasswordStrengthWeak")]
         Weak = 2,
 
-        [Description("Medium")]
+        [Description("PasswordStrengthMedium")]
         Medium = 3,
 
-        [Description("Strong")]
+        [Description("PasswordStrengthStrong")]
         Strong = 4,
 
-        [Description("Very strong")]
+        [Description("PasswordStrengthVeryStrong")]
         VeryStrong = 5
     }
 }

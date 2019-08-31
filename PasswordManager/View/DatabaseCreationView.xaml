@@ -24,7 +24,7 @@
                 Grid.Row="0"
                 Background="#3B4045">
                 <TextBlock
-                    Text="Create database"
+                    Text="{Binding [DatabaseCreationTitle]}"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Left"
                     Margin="15 0 0 0"
@@ -104,13 +104,13 @@
                     Margin="0 10 0 0"
                     FontSize="14"
                     Text="{Binding DatabaseName, UpdateSourceTrigger=PropertyChanged}"
-                    materialDesign:HintAssist.Hint="Name"
+                    materialDesign:HintAssist.Hint="{Binding [Name]}"
                     materialDesign:HintAssist.IsFloating="True" />
                 <TextBox
                     Margin="0 10 0 0"
                     FontSize="14"
                     Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                    materialDesign:HintAssist.Hint="Password"
+                    materialDesign:HintAssist.Hint="{Binding [Password]}"
                     materialDesign:HintAssist.IsFloating="True"
                     Visibility="{Binding ShowPassword, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
                     <TextBox.InputBindings>
@@ -122,7 +122,7 @@
                 <styles:BindablePasswordBox
                     Margin="0 10 0 0"
                     FontSize="14"
-                    materialDesign:HintAssist.Hint="Password"
+                    materialDesign:HintAssist.Hint="{Binding [Password]}"
                     materialDesign:HintAssist.IsFloating="True"
                     Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                     Visibility="{Binding ShowPassword, Converter={StaticResource InvertedBooleanToCollapsedVisibilityConverter}}">
@@ -135,15 +135,15 @@
 
                 <CheckBox
                     Margin="0 5 0 0"
-                    Width="60"
+                    Width="80"
                     HorizontalAlignment="Left"
-                    Content="Show"
+                    Content="{Binding [ShowPassword]}"
                     Cursor="Hand"
                     IsChecked="{Binding ShowPassword}" />
                 
                 <Button
                     Margin="0 50 0 0"
-                    Content="Create Database"
+                    Content="{Binding [CreateDatabase]}"
                     Command="{Binding CreateDatabaseCommand}"
                     IsEnabled="{Binding IsCreateDatabaseEnabled}" />
 
@@ -163,7 +163,7 @@
                 Command="{Binding OpenDatabaseSelectionViewCommand}">
                 <Grid>
                     <TextBlock
-                        Text="Open"
+                        Text="{Binding [Open]}"
                         Margin="-30 2 0 0" />
                     <Ellipse
                         Fill="Black"
@@ -189,7 +189,7 @@
                 Command="{Binding OpenSyncOpeningViewCommand}">
                 <Grid>
                     <TextBlock
-                        Text="Sync"
+                        Text="{Binding [Sync]}"
                         Margin="-30 2 0 0" />
                     <Ellipse
                         Fill="Black"

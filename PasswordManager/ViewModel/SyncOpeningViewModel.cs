@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf.Transitions;
 using Microsoft.Win32;
@@ -11,9 +10,9 @@ using System.Windows;
 
 namespace PasswordManager.ViewModel
 {
-    public class SyncOpeningViewModel : ViewModelBase
+    public class SyncOpeningViewModel : BaseViewModel
     {
-        ISyncService syncService;
+        private ISyncService syncService;
 
         private string databasePath;
         /// <summary>
@@ -131,8 +130,11 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="translationService"></param>
         /// <param name="syncService"></param>
-        public SyncOpeningViewModel(ISyncService syncService)
+        public SyncOpeningViewModel(ITranslationService translationService,
+                                    ISyncService syncService)
+            : base(translationService)
         {
             this.syncService = syncService;
 

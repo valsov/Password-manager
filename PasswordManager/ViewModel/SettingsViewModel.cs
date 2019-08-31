@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Messengers;
 using PasswordManager.Model;
@@ -10,9 +9,9 @@ using System.Linq;
 
 namespace PasswordManager.ViewModel
 {
-    public class SettingsViewModel : ViewModelBase
+    public class SettingsViewModel : BaseViewModel
     {
-        ISettingsService settingsService;
+        private ISettingsService settingsService;
 
         /// <summary>
         /// List of available languages
@@ -37,6 +36,7 @@ namespace PasswordManager.ViewModel
             set
             {
                 settingsService.SaveLanguage(value);
+                Messenger.Default.Send(new LanguageChangedMessage(this, SelectedLanguage));
                 RaisePropertyChanged(nameof(SelectedLanguage));
             }
         }
@@ -95,8 +95,11 @@ namespace PasswordManager.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="translationService"></param>
         /// <param name="settingsService"></param>
-        public SettingsViewModel(ISettingsService settingsService)
+        public SettingsViewModel(ITranslationService translationService,
+                                 ISettingsService settingsService)
+            : base(translationService)
         {
             this.settingsService = settingsService;
 
