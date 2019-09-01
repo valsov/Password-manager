@@ -137,22 +137,22 @@
                 Width="100"
                 Margin="40 10 10 10"
                 Command="{Binding OpenDatabaseCreationViewCommand}">
-                <Grid>
+                <Grid Width="68">
                     <TextBlock
                         Text="{Binding [New]}"
-                        Margin="-30 2 0 0" />
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left" />
                     <Ellipse
                         Fill="Black"
                         Width="20"
                         Height="20"
-                        Margin="0 0 -48 0" />
+                        HorizontalAlignment="Right" />
                     <materialDesign:PackIcon
                         Kind="Add"
                         Foreground="DeepSkyBlue"
                         Width="20"
                         Height="20"
-                        HorizontalAlignment="Right"
-                        Margin="0 0 -34 0"/>
+                        HorizontalAlignment="Right" />
                 </Grid>
             </Button>
 
@@ -162,22 +162,22 @@
                 Width="100"
                 Margin="10 10 40 10"
                 Command="{Binding OpenDatabaseSelectionViewCommand}">
-                <Grid>
+                <Grid Width="68">
                     <TextBlock
                         Text="{Binding [Open]}"
-                        Margin="-30 2 0 0" />
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left" />
                     <Ellipse
                         Fill="Black"
                         Width="20"
                         Height="20"
-                        Margin="0 0 -52 0" />
+                        HorizontalAlignment="Right" />
                     <materialDesign:PackIcon
                         Kind="LockOpen"
                         Foreground="DeepSkyBlue"
-                        Width="18"
-                        Height="18"
-                        HorizontalAlignment="Right"
-                        Margin="0 0 -34 0"/>
+                        Width="19"
+                        Height="19"
+                        HorizontalAlignment="Right" />
                 </Grid>
             </Button>
         </Grid>
