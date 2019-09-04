@@ -108,7 +108,7 @@ namespace PasswordManager.ViewModel
         {
             get
             {
-                return error;
+                return this[error];
             }
             set
             {
@@ -241,7 +241,7 @@ namespace PasswordManager.ViewModel
             }
             else
             {
-                Error = "Couldn't open the database";
+                Error = "DatabaseOpeningError";
             }
 
             DatabaseOpeningInProgress = false;
@@ -254,7 +254,7 @@ namespace PasswordManager.ViewModel
         {
             var fileDialog = new OpenFileDialog()
             {
-                Title = "Choose your Database file",
+                Title = this["ChooseDatabaseFile"],
                 Filter = "Password Databases|*.crypt",
                 CheckFileExists = true
             };

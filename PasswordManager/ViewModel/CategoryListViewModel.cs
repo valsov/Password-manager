@@ -69,7 +69,7 @@ namespace PasswordManager.ViewModel
         {
             get
             {
-                return formError;
+                return this[formError];
             }
             set
             {
@@ -275,12 +275,12 @@ namespace PasswordManager.ViewModel
         {
             if (string.IsNullOrWhiteSpace(NewCategoryName))
             {
-                FormError = "Category name is empty";
+                FormError = "EmptyCategoryName";
                 return;
             }
             if(CategoryList.FirstOrDefault(x => x == NewCategoryName) != null)
             {
-                FormError = "Category exists";
+                FormError = "CategoryExists";
                 return;
             }
 
@@ -319,12 +319,12 @@ namespace PasswordManager.ViewModel
         {
             if (string.IsNullOrWhiteSpace(CategoryInEdition))
             {
-                FormError = "Category name is empty";
+                FormError = "EmptyCategoryName";
                 return;
             }
             if (CategoryList.FirstOrDefault(x => x == CategoryInEdition) != null && CategoryInEdition != originalCategoryInEdition)
             {
-                FormError = "Category exists";
+                FormError = "CategoryExists";
                 return;
             }
 

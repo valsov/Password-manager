@@ -104,7 +104,7 @@ namespace PasswordManager.ViewModel
         {
             get
             {
-                return error;
+                return this[error];
             }
             set
             {
@@ -179,7 +179,7 @@ namespace PasswordManager.ViewModel
         {
             var fileDialog = new SaveFileDialog()
             {
-                Title = "Choose your Database file",
+                Title = this["ChooseDatabaseFile"],
                 Filter = "Password Databases|*.crypt"
             };
 
@@ -216,7 +216,7 @@ namespace PasswordManager.ViewModel
             }
             else
             {
-                Error = "Couldn't create the database";
+                Error = "DatabaseCreationError";
             }
         }
 

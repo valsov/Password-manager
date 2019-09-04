@@ -44,6 +44,15 @@
         "ColorTheme": "Color theme",
         "DataCopyDuration": "Data copy duration",
         "Seconds": "seconds",
-        "Infinite": "Infinite"
+        "Infinite": "Infinite",
+        "EmptyCategoryName": "Category name is empty",
+        "CategoryExists": "Category exists",
+        "DatabaseCreationError": "Couldn't create the database",
+        "DatabaseOpeningError": "Couldn't open the database",
+        "ChooseDatabaseFile": "Choose your Database file",
+        "CantFindFile": "Couldn't find a .crypt file",
+        "ApiError": "API error",
+        "InvalidUrl": "Invalid url",
+        "CantDownloadFile": "Couldn't download the file"
     }
 }

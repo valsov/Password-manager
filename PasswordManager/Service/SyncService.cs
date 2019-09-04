@@ -46,7 +46,7 @@ namespace PasswordManager.Service
                                                                     .FirstOrDefault();
                 if (database is null)
                 {
-                    error = "Couldn't find a .crypt file";
+                    error = "CantFindFile";
                 }
                 else
                 {
@@ -61,19 +61,19 @@ namespace PasswordManager.Service
             }
             catch (ApiException)
             {
-                error = "API error";
+                error = "ApiError";
             }
             catch (UriFormatException)
             {
-                error = "Invalid Url";
+                error = "InvalidUrl";
             }
             catch (ArgumentException)
             {
-                error = "Invalid Url";
+                error = "InvalidUrl";
             }
             catch (IOException)
             {
-                error = "Couldn't download the file";
+                error = "CantDownloadFile";
             }
             finally
             {
