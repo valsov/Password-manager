@@ -57,6 +57,7 @@
         "LocalDatabaseFileNotFound": "Couldn't find the local database file",
         "CantUploadFile": "Couldn't upload the file",
         "CorruptedSyncDatabase": "The sync database is corrupted",
-        "DatabaseAlreadyUpToDate": "The database is already up to date"
+        "DatabaseAlreadyUpToDate": "The database is already up to date",
+        "SyncViewTitle": "Sync"
     }
 }

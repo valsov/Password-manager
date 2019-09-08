@@ -195,7 +195,6 @@ namespace PasswordManager.Service
             /// Misc data
             ///
             mergedDatabase.Name = baseModel.Name;
-            mergedDatabase.Path = baseModel.Path;
 
             DatabasesMerged?.Invoke(this, new DatabasesMergedEventArgs(mergedDatabase));
         }

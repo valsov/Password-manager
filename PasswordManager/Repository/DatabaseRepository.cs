@@ -15,15 +15,19 @@ namespace PasswordManager.Repository
     {
         private IEncryptionService encryptionService;
 
+        private ISettingsService settingsService;
+
         private DatabaseModel cache = null;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="encryptionService"></param>
-        public DatabaseRepository(IEncryptionService encryptionService)
+        public DatabaseRepository(IEncryptionService encryptionService,
+                                  ISettingsService settingsService)
         {
             this.encryptionService = encryptionService;
+            this.settingsService = settingsService;
         }
 
         /// <summary>
@@ -252,7 +256,7 @@ namespace PasswordManager.Repository
             {
                 var json = JsonConvert.SerializeObject(cache);
                 var encryptedJson = encryptionService.Encrypt(json);
-                File.WriteAllText(cache.Path, encryptedJson);
+                File.WriteAllText(settingsService.GetDatabasePath(), encryptedJson);
                 return true;
             }
             catch (Exception)

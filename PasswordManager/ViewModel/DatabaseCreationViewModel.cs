@@ -16,6 +16,8 @@ namespace PasswordManager.ViewModel
     {
         private IDatabaseRepository databaseRepository;
 
+        private ISettingsService settingsService;
+
         private string databasePath;
         /// <summary>
         /// Database file location, returns the filename only
@@ -153,10 +155,12 @@ namespace PasswordManager.ViewModel
         /// <param name="translationService"></param>
         /// <param name="databaseRepository"></param>
         public DatabaseCreationViewModel(ITranslationService translationService,
-                                         IDatabaseRepository databaseRepository)
+                                         IDatabaseRepository databaseRepository,
+                                         ISettingsService settingsService)
             : base(translationService)
         {
             this.databaseRepository = databaseRepository;
+            this.settingsService = settingsService;
 
             Messenger.Default.Register<ShowDatabaseCreationViewMessage>(this, InitUserControl);
         }
@@ -205,7 +209,6 @@ namespace PasswordManager.ViewModel
             var databaseModel = new DatabaseModel()
             {
                 Name = DatabaseName,
-                Path = databasePath,
                 Categories = new List<CategoryModel>(),
                 PasswordEntries = new List<PasswordEntryModel>(),
                 DeletedCategories = new List<string>(),
@@ -216,6 +219,7 @@ namespace PasswordManager.ViewModel
                 }
             };
 
+            settingsService.SaveDatabasePath(databasePath);
             var result = databaseRepository.WriteDatabase(databaseModel, Password);
             if (result)
             {

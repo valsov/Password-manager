@@ -8,11 +8,6 @@ namespace PasswordManager.Model
     public class DatabaseModel
     {
         /// <summary>
-        /// Absolute path of the database file
-        /// </summary>
-        public string Path { get; set; }
-
-        /// <summary>
         /// Name of the database
         /// </summary>
         public string Name { get; set; }

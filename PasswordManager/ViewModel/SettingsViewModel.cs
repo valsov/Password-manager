@@ -103,17 +103,7 @@ namespace PasswordManager.ViewModel
         {
             this.settingsService = settingsService;
 
-            Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
             Messenger.Default.Register<LanguageChangedMessage>(this, LanguageChangedHandler);
-        }
-
-        /// <summary>
-        /// Save the database path
-        /// </summary>
-        /// <param name="message"></param>
-        void DatabaseLoadedHandler(DatabaseLoadedMessage message)
-        {
-            settingsService.SaveDatabasePath(message.DatabaseModel.Path);
         }
 
         /// <summary>

@@ -57,6 +57,7 @@
         "LocalDatabaseFileNotFound": "Impossible de trouver la fichier local",
         "CantUploadFile": "Erreur lors de l'envoi du fichier",
         "CorruptedSyncDatabase": "Le fichier de synchronisation est corrompu",
-        "DatabaseAlreadyUpToDate": "Le fichier est à jour"
+        "DatabaseAlreadyUpToDate": "Le fichier est à jour",
+        "SyncViewTitle": "Sync"
     }
 }

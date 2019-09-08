@@ -19,6 +19,8 @@ namespace PasswordManager.ViewModel
 
         private IIconsService iconsService;
 
+        private ISettingsService settingsService;
+
         private bool databaseOpeningResult;
 
         private DateTime databaseOpeningStartTime;
@@ -173,11 +175,13 @@ namespace PasswordManager.ViewModel
         /// <param name="iconsService"></param>
         public DatabaseSelectionViewModel(ITranslationService translationService,
                                           IDatabaseRepository databaseRepository,
-                                          IIconsService iconsService)
+                                          IIconsService iconsService,
+                                          ISettingsService settingsService)
             : base(translationService)
         {
             this.databaseRepository = databaseRepository;
             this.iconsService = iconsService;
+            this.settingsService = settingsService;
 
             iconsService.IconsLoadedEvent += IconsLoadedEventHandler;
 
@@ -194,6 +198,11 @@ namespace PasswordManager.ViewModel
             {
                 // Don't lose the path on back and forth navigation
                 DatabasePath = obj.Path;
+            }
+
+            if (!File.Exists(databasePath))
+            {
+                DatabasePath = string.Empty;
             }
 
             database = null;
@@ -237,6 +246,7 @@ namespace PasswordManager.ViewModel
         {
             if (databaseOpeningResult)
             {
+                settingsService.SaveDatabasePath(databasePath);
                 Application.Current.Dispatcher.Invoke(() => Messenger.Default.Send(new DatabaseLoadedMessage(this, database)));
             }
             else

@@ -17,6 +17,8 @@ namespace PasswordManager.ViewModel
 
         private IDatabaseRepository databaseRepository;
 
+        private ISettingsService settingsService;
+
         private string username;
         /// <summary>
         /// Username of the storage account
@@ -78,7 +80,7 @@ namespace PasswordManager.ViewModel
         {
             get
             {
-                return error;
+                return this[error];
             }
             set
             {
@@ -208,11 +210,13 @@ namespace PasswordManager.ViewModel
         /// <param name="databaseRepository"></param>
         public SyncViewModel(ITranslationService translationService,
                              ISyncService syncService,
-                             IDatabaseRepository databaseRepository)
+                             IDatabaseRepository databaseRepository,
+                             ISettingsService settingsService)
             : base(translationService)
         {
             this.syncService = syncService;
             this.databaseRepository = databaseRepository;
+            this.settingsService = settingsService;
 
             Messenger.Default.Register<DatabaseLoadedMessage>(this, InitUserControl);
             Messenger.Default.Register<ToggleSyncViewMessage>(this, ToggleSyncView);
@@ -302,7 +306,7 @@ namespace PasswordManager.ViewModel
             {
                 // Just upload because only local changes
                 syncService.DatabaseUploadEnded += DatabaseUploadEndedHandler;
-                syncService.UploadDatabase(Username, Password, databaseRepository.GetDatabase().Path);
+                syncService.UploadDatabase(Username, Password, settingsService.GetDatabasePath());
                 MergeSyncStepState = SyncStepStates.Skipped;
                 UploadSyncStepState = SyncStepStates.InProgress;
             }
@@ -338,7 +342,7 @@ namespace PasswordManager.ViewModel
             Application.Current.Dispatcher.Invoke(() => Messenger.Default.Send(new DatabaseLoadedMessage(this, args.MergedDatabase)));
 
             syncService.DatabaseUploadEnded += DatabaseUploadEndedHandler;
-            syncService.UploadDatabase(Username, Password, args.MergedDatabase.Path);
+            syncService.UploadDatabase(Username, Password, settingsService.GetDatabasePath());
             MergeSyncStepState = SyncStepStates.Done;
             UploadSyncStepState = SyncStepStates.InProgress;
         }
