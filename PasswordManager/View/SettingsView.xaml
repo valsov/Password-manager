@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PasswordManager.View"
              xmlns:converters="clr-namespace:PasswordManager.Converters"
-             xmlns:model="clr-namespace:PasswordManager.Model"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="500"
@@ -143,7 +142,7 @@
                     Value="{Binding ClipboardTimerDuration}" />
 
                 <TextBlock
-                    Text="{Binding ClipboardTimerDuration, Mode=OneWay, Converter={StaticResource IntegerToTimeConverter}}"
+                    Text="{Binding ClipboardTimerDuration, Mode=OneWay, Converter={StaticResource IntegerToTimeConverter}, ConverterParameter=Seconds}"
                     HorizontalAlignment="Center"
                     FontSize="20"
                     Foreground="Gray" />

@@ -25,6 +25,21 @@ namespace PasswordManager.Model
         /// <summary>
         /// List of categories
         /// </summary>
-        public List<string> Categories { get; set; }
+        public List<CategoryModel> Categories { get; set; }
+
+        /// <summary>
+        /// List of deleted password entries
+        /// </summary>
+        public List<string> DeletedEntries { get; set; }
+
+        /// <summary>
+        /// List of deleted categories
+        /// </summary>
+        public List<string> DeletedCategories { get; set; }
+
+        /// <summary>
+        /// Data relative to the sync process
+        /// </summary>
+        public SyncData SyncData { get; set; }
     }
 }

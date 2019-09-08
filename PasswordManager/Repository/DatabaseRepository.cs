@@ -13,9 +13,9 @@ namespace PasswordManager.Repository
     /// </summary>
     public class DatabaseRepository : IDatabaseRepository
     {
-        IEncryptionService encryptionService;
+        private IEncryptionService encryptionService;
 
-        DatabaseModel cache = null;
+        private DatabaseModel cache = null;
 
         /// <summary>
         /// Constructor
@@ -39,6 +39,15 @@ namespace PasswordManager.Repository
         }
 
         /// <summary>
+        /// Load the given database into the cache
+        /// </summary>
+        /// <param name="database"></param>
+        public void LoadDatabase(DatabaseModel database)
+        {
+            cache = database;
+        }
+
+        /// <summary>
         /// Get the current database cache
         /// </summary>
         /// <returns></returns>
@@ -48,11 +57,30 @@ namespace PasswordManager.Repository
         }
 
         /// <summary>
+        /// Retrieve a database from the given path, with the currently loaded encryption details
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public DatabaseModel GetDatabase(string path)
+        {
+            return InternalGetDatabase(path);
+        }
+
+        /// <summary>
         /// Delete the database cache
         /// </summary>
         public void UnloadDatabase()
         {
             cache = null;
+        }
+
+        /// <summary>
+        /// Write the database stored in the cache with the currently loaded encryption details
+        /// </summary>
+        /// <returns></returns>
+        public bool WriteDatabase()
+        {
+            return InternalWriteDatabase();
         }
 
         /// <summary>
@@ -80,6 +108,7 @@ namespace PasswordManager.Repository
         /// <returns></returns>
         public bool UpdatePasswordEntry(PasswordEntryModel entry)
         {
+            entry.LastEditionDate = DateTime.Now;
             for (int i = 0; i < cache?.PasswordEntries?.Count; i++)
             {
                 if (cache.PasswordEntries[i].Id == entry.Id)
@@ -100,6 +129,7 @@ namespace PasswordManager.Repository
         /// <returns></returns>
         public bool AddPasswordEntry(PasswordEntryModel entry)
         {
+            entry.LastEditionDate = DateTime.Now;
             cache.PasswordEntries.Add(entry);
             return InternalWriteDatabase();
         }
@@ -111,6 +141,7 @@ namespace PasswordManager.Repository
         /// <returns></returns>
         public bool DeletePasswordEntry(PasswordEntryModel entry)
         {
+            cache.DeletedEntries.Add(entry.Id);
             cache.PasswordEntries.RemoveAll(x => x.Id == entry.Id);
             return InternalWriteDatabase();
         }
@@ -122,7 +153,12 @@ namespace PasswordManager.Repository
         /// <returns></returns>
         public bool AddCategory(string category)
         {
-            cache.Categories.Add(category);
+            var categoryModel = new CategoryModel()
+            {
+                Name = category,
+                LastEditionDate = DateTime.Now
+            };
+            cache.Categories.Add(categoryModel);
             return InternalWriteDatabase();
         }
 
@@ -134,8 +170,9 @@ namespace PasswordManager.Repository
         /// <returns></returns>
         public bool UpdateCategory(string oldCategory, string newCategory)
         {
-            var index = cache.Categories.IndexOf(oldCategory);
-            cache.Categories[index] = newCategory;
+            var category = cache.Categories.First(x => x.Name == oldCategory);
+            category.LastEditionDate = DateTime.Now;
+            category.Name = newCategory;
             foreach (var entry in cache.PasswordEntries.Where(x => x.Category == oldCategory))
             {
                 entry.Category = newCategory;
@@ -150,7 +187,9 @@ namespace PasswordManager.Repository
         /// <returns></returns>
         public bool DeleteCategory(string category)
         {
-            cache.Categories.Remove(category);
+            var id = cache.Categories.First(x => x.Name == category).Id;
+            cache.DeletedCategories.Add(id);
+            cache.Categories.RemoveAll(x => x.Name == category);
             foreach (var entry in cache.PasswordEntries.Where(x => x.Category == category))
             {
                 entry.Category = null;
@@ -172,9 +211,9 @@ namespace PasswordManager.Repository
         /// Read the database from the disk and decrypt it with the given password
         /// </summary>
         /// <param name="path"></param>
-        /// <param name="password"></param>
+        /// <param name="password">If no password is given, use the one from the encryptionRepository if it has been set</param>
         /// <returns></returns>
-        DatabaseModel InternalGetDatabase(string path, string password)
+        DatabaseModel InternalGetDatabase(string path, string password = "")
         {
             if (path is null || password is null || !File.Exists(path))
             {
@@ -184,8 +223,11 @@ namespace PasswordManager.Repository
             try
             {
                 var encryptedJson = File.ReadAllText(path);
-                // Initialize Encryption service with the given key
-                encryptionService.Initialize(password);
+                if (password != "")
+                {
+                    // Initialize Encryption service with the given key
+                    encryptionService.Initialize(password);
+                }
                 var json = encryptionService.Decrypt(encryptedJson);
                 if (string.IsNullOrEmpty(json))
                 {

@@ -87,6 +87,20 @@ namespace PasswordManager.ViewModel
             }
         }
 
+        private bool syncVisibility;
+        public bool SyncVisibility
+        {
+            get
+            {
+                return syncVisibility;
+            }
+            set
+            {
+                syncVisibility = value;
+                RaisePropertyChanged(nameof(SyncVisibility));
+            }
+        }
+
         public RelayCommand LoadedCommand
         {
             get
@@ -145,9 +159,11 @@ namespace PasswordManager.ViewModel
             MainViewVisibility = false;
             DatabaseOpeningGroupVisibility = true;
             SettingsVisibility = false;
+            SyncVisibility = false;
 
             Messenger.Default.Register<DatabaseLoadedMessage>(this, DatabaseLoadedHandler);
             Messenger.Default.Register<ToggleSettingsViewMessage>(this, SettingsViewVisibilityHandler);
+            Messenger.Default.Register<ToggleSyncViewMessage>(this, SyncViewVisibilityHandler);
         }
 
         /// <summary>
@@ -168,6 +184,15 @@ namespace PasswordManager.ViewModel
         private void SettingsViewVisibilityHandler(ToggleSettingsViewMessage obj)
         {
             SettingsVisibility = obj.Visibility;
+        }
+
+        /// <summary>
+        /// Handle the sync view toggle
+        /// </summary>
+        /// <param name="obj"></param>
+        private void SyncViewVisibilityHandler(ToggleSyncViewMessage obj)
+        {
+            SyncVisibility = obj.Visibility;
         }
 
         /// <summary>
@@ -210,7 +235,7 @@ namespace PasswordManager.ViewModel
         /// </summary>
         private void OpenSyncView()
         {
-            throw new NotImplementedException();
+            Messenger.Default.Send(new ToggleSyncViewMessage(this, true));
         }
     }
 }

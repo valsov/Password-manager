@@ -14,5 +14,7 @@
         public const string IconsMappingFile = "mapping";
 
         public const string IconsQueryUrl = "https://logo.clearbit.com/";   // Alternative : https://icons.duckduckgo.com/ip2/
+
+        public const string TempDatabaseFileName = "temp.crypt";
     }
 }

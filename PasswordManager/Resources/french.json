@@ -53,6 +53,10 @@
         "CantFindFile": "Aucun fichier .crypt trouvé",
         "ApiError": "Erreur d'API",
         "InvalidUrl": "Url invalide",
-        "CantDownloadFile": "Erreur lors du téléchargement du fichier"
+        "CantDownloadFile": "Erreur lors du téléchargement du fichier",
+        "LocalDatabaseFileNotFound": "Impossible de trouver la fichier local",
+        "CantUploadFile": "Erreur lors de l'envoi du fichier",
+        "CorruptedSyncDatabase": "Le fichier de synchronisation est corrompu",
+        "DatabaseAlreadyUpToDate": "Le fichier est à jour"
     }
 }

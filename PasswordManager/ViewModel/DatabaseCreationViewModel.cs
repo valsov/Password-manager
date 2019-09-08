@@ -6,6 +6,7 @@ using PasswordManager.Messengers;
 using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -46,6 +47,7 @@ namespace PasswordManager.ViewModel
             set
             {
                 databaseName = value;
+                RaisePropertyChanged(nameof(DatabaseName));
                 RaisePropertyChanged(nameof(IsCreateDatabaseEnabled));
             }
         }
@@ -204,8 +206,14 @@ namespace PasswordManager.ViewModel
             {
                 Name = DatabaseName,
                 Path = databasePath,
-                Categories = new List<string>(),
-                PasswordEntries = new List<PasswordEntryModel>()
+                Categories = new List<CategoryModel>(),
+                PasswordEntries = new List<PasswordEntryModel>(),
+                DeletedCategories = new List<string>(),
+                DeletedEntries = new List<string>(),
+                SyncData = new SyncData()
+                {
+                    LastSync = DateTime.MinValue
+                }
             };
 
             var result = databaseRepository.WriteDatabase(databaseModel, Password);

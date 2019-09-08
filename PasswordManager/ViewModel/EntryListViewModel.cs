@@ -143,7 +143,8 @@ namespace PasswordManager.ViewModel
         /// <param name="obj"></param>
         void DatabaseLoadedHandler(DatabaseLoadedMessage obj)
         {
-            foreach(var entry in obj.DatabaseModel.PasswordEntries)
+            basePasswordEntries.Clear();
+            foreach (var entry in obj.DatabaseModel.PasswordEntries)
             {
                 basePasswordEntries.Add(entry);
             }

@@ -16,15 +16,34 @@ namespace PasswordManager.Repository.Interfaces
         DatabaseModel LoadDatabase(string path, string password);
 
         /// <summary>
+        /// Load the given database into the cache
+        /// </summary>
+        /// <param name="database"></param>
+        void LoadDatabase(DatabaseModel database);
+
+        /// <summary>
         /// Get the current database cache
         /// </summary>
         /// <returns></returns>
         DatabaseModel GetDatabase();
 
         /// <summary>
+        /// Retrieve a database from the given path, with the currently loaded encryption details
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        DatabaseModel GetDatabase(string path);
+
+        /// <summary>
         /// Delete the database cache
         /// </summary>
         void UnloadDatabase();
+
+        /// <summary>
+        /// Write the database stored in the cache with the currently loaded encryption details
+        /// </summary>
+        /// <returns></returns>
+        bool WriteDatabase();
 
         /// <summary>
         /// Write the given batabase to the storage with the given encryption key

@@ -53,6 +53,10 @@
         "CantFindFile": "Couldn't find a .crypt file",
         "ApiError": "API error",
         "InvalidUrl": "Invalid url",
-        "CantDownloadFile": "Couldn't download the file"
+        "CantDownloadFile": "Couldn't download the file",
+        "LocalDatabaseFileNotFound": "Couldn't find the local database file",
+        "CantUploadFile": "Couldn't upload the file",
+        "CorruptedSyncDatabase": "The sync database is corrupted",
+        "DatabaseAlreadyUpToDate": "The database is already up to date"
     }
 }

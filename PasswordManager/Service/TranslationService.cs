@@ -27,7 +27,7 @@ namespace PasswordManager.Service
         public string Translate(string key)
         {
             var translationBase = translationRepository.GetTranslationBase();
-            if (translationBase is null)
+            if (translationBase is null || key is null)
             {
                 return key;
             }

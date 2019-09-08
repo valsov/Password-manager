@@ -7,7 +7,7 @@ namespace PasswordManager.Model
     /// <summary>
     /// Class to identify a password with its details
     /// </summary>
-    public class PasswordEntryModel : INotifyPropertyChanged
+    public class PasswordEntryModel : INotifyPropertyChanged, ISyncEntry
     {
         /// <summary>
         /// Property changed event
@@ -66,6 +66,11 @@ namespace PasswordManager.Model
         /// Notes of the password entry
         /// </summary>
         public string Notes { get; set; }
+
+        /// <summary>
+        /// Last time the entry has been created / edited
+        /// </summary>
+        public DateTime LastEditionDate { get; set; }
 
         /// <summary>
         /// Constructor, set GUID

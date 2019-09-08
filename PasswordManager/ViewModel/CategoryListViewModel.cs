@@ -237,7 +237,8 @@ namespace PasswordManager.ViewModel
         /// <param name="obj"></param>
         void DatabaseLoadedHandler(DatabaseLoadedMessage obj)
         {
-            foreach (var cat in obj.DatabaseModel.Categories)
+            CategoryList.Clear();
+            foreach (var cat in obj.DatabaseModel.Categories.Select(x => x.Name))
             {
                 CategoryList.Add(cat);
             }

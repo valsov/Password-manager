@@ -1,19 +1,14 @@
 ﻿namespace PasswordManager.Events
 {
     /// <summary>
-    /// Event args for DatabaseDownloadEnded event
+    /// Event args for DatabaseUploadEnded event
     /// </summary>
-    public class DatabaseDownloadEndedEventArgs
+    public class DatabaseUploadEndedEventArgs
     {
         /// <summary>
-        /// Result of the download operation
+        /// Result of the operation
         /// </summary>
         public bool Result { get; private set; }
-
-        /// <summary>
-        /// Path of the downloaded file, if the download was a success
-        /// </summary>
-        public string Path { get; private set; }
 
         /// <summary>
         /// Eventual error from the operation
@@ -24,12 +19,10 @@
         /// Constructor
         /// </summary>
         /// <param name="result"></param>
-        /// <param name="path"></param>
         /// <param name="error"></param>
-        public DatabaseDownloadEndedEventArgs(bool result, string path, string error)
+        public DatabaseUploadEndedEventArgs(bool result, string error)
         {
             Result = result;
-            Path = path;
             Error = error;
         }
     }

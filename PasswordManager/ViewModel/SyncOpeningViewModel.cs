@@ -139,8 +139,6 @@ namespace PasswordManager.ViewModel
             this.syncService = syncService;
 
             Messenger.Default.Register<ShowSyncOpeningViewMessage>(this, InitUserControl);
-
-            syncService.DatabaseDownloadEnded += DatabaseDownloadEndedHandler;
         }
 
         /// <summary>
@@ -183,6 +181,7 @@ namespace PasswordManager.ViewModel
             }
 
             SyncInProgress = true;
+            syncService.DatabaseDownloadEnded += DatabaseDownloadEndedHandler;
             syncService.DownloadDatabaseFromUrl(Url, databasePath);
         }
 
@@ -193,6 +192,7 @@ namespace PasswordManager.ViewModel
         /// <param name="args"></param>
         private void DatabaseDownloadEndedHandler(object sender,  DatabaseDownloadEndedEventArgs args)
         {
+            syncService.DatabaseDownloadEnded -= DatabaseDownloadEndedHandler;
             SyncInProgress = false;
             Error = args.Error;
             if (args.Result)

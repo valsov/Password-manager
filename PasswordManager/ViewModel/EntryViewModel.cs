@@ -550,7 +550,7 @@ namespace PasswordManager.ViewModel
 
             // string.Empty for no category
             Categories.Add(string.Empty);
-            foreach (var category in databaseRepository.GetDatabase().Categories)
+            foreach (var category in databaseRepository.GetDatabase().Categories.Select(x => x.Name))
             {
                 Categories.Add(category);
             }

@@ -190,5 +190,11 @@
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
 
+        <materialDesign:DialogHost IsOpen="{Binding SyncVisibility}">
+            <materialDesign:DialogHost.DialogContent>
+                <view:SyncView
+                    Width="300" />
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
     </Grid>
 </Window>
