@@ -1,6 +1,7 @@
 ﻿using PasswordManager.Model;
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -19,19 +20,19 @@ namespace PasswordManager.Converters
             switch (state)
             {
                 case SyncStepStates.Inactive:
-                    brush.Color = Colors.White;
+                    brush = (SolidColorBrush)Application.Current.Resources["SyncStepStateInactiveColor"];
                     break;
                 case SyncStepStates.InProgress:
-                    brush.Color = Color.FromRgb(18, 151, 224);
+                    brush = (SolidColorBrush)Application.Current.Resources["SyncStepStateInProgressColor"];
                     break;
                 case SyncStepStates.Done:
-                    brush.Color = Color.FromRgb(46, 204, 113);
+                    brush = (SolidColorBrush)Application.Current.Resources["SyncStepStateDoneColor"];
                     break;
                 case SyncStepStates.Skipped:
-                    brush.Color = Color.FromRgb(149, 165, 166);
+                    brush = (SolidColorBrush)Application.Current.Resources["SyncStepStateSkippedColor"];
                     break;
                 case SyncStepStates.Failed:
-                    brush.Color = Color.FromRgb(215, 60, 44);
+                    brush = (SolidColorBrush)Application.Current.Resources["SyncStepStateFailedColor"];
                     break;
             }
 

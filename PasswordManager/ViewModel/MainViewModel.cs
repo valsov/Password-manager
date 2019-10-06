@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight.Messaging;
 using PasswordManager.Messengers;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
-using System;
 
 namespace PasswordManager.ViewModel
 {

@@ -16,8 +16,8 @@
     </UserControl.Resources>
     <Grid>
         <Border
-            Background="#FFFFFF"
-            BorderBrush="#D4D4D4"
+            Background="{DynamicResource EntryListBackground}"
+            BorderBrush="{DynamicResource EntryListBorderBrush}"
             BorderThickness="0 0 1 0">
             <Grid>
                 <Grid.RowDefinitions>
@@ -27,13 +27,14 @@
 
                 <Border
                     Grid.Row="0"
-                    BorderBrush="LightGray"
+                    BorderBrush="{DynamicResource SearchBorderBrush}"
                     BorderThickness="0 0 0 1">
                     <StackPanel
                         Orientation="Horizontal"
-                        Background="#EAEAEA">
+                        Background="{DynamicResource SearchBackground}">
                         <materialDesign:PackIcon
                             Kind="Search"
+                            Foreground="{DynamicResource IconForeground}"
                             Width="20"
                             Height="20"
                             Margin="5 10 0 0"/>
@@ -41,6 +42,7 @@
                         <TextBox
                             Margin="10 0 0 10"
                             Width="200"
+                            Foreground="{DynamicResource EntryForeground}"
                             Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <Button
@@ -48,10 +50,11 @@
                             Height="30"
                             Margin="30 0 0 0"
                             Style="{DynamicResource MaterialDesignFloatingActionButton}"
-                            Background="White"
+                            Background="{DynamicResource ActionButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding AddEntryCommand}">
-                            <materialDesign:PackIcon Kind="Plus" />
+                            <materialDesign:PackIcon Kind="Plus"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
                     </StackPanel>
                 </Border>
@@ -91,7 +94,7 @@
                                                     Grid.Row="0"
                                                     Text="{Binding Name}"
                                                     FontSize="18"
-                                                    FontWeight="DemiBold"/>
+                                                    FontWeight="DemiBold" />
                                                 <TextBlock
                                                     Grid.Row="1"
                                                     Text="{Binding Username}"
@@ -102,9 +105,10 @@
 
                                     <Grid.Style>
                                         <Style>
+                                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource EntryForeground}"/>
                                             <Style.Triggers>
                                                 <Trigger Property="Grid.IsMouseOver" Value="True">
-                                                    <Setter Property="Grid.Background" Value="#EBEBEB"/>
+                                                    <Setter Property="Grid.Background" Value="{DynamicResource HoverEntryBackground}"/>
                                                 </Trigger>
                                                 <DataTrigger Value="True">
                                                     <DataTrigger.Binding>
@@ -113,8 +117,8 @@
                                                             <Binding Path="DataContext.SelectedPasswordEntry" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" />
                                                         </MultiBinding>
                                                     </DataTrigger.Binding>
-                                                    <Setter Property="Grid.Background" Value="#0169DA"/>
-                                                    <Setter Property="TextBlock.Foreground" Value="#F6FEF4"/>
+                                                    <Setter Property="Grid.Background" Value="{DynamicResource FocusedEntryBackground}"/>
+                                                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource FocusedEntryForeground}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -161,7 +165,8 @@
                     Margin="0 20 0 0"
                     HorizontalAlignment="Center"
                     Text="{Binding [NoEntries]}"
-                    FontSize="20">
+                    FontSize="20"
+                    Foreground="{DynamicResource EntryForeground}">
                     <TextBlock.Style>
                         <Style>
                             <Setter Property="TextBlock.Visibility" Value="Hidden" />

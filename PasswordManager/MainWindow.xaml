@@ -29,8 +29,8 @@
         </Grid.Resources>
         <Border
             Visibility="{Binding MainViewVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
-            Background="#3B4045"
-            BorderBrush="#3A4758"
+            Background="{DynamicResource MainBackgound}"
+            BorderBrush="{DynamicResource MainBorderBrush}"
             BorderThickness="1">
             <Grid>
                 <Grid.RowDefinitions>
@@ -40,7 +40,7 @@
 
                 <Grid
                     Grid.Row="0"
-                    Background="#3B4045">
+                    Background="{DynamicResource MainBackgound}">
                     <TextBlock
                         Text="{Binding DatabaseName}"
                         VerticalAlignment="Center"

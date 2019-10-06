@@ -9,7 +9,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="#F9F9F9"
+             Background="{DynamicResource EntryViewBackground}"
              DataContext="{Binding Entry, Source={StaticResource Locator}}">
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -42,13 +42,14 @@
                     Height="40"
                     FontSize="25"
                     FontWeight="Bold"
+                    Foreground="{DynamicResource EntryDataForeground}"
                     Text="{Binding PasswordEntry.Name}" />
             </StackPanel>
 
             <Button
                 Width="30"
                 Height="30"
-                Background="White"
+                Background="{DynamicResource ActionButtonBackground}"
                 BorderBrush="Transparent"
                 Style="{DynamicResource MaterialDesignFloatingActionButton}"
                 Margin="0 65 70 0"
@@ -56,13 +57,14 @@
                 HorizontalAlignment="Right"
                 Visibility="{Binding DeleteButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Command="{Binding DeleteEntryCommand}">
-                <materialDesign:PackIcon Kind="Bin" />
+                <materialDesign:PackIcon Kind="Bin"
+                                         Foreground="{DynamicResource IconForeground}" />
             </Button>
 
             <Button
                 Width="30"
                 Height="30"
-                Background="White"
+                Background="{DynamicResource ActionButtonBackground}"
                 BorderBrush="Transparent"
                 Style="{DynamicResource MaterialDesignFloatingActionButton}"
                 Margin="0 65 30 0"
@@ -70,35 +72,38 @@
                 HorizontalAlignment="Right"
                 Visibility="{Binding EditionButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Command="{Binding StartEditionCommand}">
-                    <materialDesign:PackIcon Kind="Pencil" />
+                <materialDesign:PackIcon Kind="Pencil"
+                                         Foreground="{DynamicResource IconForeground}" />
             </Button>
 
             <Border
                 Margin="20 100 20 20"
                 VerticalAlignment="Top"
                 Height="180"
-                BorderBrush="Gray"
+                BorderBrush="{DynamicResource EntryViewDataBorderBrush}"
                 BorderThickness="1"
                 CornerRadius="5"
-                Background="White">
+                Background="{DynamicResource EntryViewDataBackground}">
                 <StackPanel
                     Orientation="Vertical"
                     Margin="15">
                     <TextBlock
                         Text="{Binding [EntryViewUsername]}"
-                        Foreground="#636361"
+                        Foreground="{DynamicResource EntryDataHeaderForeground}"
                         FontSize="13" />
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
                             Text="{Binding PasswordEntry.Username}"
                             FontSize="16"
+                            Foreground="{DynamicResource EntryDataForeground}"
                             Margin="0 0 10 0" />
                         <Grid
                             Visibility="{Binding PasswordEntry.Username, Converter={StaticResource EmptyStringToVisibilityConverter}}"
                             Cursor="Hand"
                             Background="Transparent"
                             VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="ContentCopy" />
+                            <materialDesign:PackIcon Kind="ContentCopy"
+                                                     Foreground="{DynamicResource CopyIconForeground}" />
                             <Grid.InputBindings>
                                 <MouseBinding
                                     MouseAction="LeftClick"
@@ -112,7 +117,7 @@
                             <TextBlock
                                 Margin="0 10 0 0"
                                 Text="{Binding [EntryViewPassword]}"
-                                Foreground="#636361"
+                                Foreground="{DynamicResource EntryDataHeaderForeground}"
                                 FontSize="13" />
 
                             <StackPanel Orientation="Horizontal">
@@ -120,18 +125,21 @@
                                     Text="{Binding PasswordEntry.Password}"
                                     Visibility="{Binding ShowPassword, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}"
                                     FontSize="16"
+                                    Foreground="{DynamicResource EntryDataForeground}"
                                     Margin="0 0 10 0" />
                                 <TextBlock
                                     Text="{Binding PasswordEntry.Password, Converter={StaticResource StringToPasswordCharsConverter}}"
                                     Visibility="{Binding ShowPassword, Converter={StaticResource InvertedBooleanToCollapsedVisibilityConverter}}"
                                     FontSize="20"
+                                    Foreground="{DynamicResource EntryDataForeground}"
                                     Margin="0 0 10 0" />
                                 <Grid
                                     Visibility="{Binding PasswordEntry.Password, Converter={StaticResource EmptyStringToVisibilityConverter}}"
                                     Cursor="Hand"
                                     Background="Transparent"
                                     VerticalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="ContentCopy" />
+                                    <materialDesign:PackIcon Kind="ContentCopy"
+                                                             Foreground="{DynamicResource CopyIconForeground}" />
                                     <Grid.InputBindings>
                                         <MouseBinding
                                             MouseAction="LeftClick"
@@ -148,6 +156,7 @@
                             Margin="0 0 0 5">
                             <TextBlock
                                 Margin="0 0 5 0"
+                                Foreground="{DynamicResource EntryDataForeground}"
                                 Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource EnumToTranslatedDescriptionConverter}}" />
                             <Ellipse
                                 Width="15"
@@ -162,16 +171,18 @@
                         HorizontalAlignment="Left"
                         Content="{Binding [ShowPassword]}"
                         Cursor="Hand"
+                        Foreground="{DynamicResource EntryDataForeground}"
                         Visibility="{Binding PasswordEntry.Password, Converter={StaticResource EmptyStringToVisibilityConverter}}"
                         IsChecked="{Binding ShowPassword}" />
 
                     <TextBlock
                         Margin="0 10 0 0"
                         Text="{Binding [EntryViewCategory]}"
-                        Foreground="#636361"
+                        Foreground="{DynamicResource EntryDataHeaderForeground}"
                         FontSize="13" />
                     <TextBlock
                         Text="{Binding PasswordEntry.Category}"
+                        Foreground="{DynamicResource EntryDataForeground}"
                         FontSize="16" />
                 </StackPanel>
             </Border>
@@ -183,19 +194,21 @@
                 Margin="35 310 0 0">
                 <TextBlock
                     Text="{Binding [EntryViewWebsite]}"
-                    Foreground="#636361"
+                    Foreground="{DynamicResource EntryDataHeaderForeground}"
                     FontSize="14" />
                 <StackPanel Orientation="Horizontal">
                     <TextBlock
                         Text="{Binding PasswordEntry.Website}"
                         FontSize="16"
+                        Foreground="{DynamicResource EntryDataForeground}"
                         Margin="0 0 10 0" />
                     <Grid
                         Visibility="{Binding PasswordEntry.Website, Converter={StaticResource EmptyStringToVisibilityConverter}}"
                         Cursor="Hand"
                         Background="Transparent"
                         VerticalAlignment="Center">
-                        <materialDesign:PackIcon Kind="OpenInNew" />
+                        <materialDesign:PackIcon Kind="OpenInNew"
+                                                 Foreground="{DynamicResource CopyIconForeground}" />
                         <Grid.InputBindings>
                             <MouseBinding
                                 MouseAction="LeftClick"
@@ -207,10 +220,11 @@
                 <TextBlock
                     Margin="0 10 0 0"
                     Text="{Binding [EntryViewNotes]}"
-                    Foreground="#636361"
+                    Foreground="{DynamicResource EntryDataHeaderForeground}"
                     FontSize="14" />
                 <TextBlock
                     Text="{Binding PasswordEntry.Notes}"
+                    Foreground="{DynamicResource EntryDataForeground}"
                     FontSize="16" />
             </StackPanel>
         </Grid>
@@ -224,6 +238,7 @@
                 HorizontalAlignment="Left"
                 FontSize="25"
                 FontWeight="Bold"
+                Foreground="{DynamicResource EntryDataForeground}"
                 Text="{Binding PasswordEntry.Name, UpdateSourceTrigger=PropertyChanged}"
                 materialDesign:HintAssist.Hint="{Binding [EntryViewName]}" />
 
@@ -231,10 +246,10 @@
                 Margin="20 100 20 20"
                 VerticalAlignment="Top"
                 Height="210"
-                BorderBrush="Gray"
+                BorderBrush="{DynamicResource EntryViewDataBorderBrush}"
                 BorderThickness="1"
                 CornerRadius="5"
-                Background="White">
+                Background="{DynamicResource EntryViewDataBackground}">
                 <StackPanel
                     Orientation="Vertical"
                     Width="390"
@@ -244,6 +259,7 @@
                         Width="250"
                         HorizontalAlignment="Left"
                         Text="{Binding PasswordEntry.Username, UpdateSourceTrigger=PropertyChanged}"
+                        Foreground="{DynamicResource EntryDataForeground}"
                         FontSize="16"
                         materialDesign:HintAssist.Hint="{Binding [EntryViewUsername]}"
                         materialDesign:HintAssist.IsFloating="True" />
@@ -255,6 +271,7 @@
                             HorizontalAlignment="Left"
                             Text="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}"
                             Visibility="{Binding ShowPassword, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}"
+                            Foreground="{DynamicResource EntryDataForeground}"
                             FontSize="16"
                             materialDesign:HintAssist.Hint="{Binding [EntryViewPassword]}"
                             materialDesign:HintAssist.IsFloating="True" />
@@ -265,6 +282,7 @@
                             HorizontalAlignment="Left"
                             Password="{Binding PasswordEntry.Password, UpdateSourceTrigger=PropertyChanged}"
                             Visibility="{Binding ShowPassword, Converter={StaticResource InvertedBooleanToCollapsedVisibilityConverter}}"
+                            Foreground="{DynamicResource EntryDataForeground}"
                             FontSize="16"
                             materialDesign:HintAssist.Hint="{Binding [EntryViewPassword]}"
                             materialDesign:HintAssist.IsFloating="True" />
@@ -276,10 +294,11 @@
                             Margin="0 0 100 0"
                             VerticalAlignment="Bottom"
                             HorizontalAlignment="Right"
-                            Background="LightGray"
+                            Background="{DynamicResource SecondaryButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding OpenPasswordGenerationDialogCommand}">
-                            <materialDesign:PackIcon Kind="Autorenew" />
+                            <materialDesign:PackIcon Kind="Autorenew"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
 
                         <StackPanel
@@ -289,7 +308,8 @@
                             Margin="0 0 5 5">
                             <TextBlock
                                 Margin="0 0 5 0"
-                                Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource EnumToTranslatedDescriptionConverter}}" />
+                                Text="{Binding PasswordEntry.PasswordStrength, Converter={StaticResource EnumToTranslatedDescriptionConverter}}"
+                                Foreground="{DynamicResource EntryDataForeground}" />
                             <Ellipse
                                 Width="15"
                                 Height="15"
@@ -303,6 +323,7 @@
                         Width="80"
                         HorizontalAlignment="Left"
                         Content="{Binding [ShowPassword]}"
+                        Foreground="{DynamicResource EntryDataForeground}"
                         Cursor="Hand"
                         IsChecked="{Binding ShowPassword}" />
 
@@ -325,6 +346,7 @@
                 Width="300">
                 <TextBox
                     Text="{Binding PasswordEntry.Website, UpdateSourceTrigger=PropertyChanged}"
+                    Foreground="{DynamicResource EntryDataForeground}"
                     materialDesign:HintAssist.Hint="{Binding [EntryViewWebsite]}"
                     materialDesign:HintAssist.IsFloating="True"
                     FontSize="16" />
@@ -336,6 +358,7 @@
                     AcceptsTab="True"
                     MaxLines="5"
                     Text="{Binding PasswordEntry.Notes, UpdateSourceTrigger=PropertyChanged}"
+                    Foreground="{DynamicResource EntryDataForeground}"
                     materialDesign:HintAssist.Hint="{Binding [EntryViewNotes]}"
                     materialDesign:HintAssist.IsFloating="True"
                     FontSize="16"/>
@@ -354,10 +377,11 @@
                         Width="30"
                         Height="30"
                         Margin="0 0 10 10"
-                        Background="LightGray"
+                        Background="{DynamicResource SecondaryButtonBackground}"
                         BorderBrush="Transparent"
                         Command="{Binding CancelEditionCommand}">
-                        <materialDesign:PackIcon Kind="Cancel" />
+                        <materialDesign:PackIcon Kind="Cancel"
+                                                 Foreground="{DynamicResource IconForeground}" />
                     </Button>
 
                     <Button
@@ -365,10 +389,11 @@
                         Width="30"
                         Height="30"
                         Margin="10 0 0 10"
-                        Background="LimeGreen"
+                        Background="{DynamicResource ValidateButtonBackground}"
                         BorderBrush="Transparent"
                         Command="{Binding ValidateEditionCommand}">
-                        <materialDesign:PackIcon Kind="Check" />
+                        <materialDesign:PackIcon Kind="Check"
+                                                 Foreground="{DynamicResource IconForeground}" />
                     </Button>
                 </StackPanel>
 
@@ -380,10 +405,11 @@
                         Width="30"
                         Height="30"
                         Margin="0 0 10 10"
-                        Background="LightGray"
+                        Background="{DynamicResource SecondaryButtonBackground}"
                         BorderBrush="Transparent"
                         Command="{Binding CancelEntryCreationCommand}">
-                        <materialDesign:PackIcon Kind="Cancel" />
+                        <materialDesign:PackIcon Kind="Cancel"
+                                                 Foreground="{DynamicResource IconForeground}" />
                     </Button>
 
                     <Button
@@ -391,10 +417,11 @@
                         Width="30"
                         Height="30"
                         Margin="10 0 0 10"
-                        Background="LimeGreen"
+                        Background="{DynamicResource ValidateButtonBackground}"
                         BorderBrush="Transparent"
                         Command="{Binding CreateEntryCommand}">
-                        <materialDesign:PackIcon Kind="Check" />
+                        <materialDesign:PackIcon Kind="Check"
+                                                 Foreground="{DynamicResource IconForeground}" />
                     </Button>
                 </StackPanel>
             </Grid>
@@ -420,10 +447,11 @@
                             Width="30"
                             Height="30"
                             Margin="0 0 10 10"
-                            Background="LightGray"
+                            Background="{DynamicResource SecondaryButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding CancelDeletionCommand}">
-                            <materialDesign:PackIcon Kind="Cancel" />
+                            <materialDesign:PackIcon Kind="Cancel"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
 
                         <Button
@@ -431,10 +459,11 @@
                             Width="30"
                             Height="30"
                             Margin="10 0 0 10"
-                            Background="Orange"
+                            Background="{DynamicResource DeleteButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding ValidateDeletionCommand}">
-                            <materialDesign:PackIcon Kind="Garbage" />
+                            <materialDesign:PackIcon Kind="Garbage"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
                     </StackPanel>
                 </Grid>
@@ -487,10 +516,11 @@
                             Width="30"
                             Height="30"
                             Margin="0 0 10 10"
-                            Background="LightGray"
+                            Background="{DynamicResource SecondaryButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding CancelPasswordGenerationCommand}">
-                            <materialDesign:PackIcon Kind="Cancel" />
+                            <materialDesign:PackIcon Kind="Cancel"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
 
                         <Button
@@ -498,10 +528,11 @@
                             Width="30"
                             Height="30"
                             Margin="10 0 0 10"
-                            Background="LimeGreen"
+                            Background="{DynamicResource ValidateButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding GeneratePasswordCommand}">
-                            <materialDesign:PackIcon Kind="Check" />
+                            <materialDesign:PackIcon Kind="Check"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
                     </StackPanel>
                 </Grid>

@@ -1,6 +1,8 @@
 ﻿using PasswordManager.Model;
 using PasswordManager.Repository.Interfaces;
 using PasswordManager.Service.Interfaces;
+using System;
+using System.Windows;
 
 namespace PasswordManager.Service
 {
@@ -18,6 +20,8 @@ namespace PasswordManager.Service
         public SettingsService(ISettingsRepository settingsRepository)
         {
             this.settingsRepository = settingsRepository;
+
+            ApplyTheme();
         }
 
         /// <summary>
@@ -80,6 +84,7 @@ namespace PasswordManager.Service
         {
             var settingsModel = GetSettings();
             settingsModel.Theme = theme;
+            ApplyTheme();
             return SaveSettings(settingsModel);
         }
 
@@ -121,6 +126,23 @@ namespace PasswordManager.Service
         private bool SaveSettings(SettingsModel model)
         {
             return settingsRepository.WriteSettings(model);
+        }
+
+        private void ApplyTheme()
+        {
+            string file;
+            if (GetTheme() == ColorThemes.Light)
+            {
+                file = "LightTheme";
+            }
+            else
+            {
+                file = "DarkTheme";
+            }
+            Application.Current.Resources.MergedDictionaries.RemoveAt(Application.Current.Resources.MergedDictionaries.Count - 1);
+            var theme = new ResourceDictionary();
+            theme.Source = new Uri($"../Style/{file}.xaml", UriKind.Relative);
+            Application.Current.Resources.MergedDictionaries.Add(theme);
         }
     }
 }

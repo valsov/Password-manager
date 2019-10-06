@@ -13,7 +13,7 @@
         <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
         <converters:IntegerToTimeConverter x:Key="IntegerToTimeConverter" />
     </UserControl.Resources>
-    <Grid Background="White">
+    <Grid Background="{DynamicResource SettingsBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
             <RowDefinition Height="*" />
@@ -49,13 +49,13 @@
                 <TextBlock
                     Text="{Binding [Language]}"
                     FontWeight="Bold"
-                    Foreground="#2c3a49"
+                    Foreground="{DynamicResource SettingsTitleForeground}"
                     FontSize="30" />
 
                 <Border
                     Height="1"
                     BorderThickness="1"
-                    BorderBrush="LightGray"
+                    BorderBrush="{DynamicResource SettingsSeparatorBrush}"
                     Margin="0 5" />
 
                 <ListBox
@@ -88,13 +88,13 @@
                 <TextBlock
                     Text="{Binding [ColorTheme]}"
                     FontWeight="Bold"
-                    Foreground="#2c3a49"
+                    Foreground="{DynamicResource SettingsTitleForeground}"
                     FontSize="30" />
 
                 <Border
                     Height="1"
                     BorderThickness="1"
-                    BorderBrush="LightGray"
+                    BorderBrush="{DynamicResource SettingsSeparatorBrush}"
                     Margin="0 5" />
 
                 <ListBox
@@ -111,7 +111,9 @@
                                 Margin="10 0 10 0"
                                 Width="40"
                                 Height="40">
-                                <Ellipse Fill="{Binding ., Converter={StaticResource EnumToDescriptionConverter}}" />
+                                <Ellipse Fill="{Binding ., Converter={StaticResource EnumToDescriptionConverter}}"
+                                         StrokeThickness="1"
+                                         Stroke="Black" />
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -124,13 +126,13 @@
                 <TextBlock
                     Text="{Binding [DataCopyDuration]}"
                     FontWeight="Bold"
-                    Foreground="#2c3a49"
+                    Foreground="{DynamicResource SettingsTitleForeground}"
                     FontSize="30" />
 
                 <Border
                     Height="1"
                     BorderThickness="1"
-                    BorderBrush="LightGray"
+                    BorderBrush="{DynamicResource SettingsSeparatorBrush}"
                     Margin="0 5" />
 
                 <Slider
@@ -139,13 +141,14 @@
                     Maximum="60"
                     Style="{DynamicResource MaterialDesignDiscreteSlider}" 
                     ToolTip="MaterialDesignDiscreteSlider"
+                    Foreground="{DynamicResource SettingsSliderBrush}"
                     Value="{Binding ClipboardTimerDuration}" />
 
                 <TextBlock
                     Text="{Binding ClipboardTimerDuration, Mode=OneWay, Converter={StaticResource IntegerToTimeConverter}, ConverterParameter=Seconds}"
                     HorizontalAlignment="Center"
                     FontSize="20"
-                    Foreground="Gray" />
+                    Foreground="{DynamicResource SettingsDimmedForeground}" />
             </StackPanel>
         </StackPanel>
     </Grid>

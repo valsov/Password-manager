@@ -15,7 +15,7 @@
         <local:BindingProxy x:Key="proxy" Data="{Binding}" />
     </UserControl.Resources>
     <Grid>
-        <Grid Background="#3A4758">
+        <Grid Background="{DynamicResource CategoryListBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
@@ -26,10 +26,11 @@
                 Width="30"
                 Height="30"
                 Style="{DynamicResource MaterialDesignFloatingActionButton}"
-                Background="White"
+                Background="{DynamicResource ActionButtonBackground}"
                 BorderBrush="Transparent"
                 Command="{Binding ShowNewCategoryFormCommand}">
-                <materialDesign:PackIcon Kind="Plus" />
+                <materialDesign:PackIcon Kind="Plus"
+                                         Foreground="{DynamicResource IconForeground}" />
             </Button>
 
             <ScrollViewer
@@ -47,7 +48,7 @@
                             CornerRadius="3 0 0 3"
                             Padding="5">
                             <TextBlock
-                                Foreground="#D3DBE8"
+                                Foreground="{DynamicResource CategoryNameForeground}"
                                 FontSize="20"
                                 Text="{Binding [All]}" />
 
@@ -55,11 +56,11 @@
                                 <Style>
                                     <Style.Triggers>
                                         <Trigger Property="Border.IsMouseOver" Value="True">
-                                            <Setter Property="Border.Background" Value="#485464"/>
+                                            <Setter Property="Border.Background" Value="{DynamicResource CategoryHighlightBackground}"/>
                                         </Trigger>
                                         <DataTrigger Binding="{Binding SelectedCategory}" Value="{x:Null}">
-                                            <Setter Property="Border.Background" Value="#485464"/>
-                                            <Setter Property="Border.BorderBrush" Value="Gray"/>
+                                            <Setter Property="Border.Background" Value="{DynamicResource CategoryHighlightBackground}"/>
+                                            <Setter Property="Border.BorderBrush" Value="{DynamicResource SelectedCategoryBorderBrush}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -84,7 +85,7 @@
                                         CornerRadius="3 0 0 3"
                                         Padding="5">
                                         <TextBlock
-                                            Foreground="#D3DBE8"
+                                            Foreground="{DynamicResource CategoryNameForeground}"
                                             FontSize="20"
                                             Text="{Binding}" />
 
@@ -101,8 +102,8 @@
                                                                 <Binding Path="DataContext.SelectedCategory" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" />
                                                             </MultiBinding>
                                                         </DataTrigger.Binding>
-                                                        <Setter Property="Border.Background" Value="#485464"/>
-                                                        <Setter Property="Border.BorderBrush" Value="Gray"/>
+                                                        <Setter Property="Border.Background" Value="{DynamicResource CategoryHighlightBackground}"/>
+                                                        <Setter Property="Border.BorderBrush" Value="{DynamicResource SelectedCategoryBorderBrush}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -156,7 +157,7 @@
                         Text="{Binding FormError}"
                         Visibility="{Binding FormError, Converter={StaticResource EmptyStringToVisibilityConverter}}"
                         HorizontalAlignment="Center"
-                        Foreground="Red"
+                        Foreground="{DynamicResource ErrorColor}"
                         Margin="0 5 0 5"/>
 
                     <StackPanel
@@ -168,10 +169,11 @@
                             Width="30"
                             Height="30"
                             Margin="0 0 10 10"
-                            Background="LightGray"
+                            Background="{DynamicResource SecondaryButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding CancelAddCategoryCommand}">
-                            <materialDesign:PackIcon Kind="Cancel" />
+                            <materialDesign:PackIcon Kind="Cancel"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
 
                         <Button
@@ -179,10 +181,11 @@
                             Width="30"
                             Height="30"
                             Margin="10 0 0 10"
-                            Background="LimeGreen"
+                            Background="{DynamicResource ValidateButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding AddCategoryCommand}">
-                            <materialDesign:PackIcon Kind="Check" />
+                            <materialDesign:PackIcon Kind="Check"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
                     </StackPanel>
                 </StackPanel>
@@ -210,7 +213,7 @@
                         Text="{Binding FormError}"
                         Visibility="{Binding FormError, Converter={StaticResource EmptyStringToVisibilityConverter}}"
                         HorizontalAlignment="Center"
-                        Foreground="Red"
+                        Foreground="{DynamicResource ErrorColor}"
                         Margin="0 5 0 5"/>
 
                     <StackPanel
@@ -222,10 +225,11 @@
                             Width="30"
                             Height="30"
                             Margin="0 0 10 10"
-                            Background="LightGray"
+                            Background="{DynamicResource SecondaryButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding CancelCategoryEditionCommand}">
-                            <materialDesign:PackIcon Kind="Cancel" />
+                            <materialDesign:PackIcon Kind="Cancel"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
 
                         <Button
@@ -233,10 +237,11 @@
                             Width="30"
                             Height="30"
                             Margin="10 0 0 10"
-                            Background="LimeGreen"
+                            Background="{DynamicResource ValidateButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding ValidateCategoryEditionCommand}">
-                            <materialDesign:PackIcon Kind="Check" />
+                            <materialDesign:PackIcon Kind="Check"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
                     </StackPanel>
                 </StackPanel>
@@ -263,10 +268,11 @@
                             Width="30"
                             Height="30"
                             Margin="0 0 10 10"
-                            Background="LightGray"
+                            Background="{DynamicResource SecondaryButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding CancelCategoryDeletionCommand}">
-                            <materialDesign:PackIcon Kind="Cancel" />
+                            <materialDesign:PackIcon Kind="Cancel"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
 
                         <Button
@@ -274,10 +280,11 @@
                             Width="30"
                             Height="30"
                             Margin="10 0 0 10"
-                            Background="Orange"
+                            Background="{DynamicResource DeleteButtonBackground}"
                             BorderBrush="Transparent"
                             Command="{Binding ValidateCategoryDeletionCommand}">
-                            <materialDesign:PackIcon Kind="Garbage" />
+                            <materialDesign:PackIcon Kind="Garbage"
+                                                     Foreground="{DynamicResource IconForeground}" />
                         </Button>
                     </StackPanel>
                 </Grid>

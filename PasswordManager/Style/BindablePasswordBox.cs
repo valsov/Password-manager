@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace PasswordManager.Style
 {
@@ -11,6 +12,8 @@ namespace PasswordManager.Style
         public static readonly DependencyProperty PasswordProperty;
 
         public static readonly DependencyProperty FontSizeProperty;
+
+        public static readonly DependencyProperty ForegroundProperty;
 
         private bool isPreventCallback;
         private RoutedEventHandler savedCallback;
@@ -32,6 +35,13 @@ namespace PasswordManager.Style
                 typeof(double),
                 typeof(BindablePasswordBox),
                 new FrameworkPropertyMetadata((double)12, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnFontSizePropertyChanged))
+            );
+
+            FontSizeProperty = DependencyProperty.Register(
+                "Foreground",
+                typeof(SolidColorBrush),
+                typeof(BindablePasswordBox),
+                new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnForegroundPropertyChanged))
             );
         }
 
@@ -60,6 +70,12 @@ namespace PasswordManager.Style
         {
             get { return (double)GetValue(FontSizeProperty); }
             set { SetValue(FontSizeProperty, value); }
+        }
+
+        public SolidColorBrush Foreground
+        {
+            get { return (SolidColorBrush)GetValue(ForegroundProperty); }
+            set { SetValue(ForegroundProperty, value); }
         }
 
         /// <summary>
@@ -101,6 +117,13 @@ namespace PasswordManager.Style
             var bindablePasswordBox = (BindablePasswordBox)d;
             var passwordBox = (PasswordBox)bindablePasswordBox.Child;
             passwordBox.FontSize = (double)e.NewValue;
+        }
+
+        private static void OnForegroundPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var bindablePasswordBox = (BindablePasswordBox)d;
+            var passwordBox = (PasswordBox)bindablePasswordBox.Child;
+            passwordBox.Foreground = (SolidColorBrush)e.NewValue;
         }
     }
 }

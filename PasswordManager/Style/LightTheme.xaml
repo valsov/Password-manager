@@ -1,0 +1,62 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:PasswordManager.Style">
+
+    <!-- Global -->
+    <SolidColorBrush x:Key="MainBackgound" Color="#3B4045" />
+    <SolidColorBrush x:Key="MainBorderBrush" Color="#3A4758" />
+    <SolidColorBrush x:Key="ErrorColor" Color="Red" />
+    <SolidColorBrush x:Key="ActionButtonBackground" Color="White" />
+    <SolidColorBrush x:Key="SecondaryButtonBackground" Color="LightGray" />
+    <SolidColorBrush x:Key="ValidateButtonBackground" Color="LimeGreen" />
+    <SolidColorBrush x:Key="DeleteButtonBackground" Color="Orange" />
+    <SolidColorBrush x:Key="IconForeground" Color="Black" />
+    <SolidColorBrush x:Key="CopyIconForeground" Color="Black" />
+
+    <!-- Category list -->
+    <SolidColorBrush x:Key="CategoryListBackground" Color="#3A4758" />
+    <SolidColorBrush x:Key="CategoryNameForeground" Color="#D3DBE8" />
+    <SolidColorBrush x:Key="CategoryHighlightBackground" Color="#485464" />
+    <SolidColorBrush x:Key="SelectedCategoryBorderBrush" Color="Gray" />
+
+    <!-- Entry list -->
+    <SolidColorBrush x:Key="EntryListBackground" Color="White" />
+    <SolidColorBrush x:Key="EntryListBorderBrush" Color="#D4D4D4" />
+    <SolidColorBrush x:Key="SearchBackground" Color="#EAEAEA" />
+    <SolidColorBrush x:Key="SearchBorderBrush" Color="LightGray" />
+    <SolidColorBrush x:Key="EntryForeground" Color="Black" />
+    <SolidColorBrush x:Key="FocusedEntryForeground" Color="#F6FEF4" />
+    <SolidColorBrush x:Key="FocusedEntryBackground" Color="#0169DA" />
+    <SolidColorBrush x:Key="HoverEntryBackground" Color="#EBEBEB" />
+
+    <!-- Entry view -->
+    <SolidColorBrush x:Key="EntryViewBackground" Color="#F9F9F9" />
+    <SolidColorBrush x:Key="EntryDataHeaderForeground" Color="#636361" />
+    <SolidColorBrush x:Key="EntryDataForeground" Color="Black" />
+    <SolidColorBrush x:Key="EntryViewDataBorderBrush" Color="Gray" />
+    <SolidColorBrush x:Key="EntryViewDataBackground" Color="White" />
+
+    <!-- Settings -->
+    <SolidColorBrush x:Key="SettingsBackground" Color="White" />
+    <SolidColorBrush x:Key="SettingsTitleForeground" Color="#2c3a49" />
+    <SolidColorBrush x:Key="SettingsSeparatorBrush" Color="LightGray" />
+    <SolidColorBrush x:Key="SettingsSliderBrush" Color="DeepSkyBlue" />
+    <SolidColorBrush x:Key="SettingsDimmedForeground" Color="Gray" />
+
+    <!-- Sync -->
+    <SolidColorBrush x:Key="SyncBackground" Color="White" />
+    <SolidColorBrush x:Key="SyncForeground" Color="Black" />
+    <SolidColorBrush x:Key="SyncStepBrush" Color="Black" />
+    <SolidColorBrush x:Key="SyncStepLinkBrush" Color="#4c5a69" />
+    <SolidColorBrush x:Key="SyncStepStateInactiveColor" Color="White" />
+    <SolidColorBrush x:Key="SyncStepStateInProgressColor" Color="#1297E0" />
+    <SolidColorBrush x:Key="SyncStepStateDoneColor" Color="#2ECC71" />
+    <SolidColorBrush x:Key="SyncStepStateSkippedColor" Color="#95A5A6" />
+    <SolidColorBrush x:Key="SyncStepStateFailedColor" Color="#D73C2C" />
+
+    <!-- Database views -->
+    <SolidColorBrush x:Key="DatabaseViewBackground" Color="White" />
+    <SolidColorBrush x:Key="DatabaseViewForeground" Color="Black" />
+    <SolidColorBrush x:Key="DatabaseViewActionButtonBackground" Color="DeepSkyBlue" />
+    <SolidColorBrush x:Key="DatabaseViewLoadingForeground" Color="Black" />
+</ResourceDictionary>
